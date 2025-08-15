@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Controle Financeiro{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    
+    <style>
+        /* Transições suaves entre páginas */
+        .page-transition {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .page-transition.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Estilos para a sidebar */
+        .nav-item {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.6s;
+        }
+        
+        .nav-item:hover::before {
+            left: 100%;
+        }
+        
+        /* Efeito de glow nos itens ativos */
+        .nav-item.active {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* Estilos para o menu colapsável */
+        .category-menu {
+            position: relative;
+        }
+        
+        #categorias-submenu {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
+            opacity: 0;
+        }
+        
+        #categoria-arrow {
+            transition: transform 0.3s ease;
+        }
+        
+        /* Animação suave para os itens do submenu */
+        #categorias-submenu .nav-item {
+            transform: translateX(-10px);
+            opacity: 0;
+            transition: all 0.2s ease;
+        }
+        
+        #categorias-submenu[style*="max-height: 200px"] .nav-item {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        #categorias-submenu[style*="max-height: 200px"] .nav-item:nth-child(1) {
+            transition-delay: 0.1s;
+        }
+        
+        #categorias-submenu[style*="max-height: 200px"] .nav-item:nth-child(2) {
+            transition-delay: 0.2s;
+        }
+        
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* Transição para links */
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: #3b82f6;
+            border-radius: 2px;
+            transition: height 0.3s ease;
+        }
+        
+        .nav-link.active::before,
+        .nav-link:hover::before {
+            height: 100%;
+        }
+        
+        /* Loading overlay */
+        .page-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(2px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .page-loading.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Transição de cards */
+        .card-enter {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+        }
+        
+        .card-enter-active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Stagger animation para múltiplos elementos */
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: staggerIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        .stagger-item:nth-child(1) { animation-delay: 0.1s; }
+        .stagger-item:nth-child(2) { animation-delay: 0.2s; }
+        .stagger-item:nth-child(3) { animation-delay: 0.3s; }
+        .stagger-item:nth-child(4) { animation-delay: 0.4s; }
+        .stagger-item:nth-child(5) { animation-delay: 0.5s; }
+        .stagger-item:nth-child(6) { animation-delay: 0.6s; }
+        
+        @keyframes staggerIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 to-gray-800 font-sans">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-72 bg-gradient-to-b from-gray-900 to-gray-800 text-white shadow-2xl">
+            <!-- Logo/Brand -->
+            <div class="p-6 border-b border-gray-700">
+                <!-- Logo Grande Centralizado -->
+                <div class="flex justify-center mb-4">
+                    <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center overflow-hidden shadow-xl">
+                        <img src="{{ url_for('static', filename='img/logo/despesas.png') }}" 
+                             alt="Logo Finanças" 
+                             class="w-full h-full object-cover rounded-2xl">
+                    </div>
+                </div>
+                <!-- Texto Centralizado Abaixo -->
+                <div class="text-center">
+                    <h1 class="text-lg font-bold">Finanças Pessoais</h1>
+                    <p class="text-gray-400 text-xs">Controle Financeiro</p>
+                </div>
+            </div>
+            
+            <!-- Informações do usuário -->
+            <div class="px-6 py-4 bg-gray-800/50">
+                <div class="flex items-center">
+                    <div class="relative">
+                        {% set foto_path = 'img/profile_users/' + session.username + '.jpg' %}
+                        <div class="w-12 h-12 rounded-full overflow-hidden cursor-pointer hover:ring-2 hover:ring-blue-400 transition-all duration-300" onclick="document.getElementById('photoUpload').click()">
+                            {% if url_for('static', filename=foto_path) %}
+                                <img src="{{ url_for('static', filename=foto_path) }}" 
+                                     alt="Foto de {{ session.username }}" 
+                                     class="w-full h-full object-cover"
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'; showCameraIcon();"
+                                     onload="hideCameraIcon();">
+                                <div class="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center" style="display: none;">
+                                    <i class="fas fa-user text-white"></i>
+                                </div>
+                            {% else %}
+                                <div class="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-user text-white"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <!-- Ícone de câmera no canto (só aparece quando não há foto) -->
+                        <div id="cameraIcon" class="absolute -bottom-1 -right-1 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center cursor-pointer hover:bg-blue-600 transition-colors" onclick="document.getElementById('photoUpload').click()">
+                            <i class="fas fa-camera text-white text-xs"></i>
+                        </div>
+                        <!-- Input file oculto -->
+                        <input type="file" id="photoUpload" accept="image/*" style="display: none;" onchange="uploadPhoto(this)">
+                    </div>
+                    <div class="ml-4 flex-1">
+                        <p class="text-white font-medium">{{ session.nome_completo or session.username }}</p>
+                        <p class="text-gray-400 text-sm">@{{ session.username }}</p>
+                    </div>
+                    <a href="{{ url_for('auth.profile') }}" 
+                       class="w-8 h-8 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors">
+                        <i class="fas fa-cog text-gray-300 text-sm"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <nav class="flex-1 px-4 py-6">
+                <!-- Menu Principal -->
+                <div class="space-y-2">
+                    <div class="text-gray-400 text-xs font-semibold uppercase tracking-wider px-3 mb-3">
+                        Menu Principal
+                    </div>
+                    
+                    <a href="{{ url_for('dashboard.index') }}" 
+                       class="nav-item group flex items-center p-3 rounded-xl hover:bg-gray-700/50 transition-all duration-200 {% if request.endpoint == 'dashboard.index' %}bg-blue-600 shadow-lg{% endif %}">
+                        <div class="w-10 h-10 rounded-lg bg-blue-500/20 group-hover:bg-blue-500/30 flex items-center justify-center mr-3 transition-colors">
+                            <i class="fas fa-tachometer-alt text-blue-400"></i>
+                        </div>
+                        <div class="flex-1">
+                            <span class="font-medium">Dashboard</span>
+                            <p class="text-gray-400 text-xs">Visão geral</p>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Transações -->
+                <div class="space-y-2 mt-8">
+                    <div class="text-gray-400 text-xs font-semibold uppercase tracking-wider px-3 mb-3">
+                        Transações
+                    </div>
+                    
+                    <a href="{{ url_for('receitas.index') }}" 
+                       class="nav-item group flex items-center p-3 rounded-xl hover:bg-gray-700/50 transition-all duration-200 {% if request.endpoint.startswith('receitas') %}bg-green-600 shadow-lg{% endif %}">
+                        <div class="w-10 h-10 rounded-lg bg-green-500/20 group-hover:bg-green-500/30 flex items-center justify-center mr-3 transition-colors">
+                            <i class="fas fa-arrow-up text-green-400"></i>
+                        </div>
+                        <div class="flex-1">
+                            <span class="font-medium">Receitas</span>
+                            <p class="text-gray-400 text-xs">Gerenciar entradas</p>
+                        </div>
+                        <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i class="fas fa-chevron-right text-gray-400 text-sm"></i>
+                        </div>
+                    </a>
+                    
+                    <a href="{{ url_for('despesas.index') }}" 
+                       class="nav-item group flex items-center p-3 rounded-xl hover:bg-gray-700/50 transition-all duration-200 {% if request.endpoint.startswith('despesas') %}bg-red-600 shadow-lg{% endif %}">
+                        <div class="w-10 h-10 rounded-lg bg-red-500/20 group-hover:bg-red-500/30 flex items-center justify-center mr-3 transition-colors">
+                            <i class="fas fa-arrow-down text-red-400"></i>
+                        </div>
+                        <div class="flex-1">
+                            <span class="font-medium">Despesas</span>
+                            <p class="text-gray-400 text-xs">Gerenciar saídas</p>
+                        </div>
+                        <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i class="fas fa-chevron-right text-gray-400 text-sm"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Configurações -->
+                <div class="space-y-2 mt-8">
+                    <div class="text-gray-400 text-xs font-semibold uppercase tracking-wider px-3 mb-3">
+                        Configurações
+                    </div>
+                    
+                    <!-- Categorias - Menu Colapsável -->
+                    <div class="category-menu">
+                        <button onclick="toggleCategorias()" 
+                                class="nav-item group flex items-center p-3 rounded-xl hover:bg-gray-700/50 transition-all duration-200 w-full text-left">
+                            <div class="w-10 h-10 rounded-lg bg-purple-500/20 group-hover:bg-purple-500/30 flex items-center justify-center mr-3 transition-colors">
+                                <i class="fas fa-layer-group text-purple-400"></i>
+                            </div>
+                            <div class="flex-1">
+                                <span class="font-medium">Categorias</span>
+                                <p class="text-gray-400 text-xs">Gerenciar categorias</p>
+                            </div>
+                            <div class="transition-transform duration-300" id="categoria-arrow">
+                                <i class="fas fa-chevron-down text-gray-400"></i>
+                            </div>
+                        </button>
+                        
+                        <!-- Submenu - Inicialmente oculto -->
+                        <div id="categorias-submenu" class="overflow-hidden transition-all duration-300 ease-out" style="max-height: 0;">
+                            <div class="ml-4 pl-3 border-l border-gray-600 mt-2 space-y-1">
+                                <a href="{{ url_for('categorias.categorias_receitas') }}" 
+                                   class="nav-item group flex items-center p-2 rounded-lg hover:bg-gray-700/30 transition-all duration-200 {% if request.endpoint == 'categorias.categorias_receitas' %}bg-green-600/30{% endif %}">
+                                    <div class="w-8 h-8 rounded-lg bg-green-500/20 group-hover:bg-green-500/30 flex items-center justify-center mr-3 transition-colors">
+                                        <i class="fas fa-arrow-up text-green-400 text-sm"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <span class="text-sm font-medium">Receitas</span>
+                                        <p class="text-gray-400 text-xs">Categorias de entrada</p>
+                                    </div>
+                                </a>
+                                
+                                <a href="{{ url_for('categorias.categorias_despesas') }}" 
+                                   class="nav-item group flex items-center p-2 rounded-lg hover:bg-gray-700/30 transition-all duration-200 {% if request.endpoint == 'categorias.categorias_despesas' %}bg-red-600/30{% endif %}">
+                                    <div class="w-8 h-8 rounded-lg bg-red-500/20 group-hover:bg-red-500/30 flex items-center justify-center mr-3 transition-colors">
+                                        <i class="fas fa-arrow-down text-red-400 text-sm"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <span class="text-sm font-medium">Despesas</span>
+                                        <p class="text-gray-400 text-xs">Categorias de saída</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sair -->
+                <div class="absolute bottom-6 left-4 right-4">
+                    <a href="{{ url_for('auth.logout') }}" 
+                       class="nav-item group flex items-center p-3 rounded-xl hover:bg-red-600/20 border border-red-500/30 hover:border-red-500 transition-all duration-200">
+                        <div class="w-10 h-10 rounded-lg bg-red-500/20 group-hover:bg-red-500/30 flex items-center justify-center mr-3 transition-colors">
+                            <i class="fas fa-sign-out-alt text-red-400"></i>
+                        </div>
+                        <div class="flex-1">
+                            <span class="font-medium text-red-300">Sair</span>
+                            <p class="text-red-400 text-xs">Logout da conta</p>
+                        </div>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <header class="bg-gradient-to-r from-gray-800 to-gray-700 shadow-lg border-b border-gray-600">
+                <div class="px-6 py-4">
+                    <h2 class="text-2xl font-semibold text-white">
+                        {% block header %}Dashboard{% endblock %}
+                    </h2>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <main class="flex-1 overflow-y-auto p-6 bg-gray-900/50">
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="mb-6">
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} p-4 mb-4 rounded-lg border-l-4 
+                                    {% if category == 'error' %}bg-red-900/20 border-red-500 text-red-300
+                                    {% elif category == 'success' %}bg-green-900/20 border-green-500 text-green-300
+                                    {% elif category == 'warning' %}bg-yellow-900/20 border-yellow-500 text-yellow-300
+                                    {% else %}bg-blue-900/20 border-blue-500 text-blue-300{% endif %}">
+                                    <i class="fas fa-info-circle mr-2"></i>{{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Função para controlar o menu de categorias
+        function toggleCategorias() {
+            const submenu = document.getElementById('categorias-submenu');
+            const arrow = document.getElementById('categoria-arrow');
+            const isOpen = submenu.style.maxHeight && submenu.style.maxHeight !== '0px';
+            
+            if (isOpen) {
+                // Fechar
+                submenu.style.maxHeight = '0px';
+                submenu.style.opacity = '0';
+                submenu.style.paddingTop = '0px';
+                submenu.style.paddingBottom = '0px';
+                arrow.style.transform = 'rotate(0deg)';
+            } else {
+                // Abrir
+                submenu.style.maxHeight = '200px'; // Altura suficiente para os itens
+                submenu.style.opacity = '1';
+                submenu.style.paddingTop = '8px';
+                submenu.style.paddingBottom = '8px';
+                arrow.style.transform = 'rotate(180deg)';
+            }
+        }
+        
+        // Verificar se uma página de categoria está ativa e expandir automaticamente
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            if (currentPath.includes('/categorias/')) {
+                toggleCategorias();
+            }
+        });
+        
+        // Função para fechar alertas
+        document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.opacity = '0';
+                    setTimeout(() => alert.remove(), 300);
+                }, 5000);
+            });
+        });
+
+        // Função para atualizar subcategorias
+        function updateSubcategorias(categoriaId, subcategoriaSelectId) {
+            const subcategoriaSelect = document.getElementById(subcategoriaSelectId);
+            if (!subcategoriaSelect) return;
+            
+            // Limpar opções existentes
+            subcategoriaSelect.innerHTML = '<option value="">Selecione uma subcategoria (opcional)</option>';
+            
+            if (!categoriaId) return;
+            
+            // Determinar endpoint baseado na página atual
+            let endpoint;
+            if (window.location.pathname.includes('receitas')) {
+                endpoint = `/receitas/subcategorias/${categoriaId}`;
+            } else if (window.location.pathname.includes('despesas')) {
+                endpoint = `/despesas/subcategorias/${categoriaId}`;
+            } else {
+                return;
+            }
+            
+            // Buscar subcategorias via fetch
+            fetch(endpoint)
+                .then(response => response.json())
+                .then(subcategorias => {
+                    subcategorias.forEach(sub => {
+                        const option = document.createElement('option');
+                        option.value = sub.id;
+                        option.textContent = sub.nome;
+                        subcategoriaSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar subcategorias:', error));
+        }
+        
+        // Variáveis globais para o cropper
+        let cropper = null;
+        let currentFile = null;
+        
+        // Funções para controlar a visibilidade do ícone de câmera
+        function hideCameraIcon() {
+            const cameraIcon = document.getElementById('cameraIcon');
+            if (cameraIcon) {
+                cameraIcon.style.display = 'none';
+            }
+        }
+        
+        function showCameraIcon() {
+            const cameraIcon = document.getElementById('cameraIcon');
+            if (cameraIcon) {
+                cameraIcon.style.display = 'flex';
+            }
+        }
+        
+        // Função para upload de foto de perfil
+        function uploadPhoto(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                
+                // Validar tipo de arquivo
+                if (!file.type.startsWith('image/')) {
+                    showToast('Por favor, selecione apenas arquivos de imagem.', 'error');
+                    return;
+                }
+                
+                // Validar tamanho (max 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    showToast('A imagem deve ter no máximo 5MB.', 'error');
+                    return;
+                }
+                
+                // Armazenar o arquivo atual
+                currentFile = file;
+                
+                // Ler o arquivo e exibir no modal de crop
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const cropImage = document.getElementById('cropImage');
+                    cropImage.src = e.target.result;
+                    
+                    // Abrir o modal
+                    openCropModal();
+                };
+                reader.readAsDataURL(file);
+                
+                // Limpar o input para permitir selecionar o mesmo arquivo novamente
+                input.value = '';
+            }
+        }
+        
+        // Função para abrir o modal de crop
+        function openCropModal() {
+            const modal = document.getElementById('cropModal');
+            const cropImage = document.getElementById('cropImage');
+            
+            modal.classList.remove('hidden');
+            
+            // Inicializar o cropper após um pequeno delay para garantir que a imagem está visível
+            setTimeout(() => {
+                if (cropper) {
+                    cropper.destroy();
+                }
+                
+                cropper = new Cropper(cropImage, {
+                    aspectRatio: 1, // Proporção quadrada
+                    viewMode: 1,
+                    autoCropArea: 0.8,
+                    responsive: true,
+                    guides: true,
+                    center: true,
+                    highlight: false,
+                    cropBoxMovable: true,
+                    cropBoxResizable: true,
+                    toggleDragModeOnDblclick: false,
+                });
+            }, 100);
+        }
+        
+        // Função para fechar o modal de crop
+        function closeCropModal() {
+            const modal = document.getElementById('cropModal');
+            modal.classList.add('hidden');
+            
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+            
+            currentFile = null;
+        }
+        
+        // Função para aplicar o recorte e fazer upload
+        function applyCrop() {
+            if (!cropper) {
+                showToast('Erro: editor de recorte não encontrado.', 'error');
+                return;
+            }
+            
+            // Obter a imagem recortada como blob
+            cropper.getCroppedCanvas({
+                width: 200,
+                height: 200,
+                imageSmoothingEnabled: true,
+                imageSmoothingQuality: 'high'
+            }).toBlob(function(blob) {
+                if (!blob) {
+                    showToast('Erro ao processar imagem recortada.', 'error');
+                    return;
+                }
+                
+                // Fechar o modal
+                closeCropModal();
+                
+                // Mostrar loading na foto de perfil
+                const photoContainer = document.querySelector('.w-12.h-12.rounded-full.overflow-hidden');
+                const originalContent = photoContainer.innerHTML;
+                photoContainer.innerHTML = '<div class="w-full h-full bg-gray-600 flex items-center justify-center"><i class="fas fa-spinner fa-spin text-white"></i></div>';
+                
+                // Criar FormData com a imagem recortada
+                const formData = new FormData();
+                const fileName = currentFile ? currentFile.name : 'profile.jpg';
+                formData.append('photo', blob, fileName);
+                
+                // Fazer upload
+                fetch('/auth/upload-photo', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Atualizar a imagem com timestamp para forçar reload
+                        const timestamp = new Date().getTime();
+                        const newImageSrc = data.photo_url + '?t=' + timestamp;
+                        photoContainer.innerHTML = `<img src="${newImageSrc}" alt="Foto de perfil" class="w-full h-full object-cover" onload="hideCameraIcon();">`;
+                        
+                        // Esconder o ícone de câmera
+                        hideCameraIcon();
+                        
+                        // Mostrar mensagem de sucesso
+                        showToast('Foto de perfil atualizada com sucesso!', 'success');
+                    } else {
+                        photoContainer.innerHTML = originalContent;
+                        showToast(data.message || 'Erro ao fazer upload da foto.', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    photoContainer.innerHTML = originalContent;
+                    showToast('Erro ao fazer upload da foto.', 'error');
+                });
+            }, 'image/jpeg', 0.9);
+        }
+        
+        // Função para mostrar toast notifications
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white z-50 transition-all duration-300 transform translate-x-full ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+            }`;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            // Animação de entrada
+            setTimeout(() => {
+                toast.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Auto remover após 3 segundos
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Inicialização quando a página carrega
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar se existe uma foto carregada e esconder o ícone de câmera se necessário
+            const profileImg = document.querySelector('.w-12.h-12.rounded-full img');
+            if (profileImg && profileImg.style.display !== 'none') {
+                // Se a imagem existe e está visível, esconder o ícone de câmera
+                hideCameraIcon();
+            }
+        });
+    </script>
+    
+    <script>
+        // Sistema de transições suaves entre páginas
+        document.addEventListener('DOMContentLoaded', function() {
+            // Adiciona classe para transição inicial
+            const mainContent = document.querySelector('main');
+            if (mainContent) {
+                mainContent.classList.add('page-transition');
+                // Força o reflow e adiciona a classe loaded
+                setTimeout(() => {
+                    mainContent.classList.add('loaded');
+                }, 50);
+            }
+            
+            // Adiciona animação stagger para cards/elementos
+            const staggerItems = document.querySelectorAll('.bg-white, .card, [class*="shadow"]');
+            staggerItems.forEach((item, index) => {
+                if (index < 6) { // Limita a 6 itens para não sobrecarregar
+                    item.classList.add('stagger-item');
+                }
+            });
+        });
+        
+        // Intercepta cliques em links para transições suaves
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('a');
+            if (link && link.href && !link.target && !link.href.includes('#') && 
+                link.href.startsWith(window.location.origin)) {
+                
+                e.preventDefault();
+                
+                // Cria overlay de loading
+                const loading = document.createElement('div');
+                loading.className = 'page-loading';
+                loading.innerHTML = '<div class="loading-spinner"></div>';
+                document.body.appendChild(loading);
+                
+                // Mostra o loading
+                setTimeout(() => loading.classList.add('show'), 10);
+                
+                // Fade out do conteúdo atual
+                const mainContent = document.querySelector('main');
+                if (mainContent) {
+                    mainContent.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                    mainContent.style.opacity = '0';
+                    mainContent.style.transform = 'translateY(-20px)';
+                }
+                
+                // Navega após a animação
+                setTimeout(() => {
+                    window.location.href = link.href;
+                }, 300);
+            }
+        });
+        
+        // Adiciona indicador visual para link ativo no sidebar
+        function setActiveNavLink() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('nav a');
+            
+            navLinks.forEach(link => {
+                link.classList.remove('nav-link', 'active');
+                link.classList.add('nav-link');
+                
+                const linkPath = new URL(link.href).pathname;
+                
+                if (currentPath === linkPath || 
+                    (currentPath.startsWith(linkPath) && linkPath !== '/')) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        // Executa quando a página carrega
+        document.addEventListener('DOMContentLoaded', setActiveNavLink);
+        
+        // Transição suave para formulários
+        document.addEventListener('submit', function(e) {
+            const form = e.target;
+            if (form.method === 'post') {
+                const submitBtn = form.querySelector('button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.style.transition = 'all 0.3s ease';
+                    submitBtn.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        submitBtn.style.transform = 'scale(1)';
+                    }, 150);
+                }
+            }
+        });
+        
+        // Melhora a experiência de hover em botões
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('button, .btn, input[type="submit"]');
+            buttons.forEach(btn => {
+                btn.style.transition = 'all 0.2s ease';
+            });
+        });
+    </script>
+    
+    <!-- Modal de Recorte de Foto -->
+    <div id="cropModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-800 rounded-2xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-white">Recortar Foto de Perfil</h3>
+                <button onclick="closeCropModal()" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="mb-4">
+                <div class="bg-gray-900 rounded-lg overflow-hidden" style="max-height: 400px;">
+                    <img id="cropImage" style="max-width: 100%; display: block;">
+                </div>
+            </div>
+            
+            <div class="flex justify-between items-center">
+                <div class="text-sm text-gray-400">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    Arraste para selecionar a área que deseja recortar
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="closeCropModal()" 
+                            class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                        Cancelar
+                    </button>
+                    <button onclick="applyCrop()" 
+                            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                        <i class="fas fa-crop mr-2"></i>Aplicar Recorte
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

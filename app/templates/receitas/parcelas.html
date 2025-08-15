@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}Parcelas da Receita - Controle Financeiro{% endblock %}
+
+{% block header %}
+    <div class="flex items-center">
+        <a href="{{ url_for('receitas.index') }}" 
+           class="mr-4 text-gray-600 hover:text-gray-900">
+            <i class="fas fa-arrow-left text-xl"></i>
+        </a>
+        <span>Parcelas da Receita</span>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <!-- Informações da Receita Principal -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+                <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Categoria</h3>
+                <p class="text-lg font-semibold text-gray-900">{{ receita_pai.categoria_nome }}</p>
+                <p class="text-sm text-gray-500">{{ receita_pai.subcategoria_nome }}</p>
+            </div>
+            <div>
+                <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Período</h3>
+                <p class="text-lg font-semibold text-gray-900">{{ receita_pai.data_inicio }}</p>
+                {% if receita_pai.data_fim %}
+                    <p class="text-sm text-gray-500">até {{ receita_pai.data_fim }}</p>
+                {% else %}
+                    <p class="text-sm text-gray-500">Sem data fim</p>
+                {% endif %}
+            </div>
+            <div>
+                <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Parcelas</h3>
+                {% if receita_pai.numero_parcelas.lower() == 'x' %}
+                    <p class="text-lg font-semibold text-blue-600">
+                        <i class="fas fa-infinity mr-1"></i>Infinitas
+                    </p>
+                {% else %}
+                    <p class="text-lg font-semibold text-gray-900">{{ receita_pai.numero_parcelas }}x</p>
+                {% endif %}
+            </div>
+            <div>
+                <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Valor Total</h3>
+                <p class="text-lg font-semibold text-green-600">R$ {{ "%.2f"|format(receita_pai.valor) }}</p>
+                {% if parcelas %}
+                    <p class="text-sm text-gray-500">R$ {{ "%.2f"|format(parcelas[0].valor) }} por parcela</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Parcelas -->
+    <div class="bg-white rounded-lg shadow-md">
+        <div class="p-6 border-b border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800">
+                <i class="fas fa-list mr-2"></i>
+                Lista de Parcelas ({{ parcelas|length }} geradas)
+            </h3>
+        </div>
+
+        {% if parcelas %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Parcela
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Data
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Valor
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for parcela in parcelas %}
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-8 w-8">
+                                            <div class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+                                                <span class="text-xs font-medium text-green-600">{{ parcela.parcela_atual }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                Parcela {{ parcela.parcela_atual }}
+                                                {% if receita_pai.numero_parcelas.lower() != 'x' %}
+                                                    de {{ receita_pai.numero_parcelas }}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {{ parcela.data_inicio }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-bold text-green-600">
+                                        R$ {{ "%.2f"|format(parcela.valor) }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        Agendada
+                                    </span>
+                                </td>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="p-12 text-center">
+                <div class="mx-auto h-24 w-24 text-gray-400">
+                    <i class="fas fa-calendar-times text-6xl"></i>
+                </div>
+                <h3 class="mt-4 text-lg font-medium text-gray-900">Nenhuma parcela encontrada</h3>
+                <p class="mt-2 text-gray-500">Esta receita ainda não possui parcelas geradas.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Ações -->
+    <div class="mt-6 flex justify-between">
+        <a href="{{ url_for('receitas.index') }}" 
+           class="bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors font-medium">
+            <i class="fas fa-arrow-left mr-2"></i>
+            Voltar para Receitas
+        </a>
+        
+        <form method="POST" action="{{ url_for('receitas.excluir', id=receita_pai.id) }}" 
+              class="inline" onsubmit="return confirm('Tem certeza que deseja excluir esta receita e todas suas parcelas?')">
+            <button type="submit" 
+                    class="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors font-medium">
+                <i class="fas fa-trash mr-2"></i>
+                Excluir Receita
+            </button>
+        </form>
+    </div>
+{% endblock %}

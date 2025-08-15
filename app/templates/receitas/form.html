@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Editar' if receita else 'Nova' }} Receita{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl p-8 border border-gray-700">
+        <div class="flex items-center mb-8">
+            <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mr-4">
+                <i class="fas fa-plus-circle text-white text-xl"></i>
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold text-white">
+                    {{ 'Editar' if receita else 'Nova' }} Receita
+                </h2>
+                <p class="text-gray-300 text-sm">{{ 'Atualize os dados da' if receita else 'Preencha os dados para criar uma nova' }} receita</p>
+            </div>
+        </div>
+        
+        <form method="POST" class="space-y-6">
+            <!-- Categoria -->
+            <div>
+                <label for="categoria_id" class="block text-sm font-medium text-gray-300 mb-2">
+                    <i class="fas fa-tags text-green-400 mr-2"></i>Categoria *
+                </label>
+                <select id="categoria_id" name="categoria_id" required 
+                        class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+                        onchange="updateSubcategorias(this.value, 'subcategoria_id')">
+                    <option value="" class="bg-gray-800">Selecione uma categoria</option>
+                    {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}" class="bg-gray-800"
+                                {{ 'selected' if (receita and receita.categoria_id == categoria.id) or (not receita and loop.first) else '' }}>
+                            {{ categoria.nome }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <!-- Subcategoria -->
+            <div>
+                <label for="subcategoria_id" class="block text-sm font-medium text-gray-300 mb-2">
+                    <i class="fas fa-tag text-green-400 mr-2"></i>Subcategoria
+                </label>
+                <select id="subcategoria_id" name="subcategoria_id" 
+                        class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300">
+                    <option value="" class="bg-gray-800">Selecione uma subcategoria (opcional)</option>
+                    {% if subcategorias %}
+                        {% for subcategoria in subcategorias %}
+                            <option value="{{ subcategoria.id }}" class="bg-gray-800"
+                                    {{ 'selected' if (receita and receita.subcategoria_id == subcategoria.id) or (not receita and loop.first) else '' }}>
+                                {{ subcategoria.nome }}
+                            </option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+            
+            <!-- Data de Início (ou Data para edição) -->
+            <div>
+                <label for="data_inicio" class="block text-sm font-medium text-gray-300 mb-2">
+                    <i class="fas fa-calendar text-green-400 mr-2"></i>Data {{ 'da Receita' if receita else 'de Início' }} *
+                </label>
+                <input type="date" id="data_inicio" name="data_inicio" required
+                       value="{{ receita.data_inicio if receita else '' }}"
+                       class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300">
+            </div>
+            
+            {% if not receita %}
+            <!-- Campos para nova receita -->
+            <!-- Tipo de Recorrência -->
+            <div>
+                <label for="tipo_recorrencia" class="block text-sm font-medium text-gray-300 mb-2">
+                    <i class="fas fa-sync-alt text-green-400 mr-2"></i>Tipo de Recorrência *
+                </label>
+                <select id="tipo_recorrencia" name="tipo_recorrencia" required
+                        class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+                        onchange="toggleRecurrenceFields(this.value)">
+                    <option value="unica" selected class="bg-gray-800">Única (registro único)</option>
+                    <option value="semanal" class="bg-gray-800">Semanal</option>
+                    <option value="quinzenal" class="bg-gray-800">Quinzenal</option>
+                    <option value="mensal" class="bg-gray-800">Mensal</option>
+                    <option value="bimestral" class="bg-gray-800">Bimestral</option>
+                    <option value="trimestral" class="bg-gray-800">Trimestral</option>
+                    <option value="quadrimestral" class="bg-gray-800">Quadrimestral</option>
+                    <option value="semestral" class="bg-gray-800">Semestral</option>
+                    <option value="anual" class="bg-gray-800">Anual</option>
+                </select>
+                <p class="text-xs text-gray-500 mt-2">O número de parcelas será calculado automaticamente baseado no período</p>
+            </div>
+            
+            <!-- Data de Fim -->
+            <div id="data_fim_field" style="display: none;">
+                <label for="data_fim" class="block text-sm font-medium text-gray-300 mb-2">
+                    <i class="fas fa-calendar-check text-green-400 mr-2"></i>Data de Fim <span class="text-gray-500 text-xs">(opcional)</span>
+                </label>
+                <input type="date" id="data_fim" name="data_fim"
+                       class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300">
+                <p class="text-xs text-gray-500 mt-2">Se não informada, as parcelas serão geradas de forma contínua</p>
+            </div>
+            
+            <!-- Dia Comum de Recebimento -->
+            <div id="dia_comum_field" style="display: none;">
+                <label for="dia_comum_recebimento" class="block text-sm font-medium text-gray-300 mb-2">
+                    <i class="fas fa-calendar-day text-green-400 mr-2"></i>Dia Comum de Recebimento
+                </label>
+                <input type="number" id="dia_comum_recebimento" name="dia_comum_recebimento"
+                       min="1" max="31" placeholder="Ex: 15"
+                       class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300">
+                <p class="text-xs text-gray-500 mt-2">Opcional: dia fixo do mês para recebimento das parcelas</p>
+            </div>
+            {% endif %}
+            
+            <!-- Valor -->
+            <div>
+                <label for="{{ 'valor' if receita else 'valor_parcela' }}" class="block text-sm font-medium text-gray-300 mb-2">
+                    <i class="fas fa-dollar-sign text-green-400 mr-2"></i>Valor {{ 'da Receita' if receita else 'por Parcela' }} *
+                </label>
+                <input type="text" id="{{ 'valor' if receita else 'valor_parcela' }}" name="{{ 'valor' if receita else 'valor_parcela' }}" required
+                       value="{{ '%.2f'|format(receita.valor)|replace('.', ',') if receita else '' }}"
+                       placeholder="0,00"
+                       class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300">
+                {% if not receita %}
+                <p class="text-xs text-gray-500 mt-2">Este será o valor de cada parcela gerada (ex: salário mensal)</p>
+                {% endif %}
+            </div>
+            
+            <!-- Botões -->
+            <div class="flex justify-between items-center pt-8 border-t border-gray-700">
+                <a href="{{ url_for('receitas.index') }}" 
+                   class="flex items-center px-6 py-3 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-xl transition-all duration-200 group">
+                    <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+                    Voltar
+                </a>
+                <button type="submit" 
+                        class="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                    <i class="fas fa-save mr-2"></i>
+                    {{ 'Atualizar' if receita else 'Cadastrar' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Definir data de hoje como padrão
+document.addEventListener('DOMContentLoaded', function() {
+    const dataInicioField = document.getElementById('data_inicio');
+    const tipoRecorrenciaField = document.getElementById('tipo_recorrencia');
+    
+    // Definir data de hoje se for um novo registro
+    if (dataInicioField && !dataInicioField.value) {
+        const hoje = new Date();
+        const dataFormatada = hoje.getFullYear() + '-' + 
+                            String(hoje.getMonth() + 1).padStart(2, '0') + '-' + 
+                            String(hoje.getDate()).padStart(2, '0');
+        dataInicioField.value = dataFormatada;
+    }
+    
+    // Configurar estado inicial como "única"
+    if (tipoRecorrenciaField && tipoRecorrenciaField.value === 'unica') {
+        toggleRecurrenceFields('unica');
+    }
+});
+
+function toggleRecurrenceFields(tipoRecorrencia) {
+    const dataFimField = document.getElementById('data_fim_field');
+    const diaComumField = document.getElementById('dia_comum_field');
+    const valorLabel = document.querySelector('label[for="valor_parcela"]');
+    const valorHelp = document.querySelector('#valor_parcela').nextElementSibling;
+    
+    if (tipoRecorrencia === 'unica') {
+        // Ocultar campos específicos de recorrência
+        dataFimField.style.display = 'none';
+        diaComumField.style.display = 'none';
+        
+        // Alterar textos para registro único
+        valorLabel.innerHTML = '<i class="fas fa-dollar-sign text-green-400 mr-2"></i>Valor da Receita *';
+        if (valorHelp) {
+            valorHelp.textContent = 'Valor total desta receita específica';
+        }
+    } else {
+        // Mostrar campos de recorrência
+        dataFimField.style.display = 'block';
+        diaComumField.style.display = 'block';
+        
+        // Restaurar textos para parcelas
+        valorLabel.innerHTML = '<i class="fas fa-dollar-sign text-green-400 mr-2"></i>Valor por Parcela *';
+        if (valorHelp) {
+            valorHelp.textContent = 'Este será o valor de cada parcela gerada (ex: salário mensal)';
+        }
+    }
+}
+
+function updateSubcategorias(categoriaId, targetId) {
+    if (!categoriaId) {
+        document.getElementById(targetId).innerHTML = '<option value="" class="bg-gray-800">Selecione uma subcategoria (opcional)</option>';
+        return;
+    }
+    
+    fetch(`/receitas/subcategorias/${categoriaId}`)
+        .then(response => response.json())
+        .then(data => {
+            const select = document.getElementById(targetId);
+            select.innerHTML = '<option value="" class="bg-gray-800">Selecione uma subcategoria (opcional)</option>';
+            
+            data.forEach(subcategoria => {
+                const option = document.createElement('option');
+                option.value = subcategoria.id;
+                option.textContent = subcategoria.nome;
+                option.className = 'bg-gray-800';
+                select.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Erro ao buscar subcategorias:', error));
+}
+</script>
+{% endblock %}

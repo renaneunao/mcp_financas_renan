@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if subcategoria %}Editar Subcategoria de Despesa{% else %}Nova Subcategoria de Despesa{% endif %}
+{% endblock %}
+
+{% block header %}
+<div class="flex items-center justify-between">
+    <div class="flex items-center">
+        <a href="{{ url_for('categorias.categorias_despesas') }}" 
+           class="mr-4 text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-700">
+            <i class="fas fa-arrow-left text-xl"></i>
+        </a>
+        <div class="flex items-center">
+            <div class="w-10 h-10 bg-gradient-to-r from-red-500 to-pink-600 rounded-lg flex items-center justify-center mr-3">
+                <i class="fas fa-{% if subcategoria %}edit{% else %}plus{% endif %} text-white"></i>
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold text-white">
+                    {% if subcategoria %}Editar Subcategoria{% else %}Nova Subcategoria{% endif %}
+                </h1>
+                <p class="text-gray-300 text-sm">Para a categoria "{{ categoria.nome }}"</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl overflow-hidden">
+        <!-- Header do Form -->
+        <div class="p-6 border-b border-gray-700">
+            <div class="flex items-center">
+                <div class="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center mr-3">
+                    <i class="fas fa-tag text-red-400"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-white">Informações da Subcategoria</h3>
+                    <p class="text-gray-400 text-sm">Preencha os campos abaixo</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulário -->
+        <form method="POST" class="p-6 space-y-6">
+            <!-- Categoria Pai -->
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">
+                    <i class="fas fa-folder mr-2 text-red-400"></i>
+                    Categoria Pai
+                </label>
+                <div class="px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-folder text-red-400"></i>
+                        </div>
+                        <div>
+                            <span class="text-white font-medium">{{ categoria.nome }}</span>
+                            {% if categoria.descricao %}
+                                <p class="text-gray-400 text-sm mt-1">{{ categoria.descricao }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nome -->
+            <div>
+                <label for="nome" class="block text-sm font-medium text-gray-300 mb-2">
+                    <i class="fas fa-tag mr-2 text-red-400"></i>
+                    Nome da Subcategoria *
+                </label>
+                <input type="text" 
+                       id="nome" 
+                       name="nome" 
+                       value="{{ subcategoria.nome if subcategoria else '' }}"
+                       required
+                       class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200"
+                       placeholder="Ex: Supermercado, Gasolina, Netflix">
+            </div>
+
+            <!-- Descrição -->
+            <div>
+                <label for="descricao" class="block text-sm font-medium text-gray-300 mb-2">
+                    <i class="fas fa-align-left mr-2 text-red-400"></i>
+                    Descrição
+                </label>
+                <textarea id="descricao" 
+                          name="descricao" 
+                          rows="4"
+                          class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200"
+                          placeholder="Descrição opcional da subcategoria">{{ subcategoria.descricao if subcategoria else '' }}</textarea>
+            </div>
+
+            <!-- Preview Card -->
+            <div class="bg-gray-800/50 rounded-xl p-4 border border-gray-600">
+                <div class="flex items-center mb-2">
+                    <div class="w-6 h-6 bg-red-500/20 rounded-lg flex items-center justify-center mr-2">
+                        <i class="fas fa-eye text-red-400 text-sm"></i>
+                    </div>
+                    <span class="text-sm font-medium text-gray-300">Preview da Subcategoria</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-tag text-red-400"></i>
+                    </div>
+                    <div>
+                        <div class="font-medium text-white" id="preview-nome">{{ subcategoria.nome if subcategoria else 'Nome da subcategoria...' }}</div>
+                        <div class="text-gray-400 text-sm" id="preview-descricao">{{ subcategoria.descricao if subcategoria else 'Descrição da subcategoria...' }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botões -->
+            <div class="flex space-x-4 pt-6">
+                <button type="submit" 
+                        class="flex-1 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white py-3 px-6 rounded-xl font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                    <i class="fas fa-save mr-2"></i>
+                    {% if subcategoria %}Atualizar{% else %}Criar{% endif %} Subcategoria
+                </button>
+                <a href="{{ url_for('categorias.categorias_despesas') }}" 
+                   class="flex-1 bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white py-3 px-6 rounded-xl font-medium transition-all duration-200 text-center">
+                    <i class="fas fa-times mr-2"></i>
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Dicas -->
+    <div class="mt-6 bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl p-6">
+        <div class="flex items-center mb-4">
+            <div class="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center mr-3">
+                <i class="fas fa-lightbulb text-blue-400"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-white">Dicas</h3>
+        </div>
+        <div class="space-y-3 text-gray-300">
+            <div class="flex items-start">
+                <i class="fas fa-check text-red-400 mr-2 mt-1"></i>
+                <span class="text-sm">Subcategorias ajudam a detalhar melhor suas despesas</span>
+            </div>
+            <div class="flex items-start">
+                <i class="fas fa-check text-red-400 mr-2 mt-1"></i>
+                <span class="text-sm">Use nomes específicos como "Supermercado Pão de Açúcar" ou "Netflix"</span>
+            </div>
+            <div class="flex items-start">
+                <i class="fas fa-check text-red-400 mr-2 mt-1"></i>
+                <span class="text-sm">A descrição ajuda a lembrar do propósito da subcategoria</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Preview em tempo real
+document.addEventListener('DOMContentLoaded', function() {
+    const nomeInput = document.getElementById('nome');
+    const descricaoInput = document.getElementById('descricao');
+    const previewNome = document.getElementById('preview-nome');
+    const previewDescricao = document.getElementById('preview-descricao');
+
+    function updatePreview() {
+        previewNome.textContent = nomeInput.value || 'Nome da subcategoria...';
+        previewDescricao.textContent = descricaoInput.value || 'Descrição da subcategoria...';
+    }
+
+    nomeInput.addEventListener('input', updatePreview);
+    descricaoInput.addEventListener('input', updatePreview);
+
+    // Validação em tempo real
+    nomeInput.addEventListener('input', function() {
+        if (this.value.length > 0) {
+            this.classList.remove('border-red-500');
+            this.classList.add('border-red-500');
+        } else {
+            this.classList.remove('border-red-500');
+        }
+    });
+
+    // Animação de entrada
+    const form = document.querySelector('form');
+    form.style.opacity = '0';
+    form.style.transform = 'translateY(20px)';
+    form.style.transition = 'all 0.5s ease';
+    
+    setTimeout(() => {
+        form.style.opacity = '1';
+        form.style.transform = 'translateY(0)';
+    }, 100);
+});
+</script>
+{% endblock %}

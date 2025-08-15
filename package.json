@@ -1,0 +1,17 @@
+{
+  "name": "financas-renan",
+  "version": "1.0.0",
+  "description": "Sistema de controle financeiro pessoal",
+  "scripts": {
+    "dev": "tailwindcss -i ./app/static/css/input.css -o ./app/static/css/output.css --watch",
+    "build": "tailwindcss -i ./app/static/css/input.css -o ./app/static/css/output.css --minify",
+    "start": "npm run build && python app.py"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0",
+    "@tailwindcss/forms": "^0.5.7"
+  },
+  "keywords": ["flask", "finance", "personal-finance", "tailwindcss"],
+  "author": "Renan",
+  "license": "MIT"
+}

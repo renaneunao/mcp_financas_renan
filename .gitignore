@@ -1,0 +1,39 @@
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.env
+.venv
+env/
+venv/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+*.db
+
+# Logs
+*.log
+
+# SSL certificates (se necessário manter privado)
+# certs/
+
+# CSS compilado será regenerado
+app/static/css/output.css

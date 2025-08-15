@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+
+{% block title %}Despesas{% endblock %}
+
+{% block header %}
+<div class="flex items-center justify-between">
+    <div class="flex items-center">
+        <div class="w-10 h-10 bg-gradient-to-r from-red-500 to-pink-600 rounded-lg flex items-center justify-center mr-3">
+            <i class="fas fa-arrow-down text-white"></i>
+        </div>
+        <div>
+            <h1 class="text-2xl font-bold text-white">Despesas</h1>
+            <p class="text-gray-300 text-sm">Controle seus gastos e despesas</p>
+        </div>
+    </div>
+    <a href="{{ url_for('despesas.nova') }}" 
+       class="flex items-center px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white rounded-xl font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
+        <i class="fas fa-plus mr-2"></i>Nova Despesa
+    </a>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+    <!-- Filtros Avançados -->
+    <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl p-6">
+        <div class="flex items-center mb-4">
+            <div class="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center mr-3">
+                <i class="fas fa-filter text-blue-400"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-white">Filtros</h3>
+        </div>
+        
+        <form method="GET" id="filtroDespesasForm" class="grid md:grid-cols-4 gap-4">
+            <!-- Filtro de Categoria -->
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">
+                    <i class="fas fa-folder mr-2 text-red-400"></i>
+                    Categoria
+                </label>
+                <select name="categoria" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200">
+                    <option value="">Todas as categorias</option>
+                    {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}" {% if request.args.get('categoria') == categoria.id|string %}selected{% endif %}>
+                            {{ categoria.nome }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Filtro de Mês -->
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">
+                    <i class="fas fa-calendar-alt mr-2 text-red-400"></i>
+                    Mês
+                </label>
+                <select name="mes" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200">
+                    <option value="">Todos os meses</option>
+                    <option value="1" {% if request.args.get('mes') == '1' %}selected{% endif %}>Janeiro</option>
+                    <option value="2" {% if request.args.get('mes') == '2' %}selected{% endif %}>Fevereiro</option>
+                    <option value="3" {% if request.args.get('mes') == '3' %}selected{% endif %}>Março</option>
+                    <option value="4" {% if request.args.get('mes') == '4' %}selected{% endif %}>Abril</option>
+                    <option value="5" {% if request.args.get('mes') == '5' %}selected{% endif %}>Maio</option>
+                    <option value="6" {% if request.args.get('mes') == '6' %}selected{% endif %}>Junho</option>
+                    <option value="7" {% if request.args.get('mes') == '7' %}selected{% endif %}>Julho</option>
+                    <option value="8" {% if request.args.get('mes') == '8' %}selected{% endif %}>Agosto</option>
+                    <option value="9" {% if request.args.get('mes') == '9' %}selected{% endif %}>Setembro</option>
+                    <option value="10" {% if request.args.get('mes') == '10' %}selected{% endif %}>Outubro</option>
+                    <option value="11" {% if request.args.get('mes') == '11' %}selected{% endif %}>Novembro</option>
+                    <option value="12" {% if request.args.get('mes') == '12' %}selected{% endif %}>Dezembro</option>
+                </select>
+            </div>
+
+            <!-- Filtro de Ano -->
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">
+                    <i class="fas fa-calendar mr-2 text-red-400"></i>
+                    Ano
+                </label>
+                <input type="number" name="ano" value="{{ request.args.get('ano', '') }}" min="2000" max="2100" 
+                       placeholder="Ano" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200">
+            </div>
+
+            <!-- Botões de Ação -->
+            <div class="flex items-end space-x-2">
+                <button type="submit" 
+                        class="flex-1 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white py-3 px-4 rounded-xl font-medium transition-all duration-200 transform hover:scale-105">
+                    <i class="fas fa-search mr-2"></i>Filtrar
+                </button>
+                <a href="{{ url_for('despesas.index') }}" 
+                   class="bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white py-3 px-4 rounded-xl transition-all duration-200">
+                    <i class="fas fa-times"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Estatísticas -->
+    <div class="grid md:grid-cols-4 gap-6">
+        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl p-6">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mr-4">
+                    <i class="fas fa-list text-red-400"></i>
+                </div>
+                <div>
+                    <p class="text-gray-400 text-sm">Total de Despesas</p>
+                    <p class="text-2xl font-bold text-white">{{ despesas|length }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl p-6">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mr-4">
+                    <i class="fas fa-money-bill-wave text-blue-400"></i>
+                </div>
+                <div>
+                    <p class="text-gray-400 text-sm">Valor Total</p>
+                    <p class="text-2xl font-bold text-white">R$ {{ "%.2f"|format(despesas|sum(attribute='valor') if despesas else 0)|replace('.', ',') }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl p-6">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center mr-4">
+                    <i class="fas fa-calculator text-purple-400"></i>
+                </div>
+                <div>
+                    <p class="text-gray-400 text-sm">Média por Despesa</p>
+                    <p class="text-2xl font-bold text-white">R$ {{ "%.2f"|format((despesas|sum(attribute='valor') / despesas|length) if despesas else 0)|replace('.', ',') }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl p-6">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center mr-4">
+                    <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+                </div>
+                <div>
+                    <p class="text-gray-400 text-sm">Maior Despesa</p>
+                    <p class="text-lg font-semibold text-white">R$ {{ "%.2f"|format(despesas|max(attribute='valor') if despesas else 0)|replace('.', ',') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Despesas -->
+    <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl overflow-hidden">
+        <div class="p-6 border-b border-gray-700">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-table text-red-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-white">Lista de Despesas</h3>
+                        <p class="text-gray-400 text-sm">Ordenadas por data (mais recentes primeiro)</p>
+                    </div>
+                </div>
+                <div class="text-red-400 text-sm font-medium">
+                    {{ despesas|length }} despesa{{ 's' if despesas|length != 1 else '' }}
+                </div>
+            </div>
+        </div>
+
+        {% if despesas %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead class="bg-gray-800/50">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                                <i class="fas fa-folder mr-2"></i>Categoria
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                                <i class="fas fa-calendar mr-2"></i>Data
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                                <i class="fas fa-dollar-sign mr-2"></i>Valor
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                                <i class="fas fa-list-ol mr-2"></i>Parcelas
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                                <i class="fas fa-cog mr-2"></i>Ações
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-700">
+                        {% for despesa in despesas %}
+                            <tr class="hover:bg-gray-800/30 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center mr-3">
+                                            <i class="fas fa-folder text-red-400 text-sm"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-white font-medium">{{ despesa.categoria_nome or 'Sem categoria' }}</div>
+                                            {% if despesa.subcategoria_nome %}
+                                                <div class="text-gray-400 text-sm">{{ despesa.subcategoria_nome }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-white">{{ despesa.data_inicio.strftime('%d/%m/%Y') if despesa.data_inicio else 'N/A' }}</div>
+                                    {% if despesa.data_fim %}
+                                        <div class="text-gray-400 text-sm">até {{ despesa.data_fim.strftime('%d/%m/%Y') }}</div>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-red-400 font-semibold">R$ {{ "%.2f"|format(despesa.valor)|replace('.', ',') }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-500/20 text-blue-300">
+                                        <i class="fas fa-list-ol mr-1"></i>
+                                        {{ despesa.numero_parcelas if despesa.numero_parcelas != 'x' else 'Infinitas' }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex space-x-2">
+                                        <a href="{{ url_for('despesas.parcelas', despesa_id=despesa.id) }}" 
+                                           class="flex items-center px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors text-xs">
+                                            <i class="fas fa-list mr-1"></i>Parcelas
+                                        </a>
+                                        <a href="{{ url_for('despesas.editar', id=despesa.id) }}" 
+                                           class="flex items-center px-3 py-1 bg-yellow-600 hover:bg-yellow-500 text-white rounded-lg transition-colors text-xs">
+                                            <i class="fas fa-edit mr-1"></i>Editar
+                                        </a>
+                                        <button onclick="confirmarExclusao({{ despesa.id }}, '{{ despesa.categoria_nome }}')" 
+                                                class="flex items-center px-3 py-1 bg-red-600 hover:bg-red-500 text-white rounded-lg transition-colors text-xs">
+                                            <i class="fas fa-trash mr-1"></i>Excluir
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="p-12 text-center">
+                <div class="text-gray-500">
+                    <i class="fas fa-receipt text-6xl mb-4 text-gray-600"></i>
+                    <h3 class="text-xl font-semibold text-gray-400 mb-2">Nenhuma despesa encontrada</h3>
+                    <p class="text-gray-500 mb-6">Comece adicionando sua primeira despesa para controlar seus gastos</p>
+                    <a href="{{ url_for('despesas.nova') }}" 
+                       class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white rounded-xl font-medium transition-all duration-200 transform hover:scale-105 shadow-lg">
+                        <i class="fas fa-plus mr-2"></i>Adicionar primeira despesa
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+// Auto-submit do formulário de filtros
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('filtroDespesasForm');
+    const selects = form.querySelectorAll('select');
+    const inputs = form.querySelectorAll('input[type="number"]');
+    
+    [...selects, ...inputs].forEach(element => {
+        element.addEventListener('change', function() {
+            form.submit();
+        });
+    });
+});
+
+function confirmarExclusao(despesaId, categoria) {
+    if (confirm(`Tem certeza que deseja excluir a despesa "${categoria}"?\n\nEsta ação não pode ser desfeita e todas as parcelas serão removidas.`)) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/despesas/' + despesaId + '/excluir';
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+
+// Animação de entrada das linhas da tabela
+document.addEventListener('DOMContentLoaded', function() {
+    const rows = document.querySelectorAll('tbody tr');
+    rows.forEach((row, index) => {
+        row.style.opacity = '0';
+        row.style.transform = 'translateY(20px)';
+        row.style.transition = 'all 0.5s ease';
+        
+        setTimeout(() => {
+            row.style.opacity = '1';
+            row.style.transform = 'translateY(0)';
+        }, index * 50);
+    });
+});
+</script>
+{% endblock %}
+                                    {{ despesa.subcategoria_nome or 'Não informada' }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {{ despesa.data_inicio.strftime('%d/%m/%Y') if despesa.data_inicio else '' }}
+                                    {% if despesa.data_fim %}
+                                        <br><small class="text-gray-500">até {{ despesa.data_fim.strftime('%d/%m/%Y') }}</small>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-medium">
+                                    R$ {{ '%.2f'|format(despesa.valor)|replace('.', ',') }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {{ despesa.numero_parcelas }}
+                                    {% if despesa.dia_comum_pagamento %}
+                                        <br><small class="text-gray-500">Dia {{ despesa.dia_comum_pagamento }}</small>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                                    <a href="{{ url_for('despesas.ver_parcelas', despesa_pai_id=despesa.id) }}" 
+                                       class="text-blue-600 hover:text-blue-900" title="Ver Parcelas">
+                                        <i class="fas fa-list"></i>
+                                    </a>
+                                    <form method="POST" action="{{ url_for('despesas.excluir', id=despesa.id) }}" 
+                                          class="inline" onsubmit="return confirm('Tem certeza que deseja excluir esta despesa e todas suas parcelas?')">
+                                        <button type="submit" class="text-red-600 hover:text-red-900" title="Excluir">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-8">
+                <i class="fas fa-inbox text-gray-400 text-4xl mb-4"></i>
+                <p class="text-gray-500 mb-4">Nenhuma despesa cadastrada ainda.</p>
+                <a href="{{ url_for('despesas.nova') }}" 
+                   class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>Cadastrar primeira despesa
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

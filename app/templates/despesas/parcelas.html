@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Parcelas da Despesa{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto">
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">
+                <i class="fas fa-list text-red-500 mr-2"></i>
+                Parcelas da Despesa
+            </h2>
+            <a href="{{ url_for('despesas.index') }}" 
+               class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>Voltar
+            </a>
+        </div>
+        
+        <!-- Informações da Despesa Pai -->
+        <div class="bg-gray-50 rounded-lg p-4 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">Informações Gerais</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <span class="text-sm text-gray-600">Categoria:</span>
+                    <p class="font-medium">{{ despesa_pai.categoria_nome }}</p>
+                </div>
+                <div>
+                    <span class="text-sm text-gray-600">Subcategoria:</span>
+                    <p class="font-medium">{{ despesa_pai.subcategoria_nome or 'Não informada' }}</p>
+                </div>
+                <div>
+                    <span class="text-sm text-gray-600">Valor Total:</span>
+                    <p class="font-medium text-red-600">R$ {{ '%.2f'|format(despesa_pai.valor)|replace('.', ',') }}</p>
+                </div>
+                <div>
+                    <span class="text-sm text-gray-600">Período:</span>
+                    <p class="font-medium">
+                        {{ despesa_pai.data_inicio.strftime('%d/%m/%Y') if despesa_pai.data_inicio else '' }}
+                        {% if despesa_pai.data_fim %} até {{ despesa_pai.data_fim.strftime('%d/%m/%Y') }}{% endif %}
+                    </p>
+                </div>
+                <div>
+                    <span class="text-sm text-gray-600">Parcelas:</span>
+                    <p class="font-medium">{{ despesa_pai.numero_parcelas }}</p>
+                </div>
+                <div>
+                    <span class="text-sm text-gray-600">Dia Comum:</span>
+                    <p class="font-medium">{{ despesa_pai.dia_comum_pagamento or 'Não definido' }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lista de Parcelas -->
+        {% if parcelas %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Parcela
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Data de Pagamento
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Valor
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for parcela in parcelas %}
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{ parcela.parcela_atual }}/{{ despesa_pai.numero_parcelas }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {{ parcela.data_inicio.strftime('%d/%m/%Y') if parcela.data_inicio else '' }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-medium">
+                                    R$ {{ '%.2f'|format(parcela.valor)|replace('.', ',') }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        Agendada
+                                    </span>
+                                </td>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Resumo -->
+            <div class="mt-6 bg-red-50 rounded-lg p-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div>
+                        <p class="text-2xl font-bold text-red-600">{{ parcelas|length }}</p>
+                        <p class="text-sm text-gray-600">Total de Parcelas</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-red-600">
+                            R$ {{ '%.2f'|format(parcelas|sum(attribute='valor'))|replace('.', ',') }}
+                        </p>
+                        <p class="text-sm text-gray-600">Valor Total das Parcelas</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-red-600">
+                            R$ {{ '%.2f'|format(parcelas[0].valor if parcelas else 0)|replace('.', ',') }}
+                        </p>
+                        <p class="text-sm text-gray-600">Valor por Parcela</p>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="text-center py-8">
+                <i class="fas fa-inbox text-gray-400 text-4xl mb-4"></i>
+                <p class="text-gray-500">Nenhuma parcela encontrada.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
