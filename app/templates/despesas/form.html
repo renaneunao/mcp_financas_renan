@@ -89,6 +89,20 @@
                 <p class="text-xs text-gray-500 mt-2">O número de parcelas será calculado automaticamente baseado no período</p>
             </div>
             
+            <!-- Checkbox Fixo -->
+            <div class="flex items-center space-x-3 p-4 bg-gray-800/50 rounded-xl border border-gray-600">
+                <input type="checkbox" id="fixo" name="fixo" value="1"
+                       {{ 'checked' if despesa and despesa.fixo else '' }}
+                       class="w-4 h-4 text-red-600 bg-gray-700 border-gray-600 rounded focus:ring-red-500 focus:ring-2">
+                <label for="fixo" class="text-sm font-medium text-gray-300 flex items-center">
+                    <i class="fas fa-thumbtack text-red-400 mr-2"></i>
+                    Despesa Fixa
+                </label>
+                <div class="flex-1">
+                    <p class="text-xs text-gray-500">Marque se é uma despesa rotineira (ex: telefone, aluguel). Será exibida como "Fixo" em vez de mostrar parcelas.</p>
+                </div>
+            </div>
+
             <!-- Data de Fim -->
             <div id="data_fim_field" style="display: none;">
                 <label for="data_fim" class="block text-sm font-medium text-gray-300 mb-2">
@@ -98,7 +112,7 @@
                        class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300">
                 <p class="text-xs text-gray-500 mt-2">Se não informada, as parcelas serão geradas conforme o número especificado</p>
             </div>
-            
+
             <!-- Dia Comum de Pagamento -->
             <div id="dia_comum_field" style="display: none;">
                 <label for="dia_comum_pagamento" class="block text-sm font-medium text-gray-300 mb-2">
@@ -109,9 +123,7 @@
                        class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300">
                 <p class="text-xs text-gray-500 mt-2">Opcional: dia fixo do mês para pagamento das parcelas</p>
             </div>
-            {% endif %}
-            
-            <!-- Valor -->
+            {% endif %}            <!-- Valor -->
             <div>
                 <label for="{{ 'valor' if despesa else 'valor_parcela' }}" class="block text-sm font-medium text-gray-300 mb-2">
                     <i class="fas fa-dollar-sign text-red-400 mr-2"></i>Valor {{ 'da Despesa' if despesa else 'por Parcela' }} *
@@ -127,11 +139,23 @@
             
             <!-- Botões -->
             <div class="flex justify-between items-center pt-8 border-t border-gray-700">
-                <a href="{{ url_for('despesas.index') }}" 
-                   class="flex items-center px-6 py-3 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-xl transition-all duration-200 group">
-                    <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
-                    Voltar
-                </a>
+                <div class="flex space-x-3">
+                    <a href="{{ url_for('despesas.index') }}" 
+                       class="flex items-center px-6 py-3 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-xl transition-all duration-200 group">
+                        <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+                        Voltar
+                    </a>
+                    
+                    {% if despesa %}
+                    <!-- Botão de Exclusão (só aparece na edição) -->
+                    <button type="button" onclick="confirmarExclusao()" 
+                            class="flex items-center px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl transition-all duration-200 group">
+                        <i class="fas fa-trash mr-2"></i>
+                        Excluir
+                    </button>
+                    {% endif %}
+                </div>
+                
                 <button type="submit" 
                         class="flex items-center px-8 py-3 bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white rounded-xl font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
                     <i class="fas fa-save mr-2"></i>
@@ -139,6 +163,12 @@
                 </button>
             </div>
         </form>
+        
+        {% if despesa %}
+        <!-- Formulário de Exclusão (oculto) -->
+        <form id="formExclusao" method="POST" action="{{ url_for('despesas.excluir', id=despesa.id) }}" style="display: none;">
+        </form>
+        {% endif %}
     </div>
 </div>
 
@@ -213,6 +243,12 @@ function updateSubcategorias(categoriaId, targetId) {
             });
         })
         .catch(error => console.error('Erro ao buscar subcategorias:', error));
+}
+
+function confirmarExclusao() {
+    if (confirm('Tem certeza que deseja excluir esta despesa? Esta ação não pode ser desfeita.')) {
+        document.getElementById('formExclusao').submit();
+    }
 }
 </script>
 {% endblock %}

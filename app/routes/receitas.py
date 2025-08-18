@@ -99,6 +99,7 @@ def nova():
         tipo_recorrencia = request.form['tipo_recorrencia']
         dia_comum_recebimento = request.form.get('dia_comum_recebimento') or None
         valor_parcela = request.form['valor_parcela']
+        fixo = bool(request.form.get('fixo'))  # Checkbox para receita fixa
         
         # Validações
         if not categoria_id or not data_inicio or not tipo_recorrencia or not valor_parcela:
@@ -133,7 +134,7 @@ def nova():
         try:
             receita_pai_id = gerar_parcelas_receita(
                 categoria_id, subcategoria_id, data_inicio, data_fim, 
-                tipo_recorrencia, valor_parcela, dia_comum_recebimento, user_id
+                tipo_recorrencia, valor_parcela, dia_comum_recebimento, user_id, fixo
             )
             flash('Receita cadastrada com sucesso!', 'success')
             return redirect(url_for('receitas.index'))
@@ -161,6 +162,7 @@ def editar(id):
         subcategoria_id = request.form.get('subcategoria_id') or None
         data_inicio = request.form['data_inicio']
         valor = request.form['valor']
+        fixo = bool(request.form.get('fixo'))
         
         # Validações
         if not categoria_id or not data_inicio or not valor:
@@ -182,9 +184,9 @@ def editar(id):
         try:
             conn.execute('''
                 UPDATE receita 
-                SET categoria_id = ?, subcategoria_id = ?, data_inicio = ?, valor = ?
+                SET categoria_id = ?, subcategoria_id = ?, data_inicio = ?, valor = ?, fixo = ?
                 WHERE id = ?
-            ''', (categoria_id, subcategoria_id, data_inicio, valor, id))
+            ''', (categoria_id, subcategoria_id, data_inicio, valor, fixo, id))
             conn.commit()
             flash('Receita atualizada com sucesso!', 'success')
             return redirect(url_for('receitas.index'))

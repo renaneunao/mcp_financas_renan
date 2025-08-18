@@ -279,7 +279,7 @@ function confirmarExclusao(despesaId, categoria) {
     if (confirm(`Tem certeza que deseja excluir a despesa "${categoria}"?\n\nEsta ação não pode ser desfeita.`)) {
         const form = document.createElement('form');
         form.method = 'POST';
-        form.action = '/despesas/' + despesaId + '/excluir';
+        form.action = '/despesas/excluir/' + despesaId;
         document.body.appendChild(form);
         form.submit();
     }

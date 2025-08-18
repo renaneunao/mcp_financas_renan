@@ -11,8 +11,34 @@ def get_db_connection():
     return conn
 
 def migrate_database(conn):
-    """Migra o banco de dados para a nova estrutura - não necessário para banco novo"""
-    pass
+    """Migra o banco de dados para a nova estrutura - adiciona colunas necessárias"""
+    cursor = conn.cursor()
+    
+    # Adicionar coluna usuario_id na tabela receita se não existir
+    try:
+        cursor.execute("ALTER TABLE receita ADD COLUMN usuario_id INTEGER")
+    except sqlite3.OperationalError:
+        pass  # Coluna já existe
+    
+    # Adicionar coluna fixo na tabela receita se não existir
+    try:
+        cursor.execute("ALTER TABLE receita ADD COLUMN fixo BOOLEAN DEFAULT 0")
+    except sqlite3.OperationalError:
+        pass  # Coluna já existe
+        
+    # Adicionar coluna usuario_id na tabela despesa se não existir
+    try:
+        cursor.execute("ALTER TABLE despesa ADD COLUMN usuario_id INTEGER")
+    except sqlite3.OperationalError:
+        pass  # Coluna já existe
+    
+    # Adicionar coluna fixo na tabela despesa se não existir
+    try:
+        cursor.execute("ALTER TABLE despesa ADD COLUMN fixo BOOLEAN DEFAULT 0")
+    except sqlite3.OperationalError:
+        pass  # Coluna já existe
+    
+    conn.commit()
 
 def init_db():
     """Inicializa o banco de dados com as tabelas necessárias"""
@@ -276,7 +302,7 @@ def calcular_numero_parcelas(data_inicio, data_fim, tipo_recorrencia):
     
     return str(contador)
 
-def gerar_parcelas_receita(categoria_id, subcategoria_id, data_inicio, data_fim, tipo_recorrencia, valor_parcela, dia_comum, user_id):
+def gerar_parcelas_receita(categoria_id, subcategoria_id, data_inicio, data_fim, tipo_recorrencia, valor_parcela, dia_comum, user_id, fixo=False):
     """Gera parcelas individuais para uma receita"""
     from datetime import datetime
     from dateutil.relativedelta import relativedelta
@@ -286,9 +312,9 @@ def gerar_parcelas_receita(categoria_id, subcategoria_id, data_inicio, data_fim,
     # Se for tipo único, inserir apenas um registro
     if tipo_recorrencia == 'unica':
         cursor = conn.execute('''
-            INSERT INTO receita (categoria_id, subcategoria_id, data_inicio, valor, tipo_recorrencia, numero_parcelas, parcela_atual, usuario_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (categoria_id, subcategoria_id, data_inicio, valor_parcela, 'unica', '1', 1, user_id))
+            INSERT INTO receita (categoria_id, subcategoria_id, data_inicio, valor, tipo_recorrencia, numero_parcelas, parcela_atual, usuario_id, fixo)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (categoria_id, subcategoria_id, data_inicio, valor_parcela, 'unica', '1', 1, user_id, fixo))
         
         conn.commit()
         conn.close()
@@ -340,9 +366,9 @@ def gerar_parcelas_receita(categoria_id, subcategoria_id, data_inicio, data_fim,
         
         # Inserir parcela individual
         cursor = conn.execute('''
-            INSERT INTO receita (categoria_id, subcategoria_id, data_inicio, valor, tipo_recorrencia, numero_parcelas, parcela_atual, dia_comum_recebimento, usuario_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (categoria_id, subcategoria_id, data_atual.strftime('%Y-%m-%d'), valor_parcela, tipo_recorrencia, numero_parcelas, i+1, dia_comum, user_id))
+            INSERT INTO receita (categoria_id, subcategoria_id, data_inicio, valor, tipo_recorrencia, numero_parcelas, parcela_atual, dia_comum_recebimento, usuario_id, fixo)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (categoria_id, subcategoria_id, data_atual.strftime('%Y-%m-%d'), valor_parcela, tipo_recorrencia, numero_parcelas, i+1, dia_comum, user_id, fixo))
         
         parcelas_criadas.append(cursor.lastrowid)
         
@@ -353,7 +379,7 @@ def gerar_parcelas_receita(categoria_id, subcategoria_id, data_inicio, data_fim,
     conn.close()
     return parcelas_criadas
 
-def gerar_parcelas_despesa(categoria_id, subcategoria_id, data_inicio, data_fim, tipo_recorrencia, valor_parcela, dia_comum, user_id):
+def gerar_parcelas_despesa(categoria_id, subcategoria_id, data_inicio, data_fim, tipo_recorrencia, valor_parcela, dia_comum, user_id, fixo=False):
     """Gera parcelas individuais para uma despesa"""
     from datetime import datetime
     from dateutil.relativedelta import relativedelta
@@ -363,9 +389,9 @@ def gerar_parcelas_despesa(categoria_id, subcategoria_id, data_inicio, data_fim,
     # Se for tipo único, inserir apenas um registro
     if tipo_recorrencia == 'unica':
         cursor = conn.execute('''
-            INSERT INTO despesa (categoria_id, subcategoria_id, data_inicio, valor, tipo_recorrencia, numero_parcelas, parcela_atual, usuario_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (categoria_id, subcategoria_id, data_inicio, valor_parcela, 'unica', '1', 1, user_id))
+            INSERT INTO despesa (categoria_id, subcategoria_id, data_inicio, valor, tipo_recorrencia, numero_parcelas, parcela_atual, usuario_id, fixo)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (categoria_id, subcategoria_id, data_inicio, valor_parcela, 'unica', '1', 1, user_id, fixo))
         
         conn.commit()
         conn.close()
@@ -417,9 +443,9 @@ def gerar_parcelas_despesa(categoria_id, subcategoria_id, data_inicio, data_fim,
         
         # Inserir parcela individual
         cursor = conn.execute('''
-            INSERT INTO despesa (categoria_id, subcategoria_id, data_inicio, valor, tipo_recorrencia, numero_parcelas, parcela_atual, dia_comum_pagamento, usuario_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (categoria_id, subcategoria_id, data_atual.strftime('%Y-%m-%d'), valor_parcela, tipo_recorrencia, numero_parcelas, i+1, dia_comum, user_id))
+            INSERT INTO despesa (categoria_id, subcategoria_id, data_inicio, valor, tipo_recorrencia, numero_parcelas, parcela_atual, dia_comum_pagamento, usuario_id, fixo)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (categoria_id, subcategoria_id, data_atual.strftime('%Y-%m-%d'), valor_parcela, tipo_recorrencia, numero_parcelas, i+1, dia_comum, user_id, fixo))
         
         parcelas_criadas.append(cursor.lastrowid)
         

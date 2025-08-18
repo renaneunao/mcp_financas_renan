@@ -186,9 +186,9 @@
     </div>
 
     <!-- Transações Recentes -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-6 gap-6">
         <!-- Receitas Recentes -->
-        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl">
+        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl col-span-1">
             <div class="p-6 border-b border-gray-700">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center">
@@ -203,53 +203,136 @@
                     </a>
                 </div>
             </div>
-            <div class="max-h-96 overflow-y-auto">
-                {% if receitas %}
-                    {% for receita in receitas %}
-                        <a href="{{ url_for('receitas.editar', id=receita.id) }}" 
-                           class="block p-4 border-b border-gray-700 hover:bg-gray-700/50 transition-colors duration-200 cursor-pointer {% if receita.virtual is defined and receita.virtual %}bg-blue-900/30 border-l-4 border-blue-400{% endif %}">
-                            <div class="flex justify-between items-start">
-                                <div class="flex-1">
-                                    <div class="flex items-center">
-                                        <h4 class="font-medium text-white">{{ receita.categoria_nome }}</h4>
-                                        {% if receita.virtual is defined and receita.virtual %}
-                                            <span class="ml-2 px-2 py-1 bg-blue-500/30 text-blue-300 text-xs rounded-full border border-blue-500/30">
-                                                <i class="fas fa-info-circle mr-1"></i>Virtual
-                                            </span>
-                                        {% endif %}
-                                    </div>
-                                    <p class="text-sm text-gray-300">
-                                        {{ receita.subcategoria_nome }}
-                                        {% if receita.numero_parcelas != '1' and not receita.virtual %}
-                                            <span class="text-xs bg-blue-500/30 text-blue-300 px-2 py-1 rounded ml-2 border border-blue-500/30">
-                                                {% if receita.numero_parcelas.lower() == 'x' %}
-                                                    Recorrente
-                                                {% else %}
-                                                    {{ receita.parcela_atual }}/{{ receita.numero_parcelas }}
-                                                {% endif %}
-                                            </span>
-                                        {% endif %}
-                                    </p>
-                                    <p class="text-xs text-gray-500">{{ receita.data_inicio }}</p>
+            
+            {% if receitas %}
+                <!-- Grid de 2 colunas para receitas -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 p-4">
+                    <!-- Coluna 1: Receitas Fixas -->
+                    <div class="bg-gray-800/50 rounded-xl">
+                        <div class="p-3 border-b border-gray-600">
+                            <h4 class="text-sm font-medium text-green-300 flex items-center">
+                                <i class="fas fa-thumbtack mr-2 text-xs"></i>
+                                Fixas
+                            </h4>
+                        </div>
+                        <div class="max-h-96 overflow-y-auto">
+                            {% set found_receitas_fixas = false %}
+                            {% for receita in receitas %}
+                                {% if not (receita.virtual is defined and receita.virtual) and receita.fixo %}
+                                    {% set found_receitas_fixas = true %}
+                                    <a href="{{ url_for('receitas.editar', id=receita.id) }}" 
+                                       class="block p-3 border-b border-gray-600 hover:bg-gray-700/50 transition-colors duration-200 cursor-pointer">
+                                        <div class="flex justify-between items-start">
+                                            <div class="flex-1">
+                                                <h5 class="font-medium text-white text-sm">{{ receita.categoria_nome }}</h5>
+                                                <p class="text-xs text-gray-300">{{ receita.subcategoria_nome }}</p>
+                                                <span class="text-xs bg-green-500/30 text-green-300 px-1 py-0.5 rounded mt-1 inline-block">
+                                                    Fixo
+                                                </span>
+                                                <p class="text-xs text-gray-500 mt-1">{{ receita.data_inicio }}</p>
+                                            </div>
+                                            <div class="text-right">
+                                                <span class="text-green-400 font-bold text-sm">R$ {{ "%.2f"|format(receita.valor)|replace('.', ',') }}</span>
+                                                <i class="fas fa-edit text-gray-400 text-xs opacity-50 block mt-1"></i>
+                                            </div>
+                                        </div>
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                            {% if not found_receitas_fixas %}
+                                <div class="p-6 text-center">
+                                    <i class="fas fa-thumbtack text-gray-600 text-2xl mb-2"></i>
+                                    <p class="text-gray-400 text-xs">Nenhuma receita fixa</p>
                                 </div>
-                                <div class="flex items-center">
-                                    <span class="text-green-400 font-bold mr-3">R$ {{ "%.2f"|format(receita.valor)|replace('.', ',') }}</span>
-                                    <i class="fas fa-edit text-gray-400 text-sm opacity-50"></i>
-                                </div>
-                            </div>
-                        </a>
-                    {% endfor %}
-                {% else %}
-                    <div class="p-8 text-center">
-                        <i class="fas fa-inbox text-gray-600 text-4xl mb-4"></i>
-                        <p class="text-gray-400">Nenhuma receita registrada neste mês</p>
+                            {% endif %}
+                        </div>
                     </div>
-                {% endif %}
-            </div>
+
+                    <!-- Coluna 2: Outras Receitas (Parceladas + Avulsas) -->
+                    <div class="bg-gray-800/50 rounded-xl">
+                        <div class="p-3 border-b border-gray-600">
+                            <h4 class="text-sm font-medium text-blue-300 flex items-center">
+                                <i class="fas fa-list mr-2 text-xs"></i>
+                                Outras
+                            </h4>
+                        </div>
+                        <div class="max-h-96 overflow-y-auto">
+                            {% set found_outras_receitas = false %}
+                            {% for receita in receitas %}
+                                {% if not (receita.virtual is defined and receita.virtual) and not receita.fixo %}
+                                    {% set found_outras_receitas = true %}
+                                    <a href="{{ url_for('receitas.editar', id=receita.id) }}" 
+                                       class="block p-3 border-b border-gray-600 hover:bg-gray-700/50 transition-colors duration-200 cursor-pointer">
+                                        <div class="flex justify-between items-start">
+                                            <div class="flex-1">
+                                                <h5 class="font-medium text-white text-sm">{{ receita.categoria_nome }}</h5>
+                                                <p class="text-xs text-gray-300">{{ receita.subcategoria_nome }}</p>
+                                                {% if receita.numero_parcelas != '1' %}
+                                                    <span class="text-xs bg-blue-500/30 text-blue-300 px-1 py-0.5 rounded mt-1 inline-block">
+                                                        {% if receita.numero_parcelas.lower() == 'x' %}
+                                                            Recorrente
+                                                        {% else %}
+                                                            {{ receita.parcela_atual }}/{{ receita.numero_parcelas }}
+                                                        {% endif %}
+                                                    </span>
+                                                {% else %}
+                                                    <span class="text-xs bg-purple-500/30 text-purple-300 px-1 py-0.5 rounded mt-1 inline-block">
+                                                        Única
+                                                    </span>
+                                                {% endif %}
+                                                <p class="text-xs text-gray-500 mt-1">{{ receita.data_inicio }}</p>
+                                            </div>
+                                            <div class="text-right">
+                                                <span class="text-green-400 font-bold text-sm">R$ {{ "%.2f"|format(receita.valor)|replace('.', ',') }}</span>
+                                                <i class="fas fa-edit text-gray-400 text-xs opacity-50 block mt-1"></i>
+                                            </div>
+                                        </div>
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            <!-- Incluir receitas virtuais na coluna "Outras" -->
+                            {% for receita in receitas %}
+                                {% if receita.virtual is defined and receita.virtual %}
+                                    {% set found_outras_receitas = true %}
+                                    <div class="block p-3 border-b border-gray-600 bg-blue-900/30 border-l-2 border-blue-400">
+                                        <div class="flex justify-between items-start">
+                                            <div class="flex-1">
+                                                <h5 class="font-medium text-white text-sm">{{ receita.categoria_nome }}</h5>
+                                                <p class="text-xs text-gray-300">{{ receita.subcategoria_nome }}</p>
+                                                <span class="text-xs bg-blue-500/30 text-blue-300 px-1 py-0.5 rounded mt-1 inline-block">
+                                                    <i class="fas fa-info-circle mr-1"></i>Virtual
+                                                </span>
+                                                <p class="text-xs text-gray-500 mt-1">{{ receita.data_inicio }}</p>
+                                            </div>
+                                            <div class="text-right">
+                                                <span class="text-green-400 font-bold text-sm">R$ {{ "%.2f"|format(receita.valor)|replace('.', ',') }}</span>
+                                                <i class="fas fa-info-circle text-blue-400 text-xs opacity-50 block mt-1"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if not found_outras_receitas %}
+                                <div class="p-6 text-center">
+                                    <i class="fas fa-list text-gray-600 text-2xl mb-2"></i>
+                                    <p class="text-gray-400 text-xs">Nenhuma outra receita</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="p-8 text-center">
+                    <i class="fas fa-inbox text-gray-600 text-4xl mb-4"></i>
+                    <p class="text-gray-400">Nenhuma receita registrada neste mês</p>
+                </div>
+            {% endif %}
         </div>
 
         <!-- Despesas Recentes -->
-        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl">
+        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl col-span-5">
             <div class="p-6 border-b border-gray-700">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center">
@@ -264,49 +347,145 @@
                     </a>
                 </div>
             </div>
-            <div class="max-h-96 overflow-y-auto">
-                {% if despesas %}
-                    {% for despesa in despesas %}
-                        <a href="{{ url_for('despesas.editar', id=despesa.id) }}" 
-                           class="block p-4 border-b border-gray-700 hover:bg-gray-700/50 transition-colors duration-200 cursor-pointer {% if despesa.virtual is defined and despesa.virtual %}bg-blue-900/30 border-l-4 border-blue-400{% endif %}">
-                            <div class="flex justify-between items-start">
-                                <div class="flex-1">
-                                    <div class="flex items-center">
-                                        <h4 class="font-medium text-white">{{ despesa.categoria_nome }}</h4>
-                                        {% if despesa.virtual is defined and despesa.virtual %}
-                                            <span class="ml-2 px-2 py-1 bg-blue-500/30 text-blue-300 text-xs rounded-full border border-blue-500/30">
-                                                Virtual
-                                            </span>
-                                        {% endif %}
-                                    </div>
-                                    <p class="text-sm text-gray-300">
-                                        {{ despesa.subcategoria_nome }}
-                                        {% if despesa.numero_parcelas != '1' %}
-                                            <span class="text-xs bg-red-500/30 text-red-300 px-2 py-1 rounded ml-2 border border-red-500/30">
-                                                {% if despesa.numero_parcelas.lower() == 'x' %}
-                                                    Recorrente
-                                                {% else %}
-                                                    {{ despesa.parcela_atual }}/{{ despesa.numero_parcelas }}
-                                                {% endif %}
-                                            </span>
-                                        {% endif %}
-                                    </p>
-                                    <p class="text-xs text-gray-500">{{ despesa.data_inicio }}</p>
+            
+            {% if despesas %}
+                <!-- Grid de 3 colunas para despesas - Forçado lado a lado -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+                    
+                    {% set found_parcelas = [] %}
+                    {% set found_fixas = [] %}
+                    {% set found_avulsas = [] %}
+                    
+                    <!-- Coluna 1: Despesas Parceladas -->
+                    <div class="bg-gray-800/50 rounded-xl">
+                        <div class="p-3 border-b border-gray-600">
+                            <h4 class="text-sm font-medium text-blue-300 flex items-center">
+                                <i class="fas fa-credit-card mr-2 text-xs"></i>
+                                Parceladas
+                            </h4>
+                        </div>
+                        <div class="max-h-96 overflow-y-auto">
+                            {% for despesa in despesas %}
+                                {% if not (despesa.virtual is defined and despesa.virtual) and not despesa.fixo and despesa.numero_parcelas != '1' %}
+                                    {% if found_parcelas.append(1) %}{% endif %}
+                                    <a href="{{ url_for('despesas.editar', id=despesa.id) }}" 
+                                       class="block p-3 border-b border-gray-600 hover:bg-gray-700/50 transition-colors duration-200 cursor-pointer">
+                                        <div class="flex justify-between items-start">
+                                            <div class="flex-1">
+                                                <h5 class="font-medium text-white text-sm">{{ despesa.categoria_nome }}</h5>
+                                                <p class="text-xs text-gray-300">{{ despesa.subcategoria_nome }}</p>
+                                                <span class="text-xs bg-blue-500/30 text-blue-300 px-1 py-0.5 rounded mt-1 inline-block">
+                                                    {% if despesa.numero_parcelas.lower() == 'x' %}
+                                                        Recorrente
+                                                    {% else %}
+                                                        {{ despesa.parcela_atual }}/{{ despesa.numero_parcelas }}
+                                                    {% endif %}
+                                                </span>
+                                                <p class="text-xs text-gray-500 mt-1">{{ despesa.data_inicio }}</p>
+                                            </div>
+                                            <div class="text-right">
+                                                <span class="text-red-400 font-bold text-sm">R$ {{ "%.2f"|format(despesa.valor)|replace('.', ',') }}</span>
+                                                <i class="fas fa-edit text-gray-400 text-xs opacity-50 block mt-1"></i>
+                                            </div>
+                                        </div>
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                            {% if not found_parcelas %}
+                                <div class="p-6 text-center">
+                                    <i class="fas fa-credit-card text-gray-600 text-2xl mb-2"></i>
+                                    <p class="text-gray-400 text-xs">Nenhuma despesa parcelada</p>
                                 </div>
-                                <div class="flex items-center">
-                                    <span class="text-red-400 font-bold mr-3">R$ {{ "%.2f"|format(despesa.valor)|replace('.', ',') }}</span>
-                                    <i class="fas fa-edit text-gray-400 text-sm opacity-50"></i>
-                                </div>
-                            </div>
-                        </a>
-                    {% endfor %}
-                {% else %}
-                    <div class="p-8 text-center">
-                        <i class="fas fa-inbox text-gray-600 text-4xl mb-4"></i>
-                        <p class="text-gray-400">Nenhuma despesa registrada neste mês</p>
+                            {% endif %}
+                        </div>
                     </div>
-                {% endif %}
-            </div>
+
+                    <!-- Coluna 2: Despesas Fixas -->
+                    <div class="bg-gray-800/50 rounded-xl">
+                        <div class="p-3 border-b border-gray-600">
+                            <h4 class="text-sm font-medium text-yellow-300 flex items-center">
+                                <i class="fas fa-thumbtack mr-2 text-xs"></i>
+                                Fixas
+                            </h4>
+                        </div>
+                        <div class="max-h-96 overflow-y-auto">
+                            {% for despesa in despesas %}
+                                {% if not (despesa.virtual is defined and despesa.virtual) and despesa.fixo %}
+                                    {% if found_fixas.append(1) %}{% endif %}
+                                    <a href="{{ url_for('despesas.editar', id=despesa.id) }}" 
+                                       class="block p-3 border-b border-gray-600 hover:bg-gray-700/50 transition-colors duration-200 cursor-pointer">
+                                        <div class="flex justify-between items-start">
+                                            <div class="flex-1">
+                                                <h5 class="font-medium text-white text-sm">{{ despesa.categoria_nome }}</h5>
+                                                <p class="text-xs text-gray-300">{{ despesa.subcategoria_nome }}</p>
+                                                <span class="text-xs bg-yellow-500/30 text-yellow-300 px-1 py-0.5 rounded mt-1 inline-block">
+                                                    Fixo
+                                                </span>
+                                                <p class="text-xs text-gray-500 mt-1">{{ despesa.data_inicio }}</p>
+                                            </div>
+                                            <div class="text-right">
+                                                <span class="text-red-400 font-bold text-sm">R$ {{ "%.2f"|format(despesa.valor)|replace('.', ',') }}</span>
+                                                <i class="fas fa-edit text-gray-400 text-xs opacity-50 block mt-1"></i>
+                                            </div>
+                                        </div>
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                            {% if not found_fixas %}
+                                <div class="p-6 text-center">
+                                    <i class="fas fa-thumbtack text-gray-600 text-2xl mb-2"></i>
+                                    <p class="text-gray-400 text-xs">Nenhuma despesa fixa</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Coluna 3: Despesas Avulsas -->
+                    <div class="bg-gray-800/50 rounded-xl">
+                        <div class="p-3 border-b border-gray-600">
+                            <h4 class="text-sm font-medium text-purple-300 flex items-center">
+                                <i class="fas fa-shopping-cart mr-2 text-xs"></i>
+                                Avulsas
+                            </h4>
+                        </div>
+                        <div class="max-h-96 overflow-y-auto">
+                            {% for despesa in despesas %}
+                                {% if not (despesa.virtual is defined and despesa.virtual) and not despesa.fixo and despesa.numero_parcelas == '1' %}
+                                    {% if found_avulsas.append(1) %}{% endif %}
+                                    <a href="{{ url_for('despesas.editar', id=despesa.id) }}" 
+                                       class="block p-3 border-b border-gray-600 hover:bg-gray-700/50 transition-colors duration-200 cursor-pointer">
+                                        <div class="flex justify-between items-start">
+                                            <div class="flex-1">
+                                                <h5 class="font-medium text-white text-sm">{{ despesa.categoria_nome }}</h5>
+                                                <p class="text-xs text-gray-300">{{ despesa.subcategoria_nome }}</p>
+                                                <span class="text-xs bg-purple-500/30 text-purple-300 px-1 py-0.5 rounded mt-1 inline-block">
+                                                    Única
+                                                </span>
+                                                <p class="text-xs text-gray-500 mt-1">{{ despesa.data_inicio }}</p>
+                                            </div>
+                                            <div class="text-right">
+                                                <span class="text-red-400 font-bold text-sm">R$ {{ "%.2f"|format(despesa.valor)|replace('.', ',') }}</span>
+                                                <i class="fas fa-edit text-gray-400 text-xs opacity-50 block mt-1"></i>
+                                            </div>
+                                        </div>
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                            {% if not found_avulsas %}
+                                <div class="p-6 text-center">
+                                    <i class="fas fa-shopping-cart text-gray-600 text-2xl mb-2"></i>
+                                    <p class="text-gray-400 text-xs">Nenhuma despesa avulsa</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="p-8 text-center">
+                    <i class="fas fa-inbox text-gray-600 text-4xl mb-4"></i>
+                    <p class="text-gray-400">Nenhuma despesa registrada neste mês</p>
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>
