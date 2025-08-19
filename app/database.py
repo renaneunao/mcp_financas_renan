@@ -38,6 +38,18 @@ def migrate_database(conn):
     except sqlite3.OperationalError:
         pass  # Coluna já existe
     
+    # Adicionar coluna pago na tabela receita se não existir
+    try:
+        cursor.execute("ALTER TABLE receita ADD COLUMN pago BOOLEAN DEFAULT 0")
+    except sqlite3.OperationalError:
+        pass  # Coluna já existe
+        
+    # Adicionar coluna pago na tabela despesa se não existir
+    try:
+        cursor.execute("ALTER TABLE despesa ADD COLUMN pago BOOLEAN DEFAULT 0")
+    except sqlite3.OperationalError:
+        pass  # Coluna já existe
+    
     conn.commit()
 
 def init_db():

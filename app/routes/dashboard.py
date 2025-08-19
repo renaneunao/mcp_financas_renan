@@ -90,6 +90,8 @@ def index():
             'tipo_recorrencia': 'unica',
             'numero_parcelas': '1',
             'parcela_atual': 1,
+            'fixo': False,
+            'pago': True,  # Saldo anterior sempre considerado como "pago"
             'virtual': True
         })()
         receitas.insert(0, receita_virtual)
@@ -119,6 +121,8 @@ def index():
             'tipo_recorrencia': 'unica',
             'numero_parcelas': '1',
             'parcela_atual': 1,
+            'fixo': False,
+            'pago': True,  # Déficit anterior sempre considerado como "pago"
             'virtual': True
         })()
         despesas.insert(0, despesa_virtual)

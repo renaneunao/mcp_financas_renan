@@ -5,6 +5,42 @@ from datetime import datetime
 
 receitas_bp = Blueprint('receitas', __name__, url_prefix='/receitas')
 
+@receitas_bp.route('/toggle-pagamento/<int:id>', methods=['POST'])
+@login_required
+def toggle_pagamento(id):
+    """Alterna o status de pagamento de uma receita"""
+    user_id = get_current_user_id()
+    conn = get_db_connection()
+    
+    try:
+        # Verificar se a receita pertence ao usuário
+        receita = conn.execute(
+            'SELECT pago FROM receita WHERE id = ? AND usuario_id = ?', 
+            (id, user_id)
+        ).fetchone()
+        
+        if not receita:
+            return jsonify({'success': False, 'message': 'Receita não encontrada'}), 404
+        
+        # Alternar status
+        novo_status = not receita['pago']
+        conn.execute(
+            'UPDATE receita SET pago = ? WHERE id = ? AND usuario_id = ?',
+            (novo_status, id, user_id)
+        )
+        conn.commit()
+        conn.close()
+        
+        return jsonify({
+            'success': True, 
+            'pago': novo_status,
+            'message': 'Pagamento confirmado' if novo_status else 'Pagamento desmarcado'
+        })
+        
+    except Exception as e:
+        conn.close()
+        return jsonify({'success': False, 'message': str(e)}), 500
+
 @receitas_bp.route('/')
 @login_required
 def index():

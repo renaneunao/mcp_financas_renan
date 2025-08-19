@@ -5,6 +5,42 @@ from datetime import datetime
 
 despesas_bp = Blueprint('despesas', __name__, url_prefix='/despesas')
 
+@despesas_bp.route('/toggle-pagamento/<int:id>', methods=['POST'])
+@login_required
+def toggle_pagamento(id):
+    """Alterna o status de pagamento de uma despesa"""
+    user_id = get_current_user_id()
+    conn = get_db_connection()
+    
+    try:
+        # Verificar se a despesa pertence ao usuário
+        despesa = conn.execute(
+            'SELECT pago FROM despesa WHERE id = ? AND usuario_id = ?', 
+            (id, user_id)
+        ).fetchone()
+        
+        if not despesa:
+            return jsonify({'success': False, 'message': 'Despesa não encontrada'}), 404
+        
+        # Alternar status
+        novo_status = not despesa['pago']
+        conn.execute(
+            'UPDATE despesa SET pago = ? WHERE id = ? AND usuario_id = ?',
+            (novo_status, id, user_id)
+        )
+        conn.commit()
+        conn.close()
+        
+        return jsonify({
+            'success': True, 
+            'pago': novo_status,
+            'message': 'Pagamento confirmado' if novo_status else 'Pagamento desmarcado'
+        })
+        
+    except Exception as e:
+        conn.close()
+        return jsonify({'success': False, 'message': str(e)}), 500
+
 @despesas_bp.route('/')
 @login_required
 def index():

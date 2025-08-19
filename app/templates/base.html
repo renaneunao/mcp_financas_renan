@@ -819,6 +819,305 @@
         </div>
     </div>
     
+    <!-- Script global para controlar pagamentos -->
+    <script>
+        function togglePagamento(tipo, id, statusAtual) {
+            // Encontrar o botão que foi clicado
+            const elemento = event.target.closest('button');
+            if (!elemento) {
+                console.error('Botão não encontrado');
+                return;
+            }
+            
+            // Obter o valor da transação para recalcular somatórios
+            let valor = 0;
+            
+            // Tentar encontrar o valor no item mais próximo
+            const itemContainer = elemento.closest('.block') || elemento.closest('div');
+            
+            if (itemContainer) {
+                // Buscar por diferentes seletores possíveis para o valor
+                const valorSelectors = [
+                    '.text-green-400.font-bold',  // Receitas
+                    '.text-red-400.font-bold',    // Despesas
+                    '.font-bold',                 // Genérico
+                    'span[class*="font-bold"]'    // Qualquer span com font-bold
+                ];
+                
+                let valorContainer = null;
+                for (const selector of valorSelectors) {
+                    valorContainer = itemContainer.querySelector(selector);
+                    if (valorContainer && valorContainer.textContent.includes('R$')) {
+                        break;
+                    }
+                }
+                
+                if (valorContainer) {
+                    const valorTexto = valorContainer.textContent.replace('R$ ', '').replace(',', '.');
+                    valor = parseFloat(valorTexto);
+                    
+                    if (isNaN(valor)) {
+                        console.warn('Valor inválido encontrado:', valorTexto, 'Continuando sem atualizar somatórios');
+                        valor = 0;
+                    } else {
+                        console.log('Valor encontrado:', valor);
+                    }
+                } else {
+                    console.warn('Container de valor não encontrado, continuando sem atualizar somatórios');
+                }
+            }
+            
+            // Mostrar loading
+            const originalContent = elemento.innerHTML;
+            elemento.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            elemento.disabled = true;
+            
+            // Construir URL correta baseada no tipo
+            const url = tipo === 'receita' ? `/receitas/toggle-pagamento/${id}` : `/despesas/toggle-pagamento/${id}`;
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Atualizar o visual do botão
+                    if (data.pago) {
+                        elemento.className = 'text-xs px-2 py-1 rounded transition-colors duration-200 bg-green-600 text-white flex items-center justify-center space-x-1';
+                        elemento.innerHTML = '<img src="/static/img/icones/pago.png" alt="Pago" class="w-3 h-3"><span>Pago</span>';
+                    } else {
+                        elemento.className = 'text-xs px-2 py-1 rounded transition-colors duration-200 bg-gray-600 text-gray-300';
+                        elemento.innerHTML = 'Pendente';
+                    }
+                    
+                    // Atualizar o onclick para o novo status
+                    elemento.setAttribute('onclick', `togglePagamento('${tipo}', ${id}, ${data.pago})`);
+                    
+                    // Atualizar somatórios sempre (mesmo se valor for 0)
+                    if (valor >= 0) {
+                        console.log('Chamando atualizarSomatorios com:', { tipo, valor, novoPago: data.pago, statusAnterior: statusAtual });
+                        atualizarSomatorios(tipo, valor, data.pago, statusAtual, elemento);
+                    }
+                    
+                    // Mostrar feedback
+                    showToast(data.message, data.pago ? 'success' : 'info');
+                } else {
+                    elemento.innerHTML = originalContent;
+                    showToast(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                elemento.innerHTML = originalContent;
+                showToast('Erro ao atualizar pagamento', 'error');
+                console.error('Erro:', error);
+            })
+            .finally(() => {
+                elemento.disabled = false;
+            });
+        }
+        
+        function atualizarSomatorios(tipo, valor, novoPago, antigoStatus, elementoClicado) {
+            console.log('Atualizando somatórios:', tipo, valor, novoPago ? 'Pago' : 'Pendente');
+            
+            if (!elementoClicado || valor <= 0) {
+                console.log('Elemento não fornecido ou valor inválido, pulando atualização');
+                return;
+            }
+            
+            // Encontrar o container específico que contém o elemento clicado
+            let containerEspecifico = elementoClicado.closest('.bg-gray-800\\/50');
+            
+            // Se não encontrou com a primeira tentativa, tentar outros seletores
+            if (!containerEspecifico) {
+                containerEspecifico = elementoClicado.closest('.bg-gray-800/50');
+            }
+            if (!containerEspecifico) {
+                containerEspecifico = elementoClicado.closest('div[class*="bg-gray-800"]');
+            }
+            if (!containerEspecifico) {
+                containerEspecifico = elementoClicado.closest('.rounded-xl');
+            }
+            
+            if (containerEspecifico) {
+                const header = containerEspecifico.querySelector('h4');
+                if (header) {
+                    console.log('Atualizando seção específica:', header.textContent.trim());
+                    atualizarContainerSomatorio(containerEspecifico, valor, novoPago, antigoStatus);
+                } else {
+                    console.warn('Header não encontrado no container específico');
+                }
+            } else {
+                console.error('Container específico não encontrado para o elemento clicado');
+                console.log('Elemento clicado:', elementoClicado);
+                
+                // Fallback: tentar encontrar pelo contexto do elemento
+                let currentElement = elementoClicado;
+                while (currentElement && currentElement !== document.body) {
+                    if (currentElement.querySelector && currentElement.querySelector('h4')) {
+                        console.log('Encontrado container por fallback:', currentElement);
+                        containerEspecifico = currentElement;
+                        break;
+                    }
+                    currentElement = currentElement.parentElement;
+                }
+                
+                if (containerEspecifico) {
+                    atualizarContainerSomatorio(containerEspecifico, valor, novoPago, antigoStatus);
+                } else {
+                    console.error('Impossível encontrar container - atualizações dinâmicas não funcionarão');
+                }
+            }
+        }
+        
+        function atualizarContainerSomatorio(container, valor, novoPago, antigoStatus) {
+            console.log('Atualizando container com valor:', valor, 'novoPago:', novoPago);
+            
+            const header = container.querySelector('h4');
+            if (!header) return;
+            
+            // Buscar ou criar o container dos somatórios
+            let summaryDiv = header.querySelector('.flex.items-center.space-x-1');
+            if (!summaryDiv) {
+                summaryDiv = document.createElement('div');
+                summaryDiv.className = 'flex items-center space-x-1';
+                
+                // Inserir após o primeiro div (ícone + texto)
+                const firstDiv = header.querySelector('div');
+                if (firstDiv) {
+                    header.insertBefore(summaryDiv, firstDiv.nextSibling);
+                } else {
+                    header.appendChild(summaryDiv);
+                }
+            }
+            
+            // Buscar containers existentes (incluindo os ocultos)
+            let pagoContainer = null;
+            let pendenteContainer = null;
+            let totalContainer = null;
+            
+            // Buscar containers existentes de forma compatível
+            const allContainers = summaryDiv.querySelectorAll('div[class*="bg-"]');
+            allContainers.forEach(cont => {
+                const label = cont.querySelector('div[class*="text-"][class*="text-[8px]"]');
+                if (label) {
+                    const labelText = label.textContent.trim();
+                    if (labelText === 'Pago') pagoContainer = cont;
+                    else if (labelText === 'Pendente') pendenteContainer = cont;
+                    else if (labelText === 'Total') totalContainer = cont;
+                }
+            });
+            
+            // Criar containers que não existem na ordem correta
+            if (!pagoContainer) {
+                pagoContainer = criarContainer('Pago', 0, 'green');
+                // Inserir no início
+                summaryDiv.insertBefore(pagoContainer, summaryDiv.firstChild);
+            }
+            
+            if (!pendenteContainer) {
+                pendenteContainer = criarContainer('Pendente', 0, 'yellow');
+                // Inserir após o container "Pago"
+                if (pagoContainer.nextSibling) {
+                    summaryDiv.insertBefore(pendenteContainer, pagoContainer.nextSibling);
+                } else {
+                    summaryDiv.appendChild(pendenteContainer);
+                }
+            }
+            
+            // Se temos total container, garantir que ele está no final
+            if (totalContainer && totalContainer.nextSibling) {
+                summaryDiv.appendChild(totalContainer);
+            }
+            
+            // Atualizar valores
+            if (novoPago) {
+                // Movendo de pendente para pago
+                atualizarValorContainer(pagoContainer, valor, true);
+                atualizarValorContainer(pendenteContainer, valor, false);
+            } else {
+                // Movendo de pago para pendente
+                atualizarValorContainer(pagoContainer, valor, false);
+                atualizarValorContainer(pendenteContainer, valor, true);
+            }
+            
+            // Total sempre visível se existir
+            if (totalContainer) {
+                totalContainer.style.display = 'block';
+            }
+        }
+        
+        function criarContainer(tipo, valor, cor) {
+            const container = document.createElement('div');
+            const bgColor = cor === 'green' ? 'bg-green-600/20' : cor === 'yellow' ? 'bg-yellow-600/20' : 'bg-red-600/20';
+            const textColor = cor === 'green' ? 'text-green-300' : cor === 'yellow' ? 'text-yellow-300' : 'text-red-300';
+            const valueColor = cor === 'green' ? 'text-green-400' : cor === 'yellow' ? 'text-yellow-400' : 'text-red-400';
+            
+            container.className = `${bgColor} rounded-lg px-2 py-1 text-center`;
+            container.style.display = valor === 0 ? 'none' : 'block';
+            container.innerHTML = `
+                <div class="${textColor} text-[8px] font-medium">${tipo}</div>
+                <div class="${valueColor} text-[9px] font-bold">R$ ${valor.toFixed(2).replace('.', ',')}</div>
+            `;
+            
+            return container;
+        }
+        
+        function atualizarValorContainer(container, valor, somar) {
+            const valueDiv = container.querySelector('div[class*="text-"][class*="text-[9px]"]');
+            if (!valueDiv) return;
+            
+            // Extrair valor atual
+            const currentText = valueDiv.textContent.replace('R$ ', '').replace(',', '.');
+            const currentValue = parseFloat(currentText) || 0;
+            
+            // Calcular novo valor
+            const newValue = somar ? currentValue + valor : currentValue - valor;
+            
+            // Atualizar display
+            valueDiv.textContent = `R$ ${newValue.toFixed(2).replace('.', ',')}`;
+            
+            // Mostrar/ocultar container baseado no valor
+            container.style.display = newValue === 0 ? 'none' : 'block';
+            
+            console.log(`Container atualizado: ${currentValue} -> ${newValue} (${somar ? 'soma' : 'subtração'})`);
+        }
+        
+        function showToast(message, type = 'info') {
+            // Criar elemento de toast
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg text-white z-50 transform transition-all duration-300 translate-x-full`;
+            
+            // Definir cor baseada no tipo
+            const colors = {
+                success: 'bg-green-500',
+                error: 'bg-red-500',
+                info: 'bg-blue-500'
+            };
+            
+            toast.classList.add(colors[type] || colors.info);
+            toast.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info-circle'} mr-2"></i>
+                    ${message}
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Animar entrada
+            setTimeout(() => toast.classList.remove('translate-x-full'), 100);
+            
+            // Remover após 3 segundos
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
+    </script>
+    
     {% block scripts %}{% endblock %}
 </body>
 </html>

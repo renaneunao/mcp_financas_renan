@@ -43,4 +43,11 @@
   .toast-info {
     @apply bg-blue-600 text-white;
   }
+  
+  /* Classes para garantir geração pelo Tailwind */
+  .safelist {
+    @apply bg-green-600/20 bg-yellow-600/20 bg-red-600/20 bg-green-500/20;
+    @apply text-green-300 text-green-400 text-yellow-300 text-yellow-400 text-red-300 text-red-400;
+    @apply text-[8px] text-[9px];
+  }
 }
