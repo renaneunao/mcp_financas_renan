@@ -389,7 +389,7 @@
             </header>
 
             <!-- Content -->
-            <main class="flex-1 overflow-y-auto p-6 bg-gray-900/50">
+            <main class="flex-1 overflow-y-auto p-2 bg-gray-900/50">
                 <!-- Flash Messages -->
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
@@ -960,7 +960,7 @@
                 const header = containerEspecifico.querySelector('h4');
                 if (header) {
                     console.log('Atualizando seção específica:', header.textContent.trim());
-                    atualizarContainerSomatorio(containerEspecifico, valor, novoPago, antigoStatus);
+                    atualizarContainerSomatorio(containerEspecifico, valor, novoPago, antigoStatus, tipo);
                 } else {
                     console.warn('Header não encontrado no container específico');
                 }
@@ -980,18 +980,64 @@
                 }
                 
                 if (containerEspecifico) {
-                    atualizarContainerSomatorio(containerEspecifico, valor, novoPago, antigoStatus);
+                    atualizarContainerSomatorio(containerEspecifico, valor, novoPago, antigoStatus, tipo);
                 } else {
                     console.error('Impossível encontrar container - atualizações dinâmicas não funcionarão');
                 }
             }
         }
         
-        function atualizarContainerSomatorio(container, valor, novoPago, antigoStatus) {
-            console.log('Atualizando container com valor:', valor, 'novoPago:', novoPago);
+        function atualizarContainerSomatorio(container, valor, novoPago, antigoStatus, tipo = null) {
+            console.log('Atualizando container com valor:', valor, 'novoPago:', novoPago, 'tipo:', tipo);
             
             const header = container.querySelector('h4');
             if (!header) return;
+            
+            // Determinar se é receita ou despesa baseado no parâmetro ou contexto
+            let isReceita = false;
+            
+            if (tipo) {
+                // Se o tipo foi passado como parâmetro, usar ele
+                isReceita = tipo === 'receita';
+            } else {
+                // Caso contrário, usar a lógica de detecção
+                const headerText = header.textContent.toLowerCase();
+                
+                // Verificar primeiro o cabeçalho específico
+                if (headerText.includes('receita')) {
+                    isReceita = true;
+                } else if (headerText.includes('despesa')) {
+                    isReceita = false;
+                } else {
+                    // Se não conseguir determinar pelo cabeçalho, buscar no container pai
+                    let parentContainer = container;
+                    while (parentContainer && parentContainer !== document.body) {
+                        const parentText = parentContainer.textContent.toLowerCase();
+                        if (parentText.includes('receitas por categoria') || parentText.includes('receita')) {
+                            isReceita = true;
+                            break;
+                        } else if (parentText.includes('despesas por categoria') || parentText.includes('despesa')) {
+                            isReceita = false;
+                            break;
+                        }
+                        parentContainer = parentContainer.parentElement;
+                    }
+                    
+                    // Fallback: verificar se está na primeira ou segunda coluna do grid
+                    if (parentContainer === null || parentContainer === document.body) {
+                        const gridContainer = container.closest('.grid');
+                        if (gridContainer) {
+                            const allCards = gridContainer.querySelectorAll('.bg-gradient-to-br');
+                            const cardIndex = Array.from(allCards).indexOf(container);
+                            // Primeira coluna = receitas, segunda coluna = despesas
+                            isReceita = cardIndex === 0;
+                        }
+                    }
+                }
+            }
+            
+            const labelPago = isReceita ? 'Recebido' : 'Pago';
+            console.log('Determinado tipo:', isReceita ? 'Receita' : 'Despesa', '- Label:', labelPago);
             
             // Buscar ou criar o container dos somatórios
             let summaryDiv = header.querySelector('.flex.items-center.space-x-1');
@@ -1013,13 +1059,33 @@
             let pendenteContainer = null;
             let totalContainer = null;
             
-            // Buscar containers existentes de forma compatível
-            const allContainers = summaryDiv.querySelectorAll('div[class*="bg-"]');
-            allContainers.forEach(cont => {
-                const label = cont.querySelector('div[class*="text-"][class*="text-[8px]"]');
+            // Limpar containers duplicados primeiro
+            const duplicates = summaryDiv.querySelectorAll('div[class*="bg-"]');
+            const seen = new Set();
+            duplicates.forEach(cont => {
+                const label = cont.querySelector('div[class*="text-"][class*="text-[12px]"]');
                 if (label) {
                     const labelText = label.textContent.trim();
-                    if (labelText === 'Pago') pagoContainer = cont;
+                    if (seen.has(labelText)) {
+                        console.log('Removendo container duplicado:', labelText);
+                        cont.remove();
+                    } else {
+                        seen.add(labelText);
+                    }
+                }
+            });
+            
+            // Re-buscar containers após limpeza
+            pagoContainer = null;
+            pendenteContainer = null;
+            totalContainer = null;
+            
+            const cleanContainers = summaryDiv.querySelectorAll('div[class*="bg-"]');
+            cleanContainers.forEach(cont => {
+                const label = cont.querySelector('div[class*="text-"][class*="text-[12px]"]');
+                if (label) {
+                    const labelText = label.textContent.trim();
+                    if (labelText === 'Pago' || labelText === 'Recebido') pagoContainer = cont;
                     else if (labelText === 'Pendente') pendenteContainer = cont;
                     else if (labelText === 'Total') totalContainer = cont;
                 }
@@ -1027,9 +1093,15 @@
             
             // Criar containers que não existem na ordem correta
             if (!pagoContainer) {
-                pagoContainer = criarContainer('Pago', 0, 'green');
+                pagoContainer = criarContainer(labelPago, 0, 'green');
                 // Inserir no início
                 summaryDiv.insertBefore(pagoContainer, summaryDiv.firstChild);
+            } else {
+                // Atualizar o label do container existente se necessário
+                const labelDiv = pagoContainer.querySelector('div[class*="text-"][class*="text-[12px]"]');
+                if (labelDiv && labelDiv.textContent.trim() !== labelPago) {
+                    labelDiv.textContent = labelPago;
+                }
             }
             
             if (!pendenteContainer) {
@@ -1066,22 +1138,22 @@
         
         function criarContainer(tipo, valor, cor) {
             const container = document.createElement('div');
-            const bgColor = cor === 'green' ? 'bg-green-600/20' : cor === 'yellow' ? 'bg-yellow-600/20' : 'bg-red-600/20';
+            const bgColor = cor === 'green' ? 'bg-green-500/20' : cor === 'yellow' ? 'bg-yellow-600/20' : 'bg-red-600/20';
             const textColor = cor === 'green' ? 'text-green-300' : cor === 'yellow' ? 'text-yellow-300' : 'text-red-300';
             const valueColor = cor === 'green' ? 'text-green-400' : cor === 'yellow' ? 'text-yellow-400' : 'text-red-400';
             
             container.className = `${bgColor} rounded-lg px-2 py-1 text-center`;
             container.style.display = valor === 0 ? 'none' : 'block';
             container.innerHTML = `
-                <div class="${textColor} text-[8px] font-medium">${tipo}</div>
-                <div class="${valueColor} text-[9px] font-bold">R$ ${valor.toFixed(2).replace('.', ',')}</div>
+                <div class="${textColor} text-[12px] font-medium">${tipo}</div>
+                <div class="${valueColor} text-[14px] font-bold">R$ ${valor.toFixed(2).replace('.', ',')}</div>
             `;
             
             return container;
         }
         
         function atualizarValorContainer(container, valor, somar) {
-            const valueDiv = container.querySelector('div[class*="text-"][class*="text-[9px]"]');
+            const valueDiv = container.querySelector('div[class*="text-"][class*="text-[14px]"]');
             if (!valueDiv) return;
             
             // Extrair valor atual

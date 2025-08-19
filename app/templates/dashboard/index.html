@@ -41,20 +41,20 @@
 {% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto space-y-6">
+<div class="max-w-full mx-auto space-y-4">
     <!-- Cards de Resumo -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Card Saldo Anterior -->
         <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl p-4 border-l-4 {% if saldo_anterior > 0 %}border-purple-500{% elif saldo_anterior < 0 %}border-yellow-500{% else %}border-gray-500{% endif %}">
             <div class="flex items-center">
                 <div class="flex-1">
-                    <h3 class="text-xs font-medium text-gray-300 uppercase tracking-wide" style="font-size: 9px;">
+                    <h3 class="font-medium text-gray-300 uppercase tracking-wide" style="font-size: 12px !important;">
                         {% if saldo_anterior > 0 %}Remanescente Anterior{% elif saldo_anterior < 0 %}Déficit Anterior{% else %}Saldo Anterior{% endif %}
                     </h3>
-                    <p class="font-bold {% if saldo_anterior > 0 %}text-purple-400{% elif saldo_anterior < 0 %}text-yellow-400{% else %}text-gray-400{% endif %}" style="font-size: 13px; white-space: nowrap; overflow: hidden;">
+                    <p class="font-bold {% if saldo_anterior > 0 %}text-purple-400{% elif saldo_anterior < 0 %}text-yellow-400{% else %}text-gray-400{% endif %}" style="font-size: 14px !important; white-space: nowrap; overflow: hidden;">
                         R$ {{ "%.2f"|format(saldo_anterior|abs)|replace('.', ',') }}
                     </p>
-                    <p class="text-xs text-gray-500 mt-1" style="font-size: 8px;">{{ "%02d"|format(mes_anterior) }}/{{ ano_anterior }}</p>
+                    <p class="text-gray-500 mt-1" style="font-size: 10px !important;">{{ "%02d"|format(mes_anterior) }}/{{ ano_anterior }}</p>
                 </div>
                 <div class="w-4 h-4 {% if saldo_anterior > 0 %}bg-purple-500/20{% elif saldo_anterior < 0 %}bg-yellow-500/20{% else %}bg-gray-500/20{% endif %} rounded-full flex items-center justify-center">
                     <i class="fas {% if saldo_anterior > 0 %}fa-piggy-bank text-purple-400{% elif saldo_anterior < 0 %}fa-exclamation-triangle text-yellow-400{% else %}fa-minus text-gray-400{% endif %}" style="font-size: 8px;"></i>
@@ -68,12 +68,12 @@
                 <!-- Total Receitas -->
                 <div class="flex-1">
                     <div class="flex items-center justify-between mb-1">
-                        <h3 class="text-xs font-medium text-gray-300 uppercase tracking-wide" style="font-size: 9px;">Total</h3>
+                        <h3 class="font-medium text-gray-300 uppercase tracking-wide" style="font-size: 12px !important;">Total</h3>
                         <div class="w-4 h-4 bg-green-500/20 rounded-full flex items-center justify-center">
                             <i class="fas fa-arrow-up text-green-400" style="font-size: 8px;"></i>
                         </div>
                     </div>
-                    <p class="font-bold text-green-400" style="font-size: 13px; white-space: nowrap; overflow: hidden;">R$ {{ "%.2f"|format(total_receitas)|replace('.', ',') }}</p>
+                    <p class="font-bold text-green-400" style="font-size: 14px !important; white-space: nowrap; overflow: hidden;">R$ {{ "%.2f"|format(total_receitas)|replace('.', ',') }}</p>
                 </div>
                 
                 <!-- Divisor Vertical -->
@@ -82,12 +82,12 @@
                 <!-- Receitas Pagas -->
                 <div class="flex-1">
                     <div class="flex items-center justify-between mb-1">
-                        <h3 class="text-xs font-medium text-gray-300 uppercase tracking-wide" style="font-size: 9px;">Pagas</h3>
+                        <h3 class="font-medium text-gray-300 uppercase tracking-wide" style="font-size: 12px !important;">Pagas</h3>
                         <div class="w-4 h-4 bg-green-600/30 rounded-full flex items-center justify-center">
                             <i class="fas fa-check text-green-300" style="font-size: 8px;"></i>
                         </div>
                     </div>
-                    <p id="receitas-pagas" class="font-bold text-green-300" style="font-size: 13px; white-space: nowrap; overflow: hidden;">R$ {{ "%.2f"|format(total_receitas_pagas)|replace('.', ',') }}</p>
+                    <p id="receitas-pagas" class="font-bold text-green-300" style="font-size: 14px !important; white-space: nowrap; overflow: hidden;">R$ {{ "%.2f"|format(total_receitas_pagas)|replace('.', ',') }}</p>
                 </div>
                 
                 <!-- Divisor Vertical -->
@@ -96,12 +96,12 @@
                 <!-- Receitas Pendentes -->
                 <div class="flex-1">
                     <div class="flex items-center justify-between mb-1">
-                        <h3 class="text-xs font-medium text-gray-300 uppercase tracking-wide" style="font-size: 9px;">Pendentes</h3>
+                        <h3 class="font-medium text-gray-300 uppercase tracking-wide" style="font-size: 12px !important;">Pendentes</h3>
                         <div class="w-4 h-4 bg-yellow-600/30 rounded-full flex items-center justify-center">
                             <i class="fas fa-clock text-yellow-300" style="font-size: 8px;"></i>
                         </div>
                     </div>
-                    <p id="receitas-pendentes" class="font-bold text-yellow-300" style="font-size: 13px; white-space: nowrap; overflow: hidden;">R$ {{ "%.2f"|format(total_receitas_pendentes)|replace('.', ',') }}</p>
+                    <p id="receitas-pendentes" class="font-bold text-yellow-300" style="font-size: 14px !important; white-space: nowrap; overflow: hidden;">R$ {{ "%.2f"|format(total_receitas_pendentes)|replace('.', ',') }}</p>
                 </div>
             </div>
         </div>
@@ -112,12 +112,12 @@
                 <!-- Total Despesas -->
                 <div class="flex-1">
                     <div class="flex items-center justify-between mb-1">
-                        <h3 class="text-xs font-medium text-gray-300 uppercase tracking-wide" style="font-size: 9px;">Total</h3>
+                        <h3 class="font-medium text-gray-300 uppercase tracking-wide" style="font-size: 12px !important;">Total</h3>
                         <div class="w-4 h-4 bg-red-500/20 rounded-full flex items-center justify-center">
                             <i class="fas fa-arrow-down text-red-400" style="font-size: 8px;"></i>
                         </div>
                     </div>
-                    <p class="font-bold text-red-400" style="font-size: 13px; white-space: nowrap; overflow: hidden;">R$ {{ "%.2f"|format(total_despesas)|replace('.', ',') }}</p>
+                    <p class="font-bold text-red-400" style="font-size: 14px !important; white-space: nowrap; overflow: hidden;">R$ {{ "%.2f"|format(total_despesas)|replace('.', ',') }}</p>
                 </div>
                 
                 <!-- Divisor Vertical -->
@@ -126,12 +126,12 @@
                 <!-- Despesas Pagas -->
                 <div class="flex-1">
                     <div class="flex items-center justify-between mb-1">
-                        <h3 class="text-xs font-medium text-gray-300 uppercase tracking-wide" style="font-size: 9px;">Pagas</h3>
+                        <h3 class="font-medium text-gray-300 uppercase tracking-wide" style="font-size: 12px !important;">Pagas</h3>
                         <div class="w-4 h-4 bg-red-600/30 rounded-full flex items-center justify-center">
                             <i class="fas fa-check text-red-300" style="font-size: 8px;"></i>
                         </div>
                     </div>
-                    <p id="despesas-pagas" class="font-bold text-red-300" style="font-size: 13px; white-space: nowrap; overflow: hidden;">R$ {{ "%.2f"|format(total_despesas_pagas)|replace('.', ',') }}</p>
+                    <p id="despesas-pagas" class="font-bold text-red-300" style="font-size: 14px !important; white-space: nowrap; overflow: hidden;">R$ {{ "%.2f"|format(total_despesas_pagas)|replace('.', ',') }}</p>
                 </div>
                 
                 <!-- Divisor Vertical -->
@@ -140,12 +140,12 @@
                 <!-- Despesas Pendentes -->
                 <div class="flex-1">
                     <div class="flex items-center justify-between mb-1">
-                        <h3 class="text-xs font-medium text-gray-300 uppercase tracking-wide" style="font-size: 9px;">Pendentes</h3>
+                        <h3 class="font-medium text-gray-300 uppercase tracking-wide" style="font-size: 12px !important;">Pendentes</h3>
                         <div class="w-4 h-4 bg-orange-600/30 rounded-full flex items-center justify-center">
                             <i class="fas fa-clock text-orange-300" style="font-size: 8px;"></i>
                         </div>
                     </div>
-                    <p id="despesas-pendentes" class="font-bold text-orange-300" style="font-size: 13px; white-space: nowrap; overflow: hidden;">R$ {{ "%.2f"|format(total_despesas_pendentes)|replace('.', ',') }}</p>
+                    <p id="despesas-pendentes" class="font-bold text-orange-300" style="font-size: 14px !important; white-space: nowrap; overflow: hidden;">R$ {{ "%.2f"|format(total_despesas_pendentes)|replace('.', ',') }}</p>
                 </div>
             </div>
         </div>
@@ -156,12 +156,12 @@
                 <!-- Saldo Previsto -->
                 <div class="flex-1">
                     <div class="flex items-center justify-between mb-1">
-                        <h3 class="font-medium text-gray-300 uppercase tracking-wide" style="font-size: 16px;">Previsto</h3>
+                        <h3 class="font-medium text-gray-300 uppercase tracking-wide" style="font-size: 12px !important;">Previsto</h3>
                         <div class="w-4 h-4 {% if saldo_previsto >= 0 %}bg-blue-500/20{% else %}bg-orange-500/20{% endif %} rounded-full flex items-center justify-center">
                             <i class="fas fa-calculator {% if saldo_previsto >= 0 %}text-blue-400{% else %}text-orange-400{% endif %}" style="font-size: 8px;"></i>
                         </div>
                     </div>
-                    <p id="saldo-previsto" class="font-bold {% if saldo_previsto >= 0 %}text-blue-400{% else %}text-orange-400{% endif %}" style="font-size: 17px; white-space: nowrap; overflow: hidden;">
+                    <p id="saldo-previsto" class="font-bold {% if saldo_previsto >= 0 %}text-blue-400{% else %}text-orange-400{% endif %}" style="font-size: 14px !important; white-space: nowrap; overflow: hidden;">
                         R$ {{ "%.2f"|format(saldo_previsto)|replace('.', ',') }}
                     </p>
                 </div>
@@ -172,12 +172,12 @@
                 <!-- Saldo Atual -->
                 <div class="flex-1">
                     <div class="flex items-center justify-between mb-1">
-                        <h3 class="font-medium text-gray-300 uppercase tracking-wide" style="font-size: 16px;">Atual</h3>
+                        <h3 class="font-medium text-gray-300 uppercase tracking-wide" style="font-size: 12px !important;">Atual</h3>
                         <div id="icone-saldo-atual" class="w-4 h-4 {% if saldo_atual >= 0 %}bg-green-500/20{% else %}bg-red-500/20{% endif %} rounded-full flex items-center justify-center">
                             <i class="fas fa-wallet {% if saldo_atual >= 0 %}text-green-400{% else %}text-red-400{% endif %}" style="font-size: 8px;"></i>
                         </div>
                     </div>
-                    <p id="saldo-atual" class="font-bold {% if saldo_atual >= 0 %}text-green-400{% else %}text-red-400{% endif %}" style="font-size: 17px; white-space: nowrap; overflow: hidden;">
+                    <p id="saldo-atual" class="font-bold {% if saldo_atual >= 0 %}text-green-400{% else %}text-red-400{% endif %}" style="font-size: 14px !important; white-space: nowrap; overflow: hidden;">
                         R$ {{ "%.2f"|format(saldo_atual)|replace('.', ',') }}
                     </p>
                 </div>
@@ -314,20 +314,20 @@
                                 <div class="flex items-center space-x-1">
                                     {% if valores_receitas_fixas_pagas|sum > 0 %}
                                     <div class="bg-green-600/20 rounded-lg px-2 py-1 text-center">
-                                        <div class="text-green-300 text-[8px] font-medium">Recebido</div>
-                                        <div class="text-green-400 text-[9px] font-bold">R$ {{ "%.2f"|format(valores_receitas_fixas_pagas|sum)|replace('.', ',') }}</div>
+                                        <div class="text-green-300 text-[12px] font-medium">Recebido</div>
+                                        <div class="text-green-400 text-[14px] font-bold">R$ {{ "%.2f"|format(valores_receitas_fixas_pagas|sum)|replace('.', ',') }}</div>
                                     </div>
                                     {% endif %}
                                     {% if valores_receitas_fixas_pendentes|sum > 0 %}
                                     <div class="bg-yellow-600/20 rounded-lg px-2 py-1 text-center">
-                                        <div class="text-yellow-300 text-[8px] font-medium">Pendente</div>
-                                        <div class="text-yellow-400 text-[9px] font-bold">R$ {{ "%.2f"|format(valores_receitas_fixas_pendentes|sum)|replace('.', ',') }}</div>
+                                        <div class="text-yellow-300 text-[12px] font-medium">Pendente</div>
+                                        <div class="text-yellow-400 text-[14px] font-bold">R$ {{ "%.2f"|format(valores_receitas_fixas_pendentes|sum)|replace('.', ',') }}</div>
                                     </div>
                                     {% endif %}
                                     {% if valores_receitas_fixas|sum > 0 %}
                                     <div class="bg-green-500/20 rounded-lg px-2 py-1 text-center">
-                                        <div class="text-green-300 text-[8px] font-medium">Total</div>
-                                        <div class="text-green-400 text-[9px] font-bold">R$ {{ "%.2f"|format(valores_receitas_fixas|sum)|replace('.', ',') }}</div>
+                                        <div class="text-green-300 text-[12px] font-medium">Total</div>
+                                        <div class="text-green-400 text-[14px] font-bold">R$ {{ "%.2f"|format(valores_receitas_fixas|sum)|replace('.', ',') }}</div>
                                     </div>
                                     {% endif %}
                                 </div>
@@ -409,20 +409,20 @@
                                 <div class="flex items-center space-x-1">
                                     {% if valores_outras_receitas_pagas|sum > 0 %}
                                     <div class="bg-green-600/20 rounded-lg px-2 py-1 text-center">
-                                        <div class="text-green-300 text-[8px] font-medium">Recebido</div>
-                                        <div class="text-green-400 text-[9px] font-bold">R$ {{ "%.2f"|format(valores_outras_receitas_pagas|sum)|replace('.', ',') }}</div>
+                                        <div class="text-green-300 text-[12px] font-medium">Recebido</div>
+                                        <div class="text-green-400 text-[14px] font-bold">R$ {{ "%.2f"|format(valores_outras_receitas_pagas|sum)|replace('.', ',') }}</div>
                                     </div>
                                     {% endif %}
                                     {% if valores_outras_receitas_pendentes|sum > 0 %}
                                     <div class="bg-yellow-600/20 rounded-lg px-2 py-1 text-center">
-                                        <div class="text-yellow-300 text-[8px] font-medium">Pendente</div>
-                                        <div class="text-yellow-400 text-[9px] font-bold">R$ {{ "%.2f"|format(valores_outras_receitas_pendentes|sum)|replace('.', ',') }}</div>
+                                        <div class="text-yellow-300 text-[12px] font-medium">Pendente</div>
+                                        <div class="text-yellow-400 text-[14px] font-bold">R$ {{ "%.2f"|format(valores_outras_receitas_pendentes|sum)|replace('.', ',') }}</div>
                                     </div>
                                     {% endif %}
                                     {% if valores_outras_receitas|sum > 0 %}
                                     <div class="bg-green-500/20 rounded-lg px-2 py-1 text-center">
-                                        <div class="text-green-300 text-[8px] font-medium">Total</div>
-                                        <div class="text-green-400 text-[9px] font-bold">R$ {{ "%.2f"|format(valores_outras_receitas|sum)|replace('.', ',') }}</div>
+                                        <div class="text-green-300 text-[12px] font-medium">Total</div>
+                                        <div class="text-green-400 text-[14px] font-bold">R$ {{ "%.2f"|format(valores_outras_receitas|sum)|replace('.', ',') }}</div>
                                     </div>
                                     {% endif %}
                                 </div>
@@ -567,20 +567,20 @@
                                 <div class="flex items-center space-x-1">
                                     {% if valores_despesas_parceladas_pagas|sum > 0 %}
                                     <div class="bg-green-600/20 rounded-lg px-2 py-1 text-center">
-                                        <div class="text-green-300 text-[8px] font-medium">Pago</div>
-                                        <div class="text-green-400 text-[9px] font-bold">R$ {{ "%.2f"|format(valores_despesas_parceladas_pagas|sum)|replace('.', ',') }}</div>
+                                        <div class="text-green-300 text-[12px] font-medium">Pago</div>
+                                        <div class="text-green-400 text-[14px] font-bold">R$ {{ "%.2f"|format(valores_despesas_parceladas_pagas|sum)|replace('.', ',') }}</div>
                                     </div>
                                     {% endif %}
                                     {% if valores_despesas_parceladas_pendentes|sum > 0 %}
                                     <div class="bg-yellow-600/20 rounded-lg px-2 py-1 text-center">
-                                        <div class="text-yellow-300 text-[8px] font-medium">Pendente</div>
-                                        <div class="text-yellow-400 text-[9px] font-bold">R$ {{ "%.2f"|format(valores_despesas_parceladas_pendentes|sum)|replace('.', ',') }}</div>
+                                        <div class="text-yellow-300 text-[12px] font-medium">Pendente</div>
+                                        <div class="text-yellow-400 text-[14px] font-bold">R$ {{ "%.2f"|format(valores_despesas_parceladas_pendentes|sum)|replace('.', ',') }}</div>
                                     </div>
                                     {% endif %}
                                     {% if valores_despesas_parceladas|sum > 0 %}
                                     <div class="bg-red-600/20 rounded-lg px-2 py-1 text-center">
-                                        <div class="text-red-300 text-[8px] font-medium">Total</div>
-                                        <div class="text-red-400 text-[9px] font-bold">R$ {{ "%.2f"|format(valores_despesas_parceladas|sum)|replace('.', ',') }}</div>
+                                        <div class="text-red-300 text-[12px] font-medium">Total</div>
+                                        <div class="text-red-400 text-[14px] font-bold">R$ {{ "%.2f"|format(valores_despesas_parceladas|sum)|replace('.', ',') }}</div>
                                     </div>
                                     {% endif %}
                                 </div>
@@ -661,20 +661,20 @@
                                 <div class="flex items-center space-x-1">
                                     {% if valores_despesas_fixas_pagas|sum > 0 %}
                                     <div class="bg-green-600/20 rounded-lg px-2 py-1 text-center">
-                                        <div class="text-green-300 text-[8px] font-medium">Pago</div>
-                                        <div class="text-green-400 text-[9px] font-bold">R$ {{ "%.2f"|format(valores_despesas_fixas_pagas|sum)|replace('.', ',') }}</div>
+                                        <div class="text-green-300 text-[12px] font-medium">Pago</div>
+                                        <div class="text-green-400 text-[14px] font-bold">R$ {{ "%.2f"|format(valores_despesas_fixas_pagas|sum)|replace('.', ',') }}</div>
                                     </div>
                                     {% endif %}
                                     {% if valores_despesas_fixas_pendentes|sum > 0 %}
                                     <div class="bg-yellow-600/20 rounded-lg px-2 py-1 text-center">
-                                        <div class="text-yellow-300 text-[8px] font-medium">Pendente</div>
-                                        <div class="text-yellow-400 text-[9px] font-bold">R$ {{ "%.2f"|format(valores_despesas_fixas_pendentes|sum)|replace('.', ',') }}</div>
+                                        <div class="text-yellow-300 text-[12px] font-medium">Pendente</div>
+                                        <div class="text-yellow-400 text-[14px] font-bold">R$ {{ "%.2f"|format(valores_despesas_fixas_pendentes|sum)|replace('.', ',') }}</div>
                                     </div>
                                     {% endif %}
                                     {% if valores_despesas_fixas|sum > 0 %}
                                     <div class="bg-red-600/20 rounded-lg px-2 py-1 text-center">
-                                        <div class="text-red-300 text-[8px] font-medium">Total</div>
-                                        <div class="text-red-400 text-[9px] font-bold">R$ {{ "%.2f"|format(valores_despesas_fixas|sum)|replace('.', ',') }}</div>
+                                        <div class="text-red-300 text-[12px] font-medium">Total</div>
+                                        <div class="text-red-400 text-[14px] font-bold">R$ {{ "%.2f"|format(valores_despesas_fixas|sum)|replace('.', ',') }}</div>
                                     </div>
                                     {% endif %}
                                 </div>
@@ -755,20 +755,20 @@
                                 <div class="flex items-center space-x-1">
                                     {% if valores_despesas_avulsas_pagas|sum > 0 %}
                                     <div class="bg-green-600/20 rounded-lg px-2 py-1 text-center">
-                                        <div class="text-green-300 text-[8px] font-medium">Pago</div>
-                                        <div class="text-green-400 text-[9px] font-bold">R$ {{ "%.2f"|format(valores_despesas_avulsas_pagas|sum)|replace('.', ',') }}</div>
+                                        <div class="text-green-300 text-[12px] font-medium">Pago</div>
+                                        <div class="text-green-400 text-[14px] font-bold">R$ {{ "%.2f"|format(valores_despesas_avulsas_pagas|sum)|replace('.', ',') }}</div>
                                     </div>
                                     {% endif %}
                                     {% if valores_despesas_avulsas_pendentes|sum > 0 %}
                                     <div class="bg-yellow-600/20 rounded-lg px-2 py-1 text-center">
-                                        <div class="text-yellow-300 text-[8px] font-medium">Pendente</div>
-                                        <div class="text-yellow-400 text-[9px] font-bold">R$ {{ "%.2f"|format(valores_despesas_avulsas_pendentes|sum)|replace('.', ',') }}</div>
+                                        <div class="text-yellow-300 text-[12px] font-medium">Pendente</div>
+                                        <div class="text-yellow-400 text-[14px] font-bold">R$ {{ "%.2f"|format(valores_despesas_avulsas_pendentes|sum)|replace('.', ',') }}</div>
                                     </div>
                                     {% endif %}
                                     {% if valores_despesas_avulsas|sum > 0 %}
                                     <div class="bg-red-600/20 rounded-lg px-2 py-1 text-center">
-                                        <div class="text-red-300 text-[8px] font-medium">Total</div>
-                                        <div class="text-red-400 text-[9px] font-bold">R$ {{ "%.2f"|format(valores_despesas_avulsas|sum)|replace('.', ',') }}</div>
+                                        <div class="text-red-300 text-[12px] font-medium">Total</div>
+                                        <div class="text-red-400 text-[14px] font-bold">R$ {{ "%.2f"|format(valores_despesas_avulsas|sum)|replace('.', ',') }}</div>
                                     </div>
                                     {% endif %}
                                 </div>
@@ -906,4 +906,68 @@
         opacity: 1;
     }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('=== DASHBOARD CARDS DEBUG ===');
+    
+    // Valores dos cards
+    console.log('Valores dos Cards:');
+    console.log('Total Receitas:', '{{ total_receitas }}');
+    console.log('Receitas Pagas:', '{{ total_receitas_pagas }}');
+    console.log('Receitas Pendentes:', '{{ total_receitas_pendentes }}');
+    console.log('Total Despesas:', '{{ total_despesas }}');
+    console.log('Despesas Pagas:', '{{ total_despesas_pagas }}');
+    console.log('Despesas Pendentes:', '{{ total_despesas_pendentes }}');
+    console.log('Saldo Anterior:', '{{ saldo_anterior }}');
+    console.log('Saldo Previsto:', '{{ saldo_previsto }}');
+    console.log('Saldo Atual:', '{{ saldo_atual }}');
+    
+    // Verificar estilos aplicados
+    console.log('\nEstilos Aplicados nos Cards Principais:');
+    
+    // Cards principais de resumo
+    const mainCards = document.querySelectorAll('.bg-gradient-to-br h3, .bg-gradient-to-br p');
+    mainCards.forEach((el, index) => {
+        const computedStyle = window.getComputedStyle(el);
+        const fontSize = computedStyle.fontSize;
+        const classes = el.className;
+        console.log(`Card Principal ${index + 1}:`, {
+            tag: el.tagName,
+            fontSize: fontSize,
+            classes: classes,
+            text: el.textContent.trim().substring(0, 20) + '...'
+        });
+    });
+    
+    console.log('\nEstilos Aplicados nos Mini Cards (Categorias):');
+    
+    // Mini cards dentro dos gráficos por categoria
+    const miniCards = document.querySelectorAll('.bg-green-600\\/20 div, .bg-yellow-600\\/20 div, .bg-green-500\\/20 div, .bg-red-600\\/20 div');
+    miniCards.forEach((el, index) => {
+        const computedStyle = window.getComputedStyle(el);
+        const fontSize = computedStyle.fontSize;
+        const classes = el.className;
+        console.log(`Mini Card ${index + 1}:`, {
+            tag: el.tagName,
+            fontSize: fontSize,
+            classes: classes,
+            text: el.textContent.trim().substring(0, 15) + '...'
+        });
+    });
+    
+    // Verificar largura da página
+    const mainContainer = document.querySelector('.max-w-full');
+    if (mainContainer) {
+        const containerWidth = mainContainer.offsetWidth;
+        const windowWidth = window.innerWidth;
+        console.log('\nLargura da Página:');
+        console.log('Container width:', containerWidth + 'px');
+        console.log('Window width:', windowWidth + 'px');
+        console.log('Aproveitamento:', ((containerWidth / windowWidth) * 100).toFixed(1) + '%');
+    }
+    
+    console.log('=== FIM DEBUG ===');
+});
+</script>
 {% endblock %}
