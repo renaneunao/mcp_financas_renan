@@ -59,6 +59,19 @@ def init_db():
     # Migrar estrutura existente se necessário
     migrate_database(conn)
     
+    # Tabela de usuários
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS usuario (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL UNIQUE,
+            password_hash TEXT NOT NULL,
+            nome_completo TEXT,
+            email TEXT,
+            ativo BOOLEAN DEFAULT 1,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    
     # Tabela de categorias de receitas
     conn.execute('''
         CREATE TABLE IF NOT EXISTS categoria_receita (
