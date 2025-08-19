@@ -7,7 +7,7 @@ import calendar
 dashboard_bp = Blueprint('dashboard', __name__)
 
 def calcular_saldo_mes_dinamico(ano, mes, user_id):
-    """Calcula o saldo acumulado até o final de um mês específico para um usuário baseado apenas em valores pagos"""
+    """Calcula o saldo acumulado até o final de um mês específico para um usuário"""
     from datetime import date
     import calendar
     
@@ -16,18 +16,18 @@ def calcular_saldo_mes_dinamico(ano, mes, user_id):
     # Calcular o último dia do mês
     ultimo_dia = date(ano, mes, calendar.monthrange(ano, mes)[1])
     
-    # Somar apenas as receitas PAGAS até o final do mês para o usuário
+    # Somar todas as receitas até o final do mês para o usuário
     receitas = conn.execute('''
         SELECT COALESCE(SUM(valor), 0) as total
         FROM receita 
-        WHERE data_inicio <= ? AND usuario_id = ? AND pago = 1
+        WHERE data_inicio <= ? AND usuario_id = ?
     ''', (ultimo_dia, user_id)).fetchone()
     
-    # Somar apenas as despesas PAGAS até o final do mês para o usuário
+    # Somar todas as despesas até o final do mês para o usuário
     despesas = conn.execute('''
         SELECT COALESCE(SUM(valor), 0) as total
         FROM despesa 
-        WHERE data_inicio <= ? AND usuario_id = ? AND pago = 1
+        WHERE data_inicio <= ? AND usuario_id = ?
     ''', (ultimo_dia, user_id)).fetchone()
     
     conn.close()
@@ -134,25 +134,19 @@ def index():
     
     # Calcular saldo atual (apenas valores pagos)
     total_receitas_pagas = 0
-    total_receitas_pendentes = 0
     total_despesas_pagas = 0
-    total_despesas_pendentes = 0
     
     for r in receitas:
         valor = float(r.valor if hasattr(r, 'valor') else r['valor'])
         # Receitas virtuais sempre consideradas pagas, ou receitas com pago=True
-        if (hasattr(r, 'virtual') and r.virtual) or (hasattr(r, 'pago') and r.pago) or (not hasattr(r, 'virtual') and r['pago']):
+        if (hasattr(r, 'virtual') and r.virtual) or (hasattr(r, 'pago') and r.pago) or (not hasattr(r, 'virtual') and r.get('pago', False)):
             total_receitas_pagas += valor
-        else:
-            total_receitas_pendentes += valor
     
     for d in despesas:
         valor = float(d.valor if hasattr(d, 'valor') else d['valor'])
         # Despesas virtuais sempre consideradas pagas, ou despesas com pago=True
-        if (hasattr(d, 'virtual') and d.virtual) or (hasattr(d, 'pago') and d.pago) or (not hasattr(d, 'virtual') and d['pago']):
+        if (hasattr(d, 'virtual') and d.virtual) or (hasattr(d, 'pago') and d.pago) or (not hasattr(d, 'virtual') and d.get('pago', False)):
             total_despesas_pagas += valor
-        else:
-            total_despesas_pendentes += valor
     
     saldo_atual = total_receitas_pagas - total_despesas_pagas
     
@@ -195,10 +189,6 @@ def index():
                          despesas=despesas,
                          total_receitas=total_receitas,
                          total_despesas=total_despesas,
-                         total_receitas_pagas=total_receitas_pagas,
-                         total_receitas_pendentes=total_receitas_pendentes,
-                         total_despesas_pagas=total_despesas_pagas,
-                         total_despesas_pendentes=total_despesas_pendentes,
                          saldo_previsto=saldo_previsto,
                          saldo_atual=saldo_atual,
                          saldo_anterior=saldo_anterior,

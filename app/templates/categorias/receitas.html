@@ -230,7 +230,7 @@ function confirmarExclusao(tipo, id, nome) {
         if (tipo === 'categoria') {
             form.action = '/categorias/receitas/' + id + '/excluir';
         } else {
-            form.action = '/categorias/subcategorias/receitas/' + id + '/excluir';
+            form.action = '/categorias/receitas/subcategoria/' + id + '/excluir';
         }
         
         document.body.appendChild(form);

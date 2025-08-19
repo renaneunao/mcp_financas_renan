@@ -49,6 +49,7 @@ def index():
     
     # Obter parâmetros de filtro
     categoria = request.args.get('categoria')
+    subcategoria = request.args.get('subcategoria')
     mes = request.args.get('mes')
     ano = request.args.get('ano')
     
@@ -66,6 +67,10 @@ def index():
     if categoria:
         query += " AND d.categoria_id = ?"
         params.append(categoria)
+    
+    if subcategoria:
+        query += " AND d.subcategoria_id = ?"
+        params.append(subcategoria)
     
     if mes:
         query += " AND strftime('%m', d.data_inicio) = ?"

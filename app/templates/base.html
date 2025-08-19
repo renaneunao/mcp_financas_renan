@@ -832,22 +832,28 @@
             // Obter o valor da transação para recalcular somatórios
             let valor = 0;
             
-            // Tentar encontrar o valor no item mais próximo
-            const itemContainer = elemento.closest('.block') || elemento.closest('div');
+            // Tentar encontrar o valor no item mais próximo - buscar o bloco principal
+            const itemContainer = elemento.closest('.p-3.border-b') || elemento.closest('.block') || elemento.closest('div');
             
             if (itemContainer) {
-                // Buscar por diferentes seletores possíveis para o valor
+                console.log('Procurando valor no container:', itemContainer);
+                
+                // Buscar por diferentes seletores possíveis para o valor - mais específicos
                 const valorSelectors = [
-                    '.text-green-400.font-bold',  // Receitas
-                    '.text-red-400.font-bold',    // Despesas
-                    '.font-bold',                 // Genérico
-                    'span[class*="font-bold"]'    // Qualquer span com font-bold
+                    '.text-green-400.font-bold.text-sm',  // Receitas específico
+                    '.text-red-400.font-bold.text-sm',    // Despesas específico
+                    '.text-green-400.font-bold',          // Receitas genérico
+                    '.text-red-400.font-bold',            // Despesas genérico
+                    '.font-bold',                         // Genérico
+                    'span[class*="font-bold"]'            // Qualquer span com font-bold
                 ];
                 
                 let valorContainer = null;
                 for (const selector of valorSelectors) {
                     valorContainer = itemContainer.querySelector(selector);
+                    console.log(`Testando seletor "${selector}":`, valorContainer);
                     if (valorContainer && valorContainer.textContent.includes('R$')) {
+                        console.log('Seletor funcionou! Conteúdo:', valorContainer.textContent);
                         break;
                     }
                 }
@@ -860,10 +866,12 @@
                         console.warn('Valor inválido encontrado:', valorTexto, 'Continuando sem atualizar somatórios');
                         valor = 0;
                     } else {
-                        console.log('Valor encontrado:', valor);
+                        console.log('Valor encontrado corretamente:', valor, 'do texto:', valorTexto);
                     }
                 } else {
                     console.warn('Container de valor não encontrado, continuando sem atualizar somatórios');
+                    console.log('Seletores testados em:', itemContainer);
+                    console.log('HTML do item:', itemContainer.innerHTML);
                 }
             }
             
@@ -887,7 +895,8 @@
                     // Atualizar o visual do botão
                     if (data.pago) {
                         elemento.className = 'text-xs px-2 py-1 rounded transition-colors duration-200 bg-green-600 text-white flex items-center justify-center space-x-1';
-                        elemento.innerHTML = '<img src="/static/img/icones/pago.png" alt="Pago" class="w-3 h-3"><span>Pago</span>';
+                        const textoStatus = tipo === 'receita' ? 'Recebido' : 'Pago';
+                        elemento.innerHTML = `<img src="/static/img/icones/pago.png" alt="${textoStatus}" class="w-3 h-3"><span>${textoStatus}</span>`;
                     } else {
                         elemento.className = 'text-xs px-2 py-1 rounded transition-colors duration-200 bg-gray-600 text-gray-300';
                         elemento.innerHTML = 'Pendente';
@@ -900,6 +909,12 @@
                     if (valor >= 0) {
                         console.log('Chamando atualizarSomatorios com:', { tipo, valor, novoPago: data.pago, statusAnterior: statusAtual });
                         atualizarSomatorios(tipo, valor, data.pago, statusAtual, elemento);
+                        
+                        // Atualizar cards de receitas/despesas pagas/pendentes
+                        atualizarCardsReceitasDespesas(tipo, valor, data.pago, statusAtual);
+                        
+                        // Atualizar cards de saldo
+                        atualizarCardsSaldo(tipo, valor, data.pago, statusAtual);
                     }
                     
                     // Mostrar feedback
@@ -1083,6 +1098,138 @@
             container.style.display = newValue === 0 ? 'none' : 'block';
             
             console.log(`Container atualizado: ${currentValue} -> ${newValue} (${somar ? 'soma' : 'subtração'})`);
+        }
+        
+        // Função para atualizar cards de receitas e despesas pagas/pendentes
+        function atualizarCardsReceitasDespesas(tipo, valor, novoPago, statusAnterior) {
+            console.log('Atualizando cards de receitas/despesas:', { tipo, valor, novoPago, statusAnterior });
+            
+            if (tipo === 'receita') {
+                const receitasPagasEl = document.getElementById('receitas-pagas');
+                const receitasPendentesEl = document.getElementById('receitas-pendentes');
+                
+                if (receitasPagasEl && receitasPendentesEl) {
+                    // Extrair valores atuais
+                    const pagasAtual = parseFloat(receitasPagasEl.textContent.replace('R$ ', '').replace(',', '.'));
+                    const pendentesAtual = parseFloat(receitasPendentesEl.textContent.replace('R$ ', '').replace(',', '.'));
+                    
+                    let novasPagas = pagasAtual;
+                    let novasPendentes = pendentesAtual;
+                    
+                    if (novoPago && !statusAnterior) {
+                        // Mudou de pendente para pago
+                        novasPagas += valor;
+                        novasPendentes -= valor;
+                    } else if (!novoPago && statusAnterior) {
+                        // Mudou de pago para pendente
+                        novasPagas -= valor;
+                        novasPendentes += valor;
+                    }
+                    
+                    // Atualizar valores na tela
+                    receitasPagasEl.textContent = 'R$ ' + novasPagas.toFixed(2).replace('.', ',');
+                    receitasPendentesEl.textContent = 'R$ ' + novasPendentes.toFixed(2).replace('.', ',');
+                    
+                    console.log('Receitas atualizadas - Pagas:', novasPagas, 'Pendentes:', novasPendentes);
+                }
+            } else if (tipo === 'despesa') {
+                const despesasPagasEl = document.getElementById('despesas-pagas');
+                const despesasPendentesEl = document.getElementById('despesas-pendentes');
+                
+                if (despesasPagasEl && despesasPendentesEl) {
+                    // Extrair valores atuais
+                    const pagasAtual = parseFloat(despesasPagasEl.textContent.replace('R$ ', '').replace(',', '.'));
+                    const pendentesAtual = parseFloat(despesasPendentesEl.textContent.replace('R$ ', '').replace(',', '.'));
+                    
+                    let novasPagas = pagasAtual;
+                    let novasPendentes = pendentesAtual;
+                    
+                    if (novoPago && !statusAnterior) {
+                        // Mudou de pendente para pago
+                        novasPagas += valor;
+                        novasPendentes -= valor;
+                    } else if (!novoPago && statusAnterior) {
+                        // Mudou de pago para pendente
+                        novasPagas -= valor;
+                        novasPendentes += valor;
+                    }
+                    
+                    // Atualizar valores na tela
+                    despesasPagasEl.textContent = 'R$ ' + novasPagas.toFixed(2).replace('.', ',');
+                    despesasPendentesEl.textContent = 'R$ ' + novasPendentes.toFixed(2).replace('.', ',');
+                    
+                    console.log('Despesas atualizadas - Pagas:', novasPagas, 'Pendentes:', novasPendentes);
+                }
+            }
+        }
+        
+        function atualizarCardsSaldo(tipo, valor, novoPago, statusAnterior) {
+            console.log('Atualizando cards de saldo:', { tipo, valor, novoPago, statusAnterior });
+            
+            // Buscar elementos pelos IDs específicos
+            const saldoAtual = document.getElementById('saldo-atual');
+            const iconeSaldoAtual = document.getElementById('icone-saldo-atual');
+            
+            if (!saldoAtual) {
+                console.warn('Elemento de saldo atual não encontrado');
+                return;
+            }
+            
+            // Calcular mudança no saldo atual
+            let mudancaSaldoAtual = 0;
+            
+            if (novoPago && !statusAnterior) {
+                // De pendente para pago
+                if (tipo === 'receita') {
+                    mudancaSaldoAtual = valor; // Receita paga aumenta saldo atual
+                } else {
+                    mudancaSaldoAtual = -valor; // Despesa paga diminui saldo atual
+                }
+            } else if (!novoPago && statusAnterior) {
+                // De pago para pendente
+                if (tipo === 'receita') {
+                    mudancaSaldoAtual = -valor; // Receita não paga diminui saldo atual
+                } else {
+                    mudancaSaldoAtual = valor; // Despesa não paga aumenta saldo atual
+                }
+            }
+            
+            console.log('Mudança calculada no saldo atual:', mudancaSaldoAtual);
+            
+            // Atualizar saldo atual se houve mudança
+            if (mudancaSaldoAtual !== 0) {
+                // Extrair valor atual do saldo atual
+                const textoAtual = saldoAtual.textContent;
+                const valorAtualTexto = textoAtual.replace('R$ ', '').replace(',', '.');
+                const valorAtual = parseFloat(valorAtualTexto) || 0;
+                const novoValor = valorAtual + mudancaSaldoAtual;
+                
+                console.log(`Atualizando saldo: ${valorAtual} + ${mudancaSaldoAtual} = ${novoValor}`);
+                
+                // Atualizar display
+                saldoAtual.textContent = `R$ ${novoValor.toFixed(2).replace('.', ',')}`;
+                
+                // Atualizar cores do texto
+                saldoAtual.classList.remove('text-green-400', 'text-red-400');
+                saldoAtual.classList.add(novoValor >= 0 ? 'text-green-400' : 'text-red-400');
+                
+                // Atualizar ícone e fundo se existir
+                if (iconeSaldoAtual) {
+                    const icone = iconeSaldoAtual.querySelector('i');
+                    
+                    // Atualizar cor do ícone
+                    if (icone) {
+                        icone.classList.remove('text-green-400', 'text-red-400');
+                        icone.classList.add(novoValor >= 0 ? 'text-green-400' : 'text-red-400');
+                    }
+                    
+                    // Atualizar cor de fundo do ícone
+                    iconeSaldoAtual.classList.remove('bg-green-500/20', 'bg-red-500/20');
+                    iconeSaldoAtual.classList.add(novoValor >= 0 ? 'bg-green-500/20' : 'bg-red-500/20');
+                }
+                
+                console.log(`Saldo atual atualizado com sucesso: ${novoValor}`);
+            }
         }
         
         function showToast(message, type = 'info') {

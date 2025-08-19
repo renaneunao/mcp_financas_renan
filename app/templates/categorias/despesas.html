@@ -230,7 +230,7 @@ function confirmarExclusao(tipo, id, nome) {
         if (tipo === 'categoria') {
             form.action = '/categorias/despesas/' + id + '/excluir';
         } else {
-            form.action = '/categorias/subcategorias/despesas/' + id + '/excluir';
+            form.action = '/categorias/despesas/subcategoria/' + id + '/excluir';
         }
         
         document.body.appendChild(form);
