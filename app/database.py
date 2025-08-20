@@ -10,54 +10,9 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-def migrate_database(conn):
-    """Migra o banco de dados para a nova estrutura - adiciona colunas necessárias"""
-    cursor = conn.cursor()
-    
-    # Adicionar coluna usuario_id na tabela receita se não existir
-    try:
-        cursor.execute("ALTER TABLE receita ADD COLUMN usuario_id INTEGER")
-    except sqlite3.OperationalError:
-        pass  # Coluna já existe
-    
-    # Adicionar coluna fixo na tabela receita se não existir
-    try:
-        cursor.execute("ALTER TABLE receita ADD COLUMN fixo BOOLEAN DEFAULT 0")
-    except sqlite3.OperationalError:
-        pass  # Coluna já existe
-        
-    # Adicionar coluna usuario_id na tabela despesa se não existir
-    try:
-        cursor.execute("ALTER TABLE despesa ADD COLUMN usuario_id INTEGER")
-    except sqlite3.OperationalError:
-        pass  # Coluna já existe
-    
-    # Adicionar coluna fixo na tabela despesa se não existir
-    try:
-        cursor.execute("ALTER TABLE despesa ADD COLUMN fixo BOOLEAN DEFAULT 0")
-    except sqlite3.OperationalError:
-        pass  # Coluna já existe
-    
-    # Adicionar coluna pago na tabela receita se não existir
-    try:
-        cursor.execute("ALTER TABLE receita ADD COLUMN pago BOOLEAN DEFAULT 0")
-    except sqlite3.OperationalError:
-        pass  # Coluna já existe
-        
-    # Adicionar coluna pago na tabela despesa se não existir
-    try:
-        cursor.execute("ALTER TABLE despesa ADD COLUMN pago BOOLEAN DEFAULT 0")
-    except sqlite3.OperationalError:
-        pass  # Coluna já existe
-    
-    conn.commit()
-
 def init_db():
     """Inicializa o banco de dados com as tabelas necessárias"""
     conn = get_db_connection()
-    
-    # Migrar estrutura existente se necessário
-    migrate_database(conn)
     
     # Tabela de usuários
     conn.execute('''
@@ -133,6 +88,9 @@ def init_db():
             valor REAL NOT NULL,
             numero_parcelas TEXT NOT NULL DEFAULT '1',
             parcela_atual INTEGER DEFAULT 1,
+            usuario_id INTEGER,
+            fixo BOOLEAN DEFAULT 0,
+            pago BOOLEAN DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (categoria_id) REFERENCES categoria_receita (id),
             FOREIGN KEY (subcategoria_id) REFERENCES subcategoria_receita (id)
@@ -152,6 +110,9 @@ def init_db():
             parcela_atual INTEGER DEFAULT 1,
             dia_comum_pagamento INTEGER,
             valor REAL NOT NULL,
+            usuario_id INTEGER,
+            fixo BOOLEAN DEFAULT 0,
+            pago BOOLEAN DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (categoria_id) REFERENCES categoria_despesa (id),
             FOREIGN KEY (subcategoria_id) REFERENCES subcategoria_despesa (id)
