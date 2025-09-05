@@ -2,3 +2,4 @@ Flask
 Pillow
 Werkzeug
 python-dateutil
+gunicorn

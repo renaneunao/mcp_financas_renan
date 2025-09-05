@@ -1,0 +1,78 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres-container
+    environment:
+      POSTGRES_USER: renaneunao
+      POSTGRES_PASSWORD: Trd7gCatp5XN9QSYZK3i
+      POSTGRES_DB: home-database
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - minha-rede
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq-container
+    environment:
+      RABBITMQ_DEFAULT_USER: renaneunao
+      RABBITMQ_DEFAULT_PASS: 5T1tJRckjgp44Bu01uAX
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - minha-rede
+    restart: unless-stopped
+
+  cartoleiro-aero:
+    image: renaneunao/cartoleiro-aero:latest
+    container_name: cartoleiro-aero-container
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: renaneunao
+      RABBITMQ_PASSWORD: 5T1tJRckjgp44Bu01uAX
+      DB_PATH: /app/cartola.db
+    command: gunicorn --bind 0.0.0.0:5000 --workers 4 --threads 2 wsgi:app
+    ports:
+      - "5002:5000"
+    volumes:
+      - ./data/cartola.db:/app/cartola.db
+    networks:
+      - minha-rede
+    restart: unless-stopped
+    depends_on:
+      - rabbitmq
+
+  financas_renan:
+    image: renaneunao/financas_renan:latest
+    container_name: financas-renan-container
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: renaneunao
+      RABBITMQ_PASSWORD: 5T1tJRckjgp44Bu01uAX
+      DB_PATH: /data/financas.db
+    ports:
+      - "8001:8000"
+    volumes:
+      - financas_data:/data
+    networks:
+      - minha-rede
+    restart: unless-stopped
+    depends_on:
+      - rabbitmq
+
+volumes:
+  postgres_data:
+  rabbitmq_data:
+  financas_data:
+
+networks:
+  minha-rede:
+    driver: bridge

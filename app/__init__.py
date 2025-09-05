@@ -1,5 +1,7 @@
+import os
 from flask import Flask
-from app.database import init_db
+from init_db import init_db
+from app.database import get_db_connection
 from app.routes.dashboard import dashboard_bp
 from app.routes.receitas import receitas_bp
 from app.routes.despesas import despesas_bp
@@ -27,14 +29,30 @@ def format_date_br(date_string):
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'financas_renan_secret_key'
-    app.config['DATABASE'] = 'financas.db'
     
-    # Adicionar filtro personalizado para datas
+    # Configurações da aplicação
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-key-change-in-production')
+    app.config['DATABASE'] = os.environ.get('DB_PATH', 'financas.db')
+    
+    # Configurações de segurança
+    app.config['SESSION_COOKIE_SECURE'] = os.environ.get('FLASK_ENV') == 'production'
+    app.config['SESSION_COOKIE_HTTPONLY'] = True
+    app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+    
+    # Filtro personalizado para datas
     app.jinja_env.filters['date_br'] = format_date_br
     
     # Inicializar banco de dados
-    init_db()
+    with app.app_context():
+        init_db()
+        # Testar conexão com o banco de dados
+        try:
+            conn = get_db_connection()
+            conn.execute('SELECT 1')
+            app.logger.info('Conexão com o banco de dados estabelecida com sucesso')
+        except Exception as e:
+            app.logger.error(f'Erro ao conectar ao banco de dados: {e}')
+            raise
     
     # Registrar blueprints
     app.register_blueprint(auth_bp, url_prefix='/auth')
