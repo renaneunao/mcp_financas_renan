@@ -34,3 +34,7 @@ Thumbs.db
 
 # CSS compilado será regenerado
 app/static/css/output.css
+
+# Chaves SSH (segurança)
+.ssh/vps_key
+.ssh/vps_key.pubfinancas.db

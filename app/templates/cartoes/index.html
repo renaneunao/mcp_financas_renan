@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+
+{% block title %}Cartões de Crédito - Controle Financeiro{% endblock %}
+
+{% block header %}
+<div class="flex items-center justify-between">
+    <div class="flex items-center">
+        <div class="w-7 h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg flex items-center justify-center mr-2.5">
+            <i class="fas fa-credit-card text-white"></i>
+        </div>
+        <div>
+            <h1 class="text-base md:text-lg lg:text-xl font-bold text-white">Meus Cartões</h1>
+            <p class="text-gray-300 text-xs md:text-sm">Gerencie seus cartões de crédito</p>
+        </div>
+    </div>
+    
+    <button onclick="openModalNovoCartao()" 
+            class="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg hover:from-purple-600 hover:to-pink-700 transition-all duration-300 text-sm shadow-lg">
+        <i class="fas fa-plus mr-1"></i> Novo Cartão
+    </button>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-full mx-auto space-y-4">
+    
+    {% if cartoes %}
+        <!-- Grid de Cartões -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for cartao in cartoes %}
+                <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl p-6 border-l-4 border-purple-500 hover:shadow-purple-500/20 transition-all duration-300">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <i class="fas fa-credit-card text-purple-400"></i>
+                                <h3 class="text-lg font-bold text-white">{{ cartao.nome_cartao }}</h3>
+                            </div>
+                            <p class="text-sm text-gray-400">{{ cartao.instituicao_nome }}</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="openModalEditarCartao({{ cartao.id }}, '{{ cartao.instituicao_id }}', '{{ cartao.nome_cartao }}', '{{ cartao.ultimos_digitos }}', {{ cartao.limite_total }}, {{ cartao.dia_vencimento }}, {{ cartao.dia_fechamento }})"
+                                    class="text-gray-400 hover:text-blue-400 transition-colors">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <form method="POST" action="{{ url_for('cartoes.excluir', cartao_id=cartao.id) }}" 
+                                  onsubmit="return confirm('Tem certeza que deseja remover este cartão?');"
+                                  class="inline">
+                                <button type="submit" class="text-gray-400 hover:text-red-400 transition-colors">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <!-- Últimos Dígitos -->
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Final do cartão</span>
+                            <span class="text-sm font-mono text-gray-300">•••• {{ cartao.ultimos_digitos }}</span>
+                        </div>
+                        
+                        <!-- Limite -->
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Limite total</span>
+                            <span class="text-sm font-bold text-green-400">R$ {{ "%.2f"|format(cartao.limite_total)|replace('.', ',') }}</span>
+                        </div>
+                        
+                        <!-- Datas -->
+                        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-gray-700">
+                            <div class="text-center">
+                                <p class="text-xs text-gray-500 mb-1">Fechamento</p>
+                                <p class="text-sm font-semibold text-blue-400">Dia {{ cartao.dia_fechamento }}</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-xs text-gray-500 mb-1">Vencimento</p>
+                                <p class="text-sm font-semibold text-orange-400">Dia {{ cartao.dia_vencimento }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <!-- Estado Vazio -->
+        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl p-12 text-center">
+            <i class="fas fa-credit-card text-gray-600 text-6xl mb-4"></i>
+            <h3 class="text-xl font-semibold text-white mb-2">Nenhum cartão cadastrado</h3>
+            <p class="text-gray-400 mb-6">Adicione seu primeiro cartão de crédito para começar</p>
+            <button onclick="openModalNovoCartao()" 
+                    class="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg hover:from-purple-600 hover:to-pink-700 transition-all duration-300 shadow-lg">
+                <i class="fas fa-plus mr-2"></i> Adicionar Cartão
+            </button>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Modal Novo Cartão -->
+<div id="modalNovoCartao" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-gray-900 rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold text-white">Novo Cartão</h2>
+            <button onclick="closeModalNovoCartao()" class="text-gray-400 hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <form method="POST" action="{{ url_for('cartoes.adicionar') }}" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Instituição Financeira</label>
+                <select name="instituicao_id" required 
+                        class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    <option value="">Selecione...</option>
+                    {% for instituicao in instituicoes %}
+                        <option value="{{ instituicao.id }}">{{ instituicao.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Nome do Cartão</label>
+                <input type="text" name="nome_cartao" required 
+                       placeholder="Ex: Cartão Principal, Cartão Pessoal"
+                       class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Últimos 4 Dígitos</label>
+                <input type="text" name="ultimos_digitos" required maxlength="4" pattern="[0-9]{4}"
+                       placeholder="1234"
+                       class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Limite Total</label>
+                <input type="number" name="limite_total" step="0.01" min="0" required
+                       placeholder="0.00"
+                       class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Dia Fechamento</label>
+                    <input type="number" name="dia_fechamento" min="1" max="31" required
+                           placeholder="1-31"
+                           class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Dia Vencimento</label>
+                    <input type="number" name="dia_vencimento" min="1" max="31" required
+                           placeholder="1-31"
+                           class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+            </div>
+            
+            <div class="flex space-x-3 pt-4">
+                <button type="button" onclick="closeModalNovoCartao()"
+                        class="flex-1 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">
+                    Cancelar
+                </button>
+                <button type="submit"
+                        class="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg hover:from-purple-600 hover:to-pink-700 transition-all">
+                    Adicionar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Editar Cartão -->
+<div id="modalEditarCartao" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-gray-900 rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold text-white">Editar Cartão</h2>
+            <button onclick="closeModalEditarCartao()" class="text-gray-400 hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <form id="formEditarCartao" method="POST" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Instituição Financeira</label>
+                <select id="edit_instituicao_id" name="instituicao_id" required 
+                        class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    {% for instituicao in instituicoes %}
+                        <option value="{{ instituicao.id }}">{{ instituicao.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Nome do Cartão</label>
+                <input type="text" id="edit_nome_cartao" name="nome_cartao" required 
+                       class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Últimos 4 Dígitos</label>
+                <input type="text" id="edit_ultimos_digitos" name="ultimos_digitos" required maxlength="4" pattern="[0-9]{4}"
+                       class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Limite Total</label>
+                <input type="number" id="edit_limite_total" name="limite_total" step="0.01" min="0" required
+                       class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Dia Fechamento</label>
+                    <input type="number" id="edit_dia_fechamento" name="dia_fechamento" min="1" max="31" required
+                           class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Dia Vencimento</label>
+                    <input type="number" id="edit_dia_vencimento" name="dia_vencimento" min="1" max="31" required
+                           class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+            </div>
+            
+            <div class="flex space-x-3 pt-4">
+                <button type="button" onclick="closeModalEditarCartao()"
+                        class="flex-1 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">
+                    Cancelar
+                </button>
+                <button type="submit"
+                        class="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg hover:from-purple-600 hover:to-pink-700 transition-all">
+                    Salvar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openModalNovoCartao() {
+    document.getElementById('modalNovoCartao').classList.remove('hidden');
+    document.getElementById('modalNovoCartao').classList.add('flex');
+}
+
+function closeModalNovoCartao() {
+    document.getElementById('modalNovoCartao').classList.add('hidden');
+    document.getElementById('modalNovoCartao').classList.remove('flex');
+}
+
+function openModalEditarCartao(id, instituicaoId, nomeCartao, ultimosDigitos, limiteTotal, diaFechamento, diaVencimento) {
+    document.getElementById('formEditarCartao').action = `/cartoes/editar/${id}`;
+    document.getElementById('edit_instituicao_id').value = instituicaoId;
+    document.getElementById('edit_nome_cartao').value = nomeCartao;
+    document.getElementById('edit_ultimos_digitos').value = ultimosDigitos;
+    document.getElementById('edit_limite_total').value = limiteTotal;
+    document.getElementById('edit_dia_fechamento').value = diaFechamento;
+    document.getElementById('edit_dia_vencimento').value = diaVencimento;
+    
+    document.getElementById('modalEditarCartao').classList.remove('hidden');
+    document.getElementById('modalEditarCartao').classList.add('flex');
+}
+
+function closeModalEditarCartao() {
+    document.getElementById('modalEditarCartao').classList.add('hidden');
+    document.getElementById('modalEditarCartao').classList.remove('flex');
+}
+
+// Fechar modal ao clicar fora
+document.getElementById('modalNovoCartao').addEventListener('click', function(e) {
+    if (e.target === this) closeModalNovoCartao();
+});
+
+document.getElementById('modalEditarCartao').addEventListener('click', function(e) {
+    if (e.target === this) closeModalEditarCartao();
+});
+</script>
+{% endblock %}

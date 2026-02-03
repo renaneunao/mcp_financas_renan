@@ -5,7 +5,8 @@
 {% block header %}
 <div class="flex items-center justify-between">
     <div class="flex items-center">
-        <div class="w-7 h-7 bg-gradient-to-r from-red-500 to-pink-600 rounded-md flex items-center justify-center mr-2.5">
+        <div
+            class="w-7 h-7 bg-gradient-to-r from-red-500 to-pink-600 rounded-md flex items-center justify-center mr-2.5">
             <i class="fas fa-arrow-down text-white text-xs"></i>
         </div>
         <div>
@@ -13,8 +14,8 @@
             <p class="text-gray-300 text-xs">Organize seus gastos e despesas</p>
         </div>
     </div>
-    <a href="{{ url_for('categorias.nova_categoria_despesa') }}" 
-       class="flex items-center px-4 py-2 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white rounded-lg font-medium transition-all duration-150 text-sm">
+    <a href="{{ url_for('categorias.nova_categoria_despesa') }}"
+        class="flex items-center px-4 py-2 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white rounded-lg font-medium transition-all duration-150 text-sm">
         <i class="fas fa-plus mr-1.5"></i>Nova Categoria
     </a>
 </div>
@@ -35,7 +36,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg shadow-xl p-3">
             <div class="flex items-center">
                 <div class="w-7 h-7 bg-blue-500/20 rounded-full flex items-center justify-center mr-2.5">
@@ -47,7 +48,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg shadow-xl p-3">
             <div class="flex items-center">
                 <div class="w-7 h-7 bg-purple-500/20 rounded-full flex items-center justify-center mr-2.5">
@@ -55,11 +56,12 @@
                 </div>
                 <div>
                     <p class="text-gray-400 text-xs">Mais Usada</p>
-                    <p class="text-sm font-semibold text-white">{% if categorias %}{{ categorias[0].nome[:15] }}...{% else %}N/A{% endif %}</p>
+                    <p class="text-sm font-semibold text-white">{% if categorias %}{{ categorias[0].nome[:15] }}...{%
+                        else %}N/A{% endif %}</p>
                 </div>
             </div>
         </div>
-        
+
         <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg shadow-xl p-3">
             <div class="flex items-center">
                 <div class="w-7 h-7 bg-yellow-500/20 rounded-full flex items-center justify-center mr-2.5">
@@ -91,166 +93,177 @@
                 </div>
             </div>
         </div>
-        
+
         {% if categorias %}
-            <div class="divide-y divide-gray-700">
-                {% for categoria in categorias %}
-                    <div class="categoria-item">
-                        <!-- Categoria Principal -->
-                        <div class="p-3 hover:bg-gray-800/50 cursor-pointer categoria-header transition-all duration-150" 
-                             onclick="toggleCategoria({{ categoria.id|tojson }})">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center flex-1">
-                                    <i class="fas fa-chevron-right categoria-icon transition-transform text-gray-400 mr-2.5 text-sm" 
-                                       id="icon-{{ categoria.id }}"></i>
-                                    <div class="flex-1">
-                                        <div class="flex items-center mb-1.5">
-                                            <div class="w-7 h-7 bg-red-500/20 rounded-md flex items-center justify-center mr-2.5">
-                                                <i class="fas fa-folder text-red-400 text-xs"></i>
-                                            </div>
-                                            <div>
-                                                <h4 class="text-sm font-semibold text-white">{{ categoria.nome }}</h4>
-                                                {% if categoria.descricao %}
-                                                    <p class="text-gray-400 text-xs">{{ categoria.descricao }}</p>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                        <div class="ml-10">
-                                            <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] bg-red-500/20 text-red-300">
-                                                <i class="fas fa-tags mr-1 text-[10px]"></i>
-                                                {{ subcategorias|selectattr('categoria_id', 'equalto', categoria.id)|list|length }} subcategorias
-                                            </span>
-                                        </div>
+        <div class="divide-y divide-gray-700">
+            {% for categoria in categorias %}
+            <div class="categoria-item">
+                <!-- Categoria Principal -->
+                <div class="p-3 hover:bg-gray-800/50 cursor-pointer categoria-header transition-all duration-150"
+                    onclick="toggleCategoria({{ categoria.id|tojson }})">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center flex-1">
+                            <i class="fas fa-chevron-right categoria-icon transition-transform text-gray-400 mr-2.5 text-sm"
+                                id="icon-{{ categoria.id }}"></i>
+                            <div class="flex-1">
+                                <div class="flex items-center mb-1.5">
+                                    <div
+                                        class="w-7 h-7 bg-red-500/20 rounded-md flex items-center justify-center mr-2.5">
+                                        <i class="fas fa-folder text-red-400 text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-semibold text-white">{{ categoria.nome }}</h4>
+                                        {% if categoria.descricao %}
+                                        <p class="text-gray-400 text-xs">{{ categoria.descricao }}</p>
+                                        {% endif %}
                                     </div>
                                 </div>
-                                <div class="flex space-x-2 ml-3" onclick="event.stopPropagation()">
-                                    <a href="{{ url_for('categorias.nova_subcategoria_despesa', categoria_id=categoria.id) }}" 
-                                       class="flex items-center px-2.5 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-md transition-colors text-xs">
-                                        <i class="fas fa-plus mr-1"></i>Subcategoria
-                                    </a>
-                                    <a href="{{ url_for('categorias.editar_categoria_despesa', id=categoria.id) }}" 
-                                       class="flex items-center px-2.5 py-1 bg-yellow-600 hover:bg-yellow-500 text-white rounded-md transition-colors text-xs">
-                                        <i class="fas fa-edit mr-1"></i>Editar
-                                    </a>
-                                    <button onclick="confirmarExclusao('categoria', {{ categoria.id|tojson }}, {{ categoria.nome|tojson }})" 
-                                            class="flex items-center px-2.5 py-1 bg-red-600 hover:bg-red-500 text-white rounded-md transition-colors text-xs">
-                                        <i class="fas fa-trash mr-1"></i>Excluir
-                                    </button>
+                                <div class="ml-10">
+                                    <span
+                                        class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] bg-red-500/20 text-red-300">
+                                        <i class="fas fa-tags mr-1 text-[10px]"></i>
+                                        {{ subcategorias|selectattr('categoria_id', 'equalto', categoria.id)|list|length
+                                        }} subcategorias
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Subcategorias (inicialmente ocultas) -->
-                        <div class="subcategorias hidden bg-gray-800/30 border-t border-gray-700" 
-                             id="subcategorias-{{ categoria.id }}">
-                            {% set categoria_subcategorias = subcategorias|selectattr('categoria_id', 'equalto', categoria.id)|list %}
-                            {% if categoria_subcategorias %}
-                                <div class="p-3 space-y-2">
-                                    <div class="text-gray-400 text-xs font-medium mb-2.5 flex items-center">
-                                        <i class="fas fa-list mr-1.5 text-xs"></i>
-                                        Subcategorias de "{{ categoria.nome }}"
-                                    </div>
-                                    {% for subcategoria in categoria_subcategorias %}
-                                        <div class="flex items-center justify-between p-2.5 bg-gray-700/50 rounded-md hover:bg-gray-700 transition-colors">
-                                            <div class="flex items-center">
-                                                <div class="w-6 h-6 bg-blue-500/20 rounded-md flex items-center justify-center mr-2.5">
-                                                    <i class="fas fa-tag text-blue-400 text-xs"></i>
-                                                </div>
-                                                <div>
-                                                    <h5 class="font-medium text-white text-sm">{{ subcategoria.nome }}</h5>
-                                                    {% if subcategoria.descricao %}
-                                                        <p class="text-gray-400 text-xs">{{ subcategoria.descricao }}</p>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                            <div class="flex space-x-2">
-                                                <a href="{{ url_for('categorias.editar_subcategoria_despesa', id=subcategoria.id) }}" 
-                                                   class="flex items-center px-2.5 py-1 bg-yellow-600 hover:bg-yellow-500 text-white rounded-md transition-colors text-[10px]">
-                                                    <i class="fas fa-edit mr-1"></i>Editar
-                                                </a>
-                                                <button onclick="confirmarExclusao('subcategoria', {{ subcategoria.id|tojson }}, {{ subcategoria.nome|tojson }})" 
-                                                        class="flex items-center px-2.5 py-1 bg-red-600 hover:bg-red-500 text-white rounded-md transition-colors text-[10px]">
-                                                    <i class="fas fa-trash mr-1"></i>Excluir
-                                                </button>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            {% else %}
-                                <div class="p-4 text-center">
-                                    <div class="text-gray-500">
-                                        <i class="fas fa-inbox text-2xl mb-1.5"></i>
-                                        <p class="text-sm">Nenhuma subcategoria encontrada</p>
-                                        <a href="{{ url_for('categorias.nova_subcategoria_despesa', categoria_id=categoria.id) }}" 
-                                           class="inline-flex items-center mt-2.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-md transition-colors text-xs">
-                                            <i class="fas fa-plus mr-1.5"></i>Criar primeira subcategoria
-                                        </a>
-                                    </div>
-                                </div>
-                            {% endif %}
+                        <div class="flex space-x-2 ml-3" onclick="event.stopPropagation()">
+                            <a href="{{ url_for('categorias.nova_subcategoria_despesa', categoria_id=categoria.id) }}"
+                                class="flex items-center px-2.5 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-md transition-colors text-xs">
+                                <i class="fas fa-plus mr-1"></i>Subcategoria
+                            </a>
+                            <a href="{{ url_for('categorias.editar_categoria_despesa', id=categoria.id) }}"
+                                class="flex items-center px-2.5 py-1 bg-yellow-600 hover:bg-yellow-500 text-white rounded-md transition-colors text-xs">
+                                <i class="fas fa-edit mr-1"></i>Editar
+                            </a>
+                            <button
+                                onclick='confirmarExclusao("categoria", {{ categoria.id }}, {{ categoria.nome|tojson }})'
+                                class="flex items-center px-2.5 py-1 bg-red-600 hover:bg-red-500 text-white rounded-md transition-colors text-xs">
+                                <i class="fas fa-trash mr-1"></i>Excluir
+                            </button>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="p-6 text-center">
-                <div class="text-gray-500">
-                    <i class="fas fa-folder-open text-4xl mb-2.5 text-gray-600"></i>
-                    <h3 class="text-base font-semibold text-gray-400 mb-1.5">Nenhuma categoria encontrada</h3>
-                    <p class="text-gray-500 mb-3 text-sm">Crie sua primeira categoria de despesa para começar a organizar seus gastos</p>
-                    <a href="{{ url_for('categorias.nova_categoria_despesa') }}" 
-                       class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white rounded-lg font-medium transition-all duration-150 text-sm">
-                        <i class="fas fa-plus mr-1.5"></i>Criar primeira categoria
-                    </a>
+                </div>
+
+                <!-- Subcategorias (inicialmente ocultas) -->
+                <div class="subcategorias hidden bg-gray-800/30 border-t border-gray-700"
+                    id="subcategorias-{{ categoria.id }}">
+                    {% set categoria_subcategorias = subcategorias|selectattr('categoria_id', 'equalto',
+                    categoria.id)|list %}
+                    {% if categoria_subcategorias %}
+                    <div class="p-3 space-y-2">
+                        <div class="text-gray-400 text-xs font-medium mb-2.5 flex items-center">
+                            <i class="fas fa-list mr-1.5 text-xs"></i>
+                            Subcategorias de "{{ categoria.nome }}"
+                        </div>
+                        {% for subcategoria in categoria_subcategorias %}
+                        <div
+                            class="flex items-center justify-between p-2.5 bg-gray-700/50 rounded-md hover:bg-gray-700 transition-colors">
+                            <div class="flex items-center">
+                                <div class="w-6 h-6 bg-blue-500/20 rounded-md flex items-center justify-center mr-2.5">
+                                    <i class="fas fa-tag text-blue-400 text-xs"></i>
+                                </div>
+                                <div>
+                                    <h5 class="font-medium text-white text-sm">{{ subcategoria.nome }}</h5>
+                                    {% if subcategoria.descricao %}
+                                    <p class="text-gray-400 text-xs">{{ subcategoria.descricao }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <a href="{{ url_for('categorias.editar_subcategoria_despesa', id=subcategoria.id) }}"
+                                    class="flex items-center px-2.5 py-1 bg-yellow-600 hover:bg-yellow-500 text-white rounded-md transition-colors text-[10px]">
+                                    <i class="fas fa-edit mr-1"></i>Editar
+                                </a>
+                                <button
+                                    onclick='confirmarExclusao("subcategoria", {{ subcategoria.id }}, {{ subcategoria.nome|tojson }})'
+                                    class="flex items-center px-2.5 py-1 bg-red-600 hover:bg-red-500 text-white rounded-md transition-colors text-[10px]">
+                                    <i class="fas fa-trash mr-1"></i>Excluir
+                                </button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="p-4 text-center">
+                        <div class="text-gray-500">
+                            <i class="fas fa-inbox text-2xl mb-1.5"></i>
+                            <p class="text-sm">Nenhuma subcategoria encontrada</p>
+                            <a href="{{ url_for('categorias.nova_subcategoria_despesa', categoria_id=categoria.id) }}"
+                                class="inline-flex items-center mt-2.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-md transition-colors text-xs">
+                                <i class="fas fa-plus mr-1.5"></i>Criar primeira subcategoria
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="p-6 text-center">
+            <div class="text-gray-500">
+                <i class="fas fa-folder-open text-4xl mb-2.5 text-gray-600"></i>
+                <h3 class="text-base font-semibold text-gray-400 mb-1.5">Nenhuma categoria encontrada</h3>
+                <p class="text-gray-500 mb-3 text-sm">Crie sua primeira categoria de despesa para começar a organizar
+                    seus gastos</p>
+                <a href="{{ url_for('categorias.nova_categoria_despesa') }}"
+                    class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white rounded-lg font-medium transition-all duration-150 text-sm">
+                    <i class="fas fa-plus mr-1.5"></i>Criar primeira categoria
+                </a>
+            </div>
+        </div>
         {% endif %}
     </div>
 </div>
 
 <script>
-function toggleCategoria(categoriaId) {
-    const subcategorias = document.getElementById('subcategorias-' + categoriaId);
-    const icon = document.getElementById('icon-' + categoriaId);
-    
-    if (subcategorias.classList.contains('hidden')) {
-        subcategorias.classList.remove('hidden');
-        icon.style.transform = 'rotate(90deg)';
-    } else {
-        subcategorias.classList.add('hidden');
-        icon.style.transform = 'rotate(0deg)';
-    }
-}
+    function toggleCategoria(categoriaId) {
+        const subcategorias = document.getElementById('subcategorias-' + categoriaId);
+        const icon = document.getElementById('icon-' + categoriaId);
 
-function confirmarExclusao(tipo, id, nome) {
-    if (confirm(`Tem certeza que deseja excluir a ${tipo} "${nome}"?\n\nEsta ação não pode ser desfeita.`)) {
-        const form = document.createElement('form');
-        form.method = 'POST';
-        
-        if (tipo === 'categoria') {
-            form.action = '/categorias/despesas/' + id + '/excluir';
+        if (subcategorias.classList.contains('hidden')) {
+            subcategorias.classList.remove('hidden');
+            icon.style.transform = 'rotate(90deg)';
         } else {
-            form.action = '/categorias/despesas/subcategoria/' + id + '/excluir';
+            subcategorias.classList.add('hidden');
+            icon.style.transform = 'rotate(0deg)';
         }
-        
-        document.body.appendChild(form);
-        form.submit();
     }
-}
 
-// Animação de entrada dos cards
-document.addEventListener('DOMContentLoaded', function() {
-    const cards = document.querySelectorAll('.categoria-item');
-    cards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'all 0.5s ease';
-        
-        setTimeout(() => {
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-        }, index * 100);
+    function confirmarExclusao(tipo, id, nome) {
+        const mensagem = `Tem certeza que deseja excluir a ${tipo} "${nome}"?\n\nEsta ação não pode ser desfeita.`;
+
+        showConfirm(mensagem, function () {
+            const form = document.createElement('form');
+            form.method = 'POST';
+
+            if (tipo === 'categoria') {
+                form.action = '/categorias/despesas/' + id + '/excluir';
+            } else {
+                form.action = '/categorias/despesas/subcategoria/' + id + '/excluir';
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        });
+    }
+
+
+    // Animação de entrada dos cards
+    document.addEventListener('DOMContentLoaded', function () {
+        const cards = document.querySelectorAll('.categoria-item');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.5s ease';
+
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
     });
-});
 </script>
 {% endblock %}

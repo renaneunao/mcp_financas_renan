@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from dotenv import load_dotenv
 from init_db import init_db
 from app.database import get_db_connection
 from app.routes.dashboard import dashboard_bp
@@ -7,7 +8,11 @@ from app.routes.receitas import receitas_bp
 from app.routes.despesas import despesas_bp
 from app.routes.categorias import categorias_bp
 from app.routes.auth import auth_bp
+from app.routes.cartoes import cartoes_bp
 from datetime import datetime
+
+# Carregar variáveis de ambiente do arquivo .env
+load_dotenv()
 
 def format_date_br(date_string):
     """Converte data do formato YYYY-MM-DD para DD/MM/YYYY"""
@@ -34,10 +39,13 @@ def create_app():
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-key-change-in-production')
     app.config['DATABASE'] = os.environ.get('DB_PATH', 'financas.db')
     
-    # Configurações de segurança
-    app.config['SESSION_COOKIE_SECURE'] = os.environ.get('FLASK_ENV') == 'production'
-    app.config['SESSION_COOKIE_HTTPONLY'] = True
-    app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+    # Configurações de sessão simplificadas para desenvolvimento
+    # Remover todas as restrições de cookies para funcionar localmente
+    app.config['SESSION_COOKIE_SECURE'] = False
+    app.config['SESSION_COOKIE_HTTPONLY'] = False
+    app.config['SESSION_COOKIE_SAMESITE'] = None
+    app.config['SESSION_COOKIE_DOMAIN'] = None
+    app.config['PERMANENT_SESSION_LIFETIME'] = 3600  # 1 hora
     
     # Filtro personalizado para datas
     app.jinja_env.filters['date_br'] = format_date_br
@@ -60,5 +68,6 @@ def create_app():
     app.register_blueprint(receitas_bp)
     app.register_blueprint(despesas_bp)
     app.register_blueprint(categorias_bp)
+    app.register_blueprint(cartoes_bp)
     
     return app

@@ -115,8 +115,40 @@ def init_db():
             usuario_id INTEGER,
             fixo BOOLEAN DEFAULT 0,
             pago BOOLEAN DEFAULT 0,
+            cartao_id INTEGER,
             FOREIGN KEY (categoria_id) REFERENCES categoria_despesa (id),
-            FOREIGN KEY (subcategoria_id) REFERENCES subcategoria_despesa (id)
+            FOREIGN KEY (subcategoria_id) REFERENCES subcategoria_despesa (id),
+            FOREIGN KEY (cartao_id) REFERENCES cartao_credito (id)
+        )
+    ''')
+    
+    # Tabela de instituições financeiras
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS instituicao_financeira (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL UNIQUE,
+            codigo TEXT,
+            logo_url TEXT,
+            ativo BOOLEAN DEFAULT 1,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    
+    # Tabela de cartões de crédito
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS cartao_credito (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            usuario_id INTEGER NOT NULL,
+            instituicao_id INTEGER NOT NULL,
+            nome_cartao TEXT NOT NULL,
+            ultimos_digitos TEXT NOT NULL,
+            limite_total REAL NOT NULL DEFAULT 0,
+            dia_vencimento INTEGER NOT NULL,
+            dia_fechamento INTEGER NOT NULL,
+            ativo BOOLEAN DEFAULT 1,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (usuario_id) REFERENCES usuario (id),
+            FOREIGN KEY (instituicao_id) REFERENCES instituicao_financeira (id)
         )
     ''')
     
@@ -160,6 +192,29 @@ def init_db():
         conn.execute("INSERT INTO subcategoria_despesa (nome, categoria_id) VALUES ('Água', 3)")
         conn.execute("INSERT INTO subcategoria_despesa (nome, categoria_id) VALUES ('Cinema', 4)")
         conn.execute("INSERT INTO subcategoria_despesa (nome, categoria_id) VALUES ('Streaming', 4)")
+    
+    # Verificar se já existem instituições financeiras
+    cursor.execute('SELECT COUNT(*) FROM instituicao_financeira')
+    if cursor.fetchone()[0] == 0:
+        # Instituições financeiras iniciais (10 mais famosas do Brasil)
+        instituicoes = [
+            ('Nubank', '260', None),
+            ('Banco do Brasil', '001', None),
+            ('Sicoob', '756', None),
+            ('Bradesco', '237', None),
+            ('Itaú', '341', None),
+            ('Caixa Econômica Federal', '104', None),
+            ('Santander', '033', None),
+            ('Inter', '077', None),
+            ('C6 Bank', '336', None),
+            ('Banco Original', '212', None),
+        ]
+        
+        for nome, codigo, logo in instituicoes:
+            conn.execute(
+                "INSERT INTO instituicao_financeira (nome, codigo, logo_url) VALUES (?, ?, ?)",
+                (nome, codigo, logo)
+            )
     
     conn.commit()
     conn.close()

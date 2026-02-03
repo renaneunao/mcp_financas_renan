@@ -62,6 +62,8 @@ services:
       - "8001:8000"
     volumes:
       - financas_data:/data
+      - ./entrypoint.sh:/entrypoint.sh
+    entrypoint: /entrypoint.sh
     networks:
       - minha-rede
     restart: unless-stopped

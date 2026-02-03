@@ -142,6 +142,19 @@ def calcular_numero_parcelas(data_inicio, data_fim, tipo_recorrencia):
     
     return str(contador)
 
+def get_cartoes_credito(usuario_id):
+    """Retorna todos os cartões de crédito do usuário"""
+    conn = get_db_connection()
+    cartoes = conn.execute('''
+        SELECT c.*, i.nome as instituicao_nome 
+        FROM cartao_credito c
+        JOIN instituicao_financeira i ON c.instituicao_id = i.id
+        WHERE c.usuario_id = ? AND c.ativo = 1
+        ORDER BY c.created_at DESC
+    ''', (usuario_id,)).fetchall()
+    conn.close()
+    return cartoes
+
 def gerar_parcelas_receita(categoria_id, subcategoria_id, data_inicio, data_fim, tipo_recorrencia, valor_parcela, dia_comum, user_id, fixo=False):
     """Gera parcelas individuais para uma receita"""
     from datetime import datetime
@@ -177,7 +190,21 @@ def gerar_parcelas_receita(categoria_id, subcategoria_id, data_inicio, data_fim,
     
     # Determinar quantas parcelas gerar
     if numero_parcelas == 'x':
-        parcelas_a_gerar = 60  # Gerar 60 períodos para infinitas
+        # Gerar até o final do ano subsequente (ano atual + 1)
+        dt_inicio = datetime.strptime(data_inicio, '%Y-%m-%d').date()
+        ano_limite = dt_inicio.year + 1
+        dt_limite = datetime(ano_limite, 12, 31).date()
+        
+        # Contagem precisa
+        count = 0
+        tmp = dt_inicio
+        inc = incrementos.get(tipo_recorrencia, incrementos['mensal'])
+        
+        while tmp <= dt_limite:
+            count += 1
+            tmp = inc(tmp)
+            
+        parcelas_a_gerar = count if count > 0 else 1
     else:
         parcelas_a_gerar = int(numero_parcelas)
     
@@ -219,7 +246,7 @@ def gerar_parcelas_receita(categoria_id, subcategoria_id, data_inicio, data_fim,
     conn.close()
     return parcelas_criadas
 
-def gerar_parcelas_despesa(categoria_id, subcategoria_id, data_inicio, data_fim, tipo_recorrencia, valor_parcela, dia_comum, user_id, fixo=False):
+def gerar_parcelas_despesa(categoria_id, subcategoria_id, data_inicio, data_fim, tipo_recorrencia, valor_parcela, dia_comum, user_id, fixo=False, cartao_id=None):
     """Gera parcelas individuais para uma despesa"""
     from datetime import datetime
     from dateutil.relativedelta import relativedelta
@@ -229,9 +256,9 @@ def gerar_parcelas_despesa(categoria_id, subcategoria_id, data_inicio, data_fim,
     # Se for tipo único, inserir apenas um registro
     if tipo_recorrencia == 'unica':
         cursor = conn.execute('''
-            INSERT INTO despesa (categoria_id, subcategoria_id, data_inicio, valor, tipo_recorrencia, numero_parcelas, parcela_atual, usuario_id, fixo)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (categoria_id, subcategoria_id, data_inicio, valor_parcela, 'unica', '1', 1, user_id, fixo))
+            INSERT INTO despesa (categoria_id, subcategoria_id, data_inicio, valor, tipo_recorrencia, numero_parcelas, parcela_atual, usuario_id, fixo, cartao_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (categoria_id, subcategoria_id, data_inicio, valor_parcela, 'unica', '1', 1, user_id, fixo, cartao_id))
         
         conn.commit()
         conn.close()
@@ -254,7 +281,21 @@ def gerar_parcelas_despesa(categoria_id, subcategoria_id, data_inicio, data_fim,
     
     # Determinar quantas parcelas gerar
     if numero_parcelas == 'x':
-        parcelas_a_gerar = 60  # Gerar 60 períodos para infinitas
+        # Gerar até o final do ano subsequente (ano atual + 1)
+        dt_inicio = datetime.strptime(data_inicio, '%Y-%m-%d').date()
+        ano_limite = dt_inicio.year + 1
+        dt_limite = datetime(ano_limite, 12, 31).date()
+        
+        # Contagem precisa
+        count = 0
+        tmp = dt_inicio
+        inc = incrementos.get(tipo_recorrencia, incrementos['mensal'])
+        
+        while tmp <= dt_limite:
+            count += 1
+            tmp = inc(tmp)
+            
+        parcelas_a_gerar = count if count > 0 else 1
     else:
         parcelas_a_gerar = int(numero_parcelas)
     
@@ -283,9 +324,9 @@ def gerar_parcelas_despesa(categoria_id, subcategoria_id, data_inicio, data_fim,
         
         # Inserir parcela individual
         cursor = conn.execute('''
-            INSERT INTO despesa (categoria_id, subcategoria_id, data_inicio, valor, tipo_recorrencia, numero_parcelas, parcela_atual, dia_comum_pagamento, usuario_id, fixo)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (categoria_id, subcategoria_id, data_atual.strftime('%Y-%m-%d'), valor_parcela, tipo_recorrencia, numero_parcelas, i+1, dia_comum, user_id, fixo))
+            INSERT INTO despesa (categoria_id, subcategoria_id, data_inicio, valor, tipo_recorrencia, numero_parcelas, parcela_atual, dia_comum_pagamento, usuario_id, fixo, cartao_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (categoria_id, subcategoria_id, data_atual.strftime('%Y-%m-%d'), valor_parcela, tipo_recorrencia, numero_parcelas, i+1, dia_comum, user_id, fixo, cartao_id))
         
         parcelas_criadas.append(cursor.lastrowid)
         

@@ -1,0 +1,2742 @@
+
+============================================================
+TENTATIVA DE LOGIN - 2026-02-03
+============================================================
+Username digitado: renaneunao
+Senha digitada: !Senhas123
+Hash da senha digitada: 70a792a4f1af1cd09aca4c98c64d09b52d58f0a3be4eb0769fdc6224284e54c8
+Hash armazenado no banco: 70a792a4f1af1cd09aca4c98c64d09b52d58f0a3be4eb0769fdc6224284e54c8
+Senhas conferem? True
+============================================================
+
+LOGIN BEM-SUCEDIDO!
+Session user_id: 1
+Session username: renaneunao
+Session keys: ['user_id', 'username', 'nome_completo']
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: []
+user_id in session: False
+============================================================
+
+
+============================================================
+TENTATIVA DE LOGIN - 2026-02-03
+============================================================
+Username digitado: renaneunao
+Senha digitada: !Senhas123
+Hash da senha digitada: 70a792a4f1af1cd09aca4c98c64d09b52d58f0a3be4eb0769fdc6224284e54c8
+Hash armazenado no banco: 70a792a4f1af1cd09aca4c98c64d09b52d58f0a3be4eb0769fdc6224284e54c8
+Senhas conferem? True
+============================================================
+
+LOGIN BEM-SUCEDIDO!
+Session permanent: True
+Session user_id: 1
+Session username: renaneunao
+Session keys: ['_permanent', 'user_id', 'username', 'nome_completo']
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: []
+user_id in session: False
+============================================================
+
+
+============================================================
+TENTATIVA DE LOGIN - 2026-02-03
+============================================================
+Username digitado: renaneunao
+Senha digitada: !Senhas123
+Hash da senha digitada: 70a792a4f1af1cd09aca4c98c64d09b52d58f0a3be4eb0769fdc6224284e54c8
+Hash armazenado no banco: 70a792a4f1af1cd09aca4c98c64d09b52d58f0a3be4eb0769fdc6224284e54c8
+Senhas conferem? True
+============================================================
+
+LOGIN BEM-SUCEDIDO!
+Session permanent: True
+Session user_id: 1
+Session username: renaneunao
+Session keys: ['_permanent', 'user_id', 'username', 'nome_completo']
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: adicionar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: adicionar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: adicionar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: adicionar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: adicionar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: adicionar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: adicionar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: adicionar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: adicionar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: adicionar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: adicionar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: adicionar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: excluir_categoria_despesa
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova_categoria_despesa
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova_categoria_despesa
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova_subcategoria_despesa
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova_subcategoria_despesa
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: toggle_pagamento
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: toggle_pagamento
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: check_fatura
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: toggle_pagamento
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: toggle_pagamento
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova_subcategoria_despesa
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova_subcategoria_despesa
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: check_fatura
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: toggle_pagamento
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: []
+user_id in session: False
+============================================================
+
+
+============================================================
+TENTATIVA DE LOGIN - 2026-02-03
+============================================================
+Username digitado: renaneunao
+Senha digitada: !Senhas123
+Hash da senha digitada: 70a792a4f1af1cd09aca4c98c64d09b52d58f0a3be4eb0769fdc6224284e54c8
+Hash armazenado no banco: 70a792a4f1af1cd09aca4c98c64d09b52d58f0a3be4eb0769fdc6224284e54c8
+Senhas conferem? True
+============================================================
+
+LOGIN BEM-SUCEDIDO!
+Session permanent: True
+Session user_id: 1
+Session username: renaneunao
+Session keys: ['_permanent', 'user_id', 'username', 'nome_completo']
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: excluir
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: excluir
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: toggle_pagamento
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: toggle_pagamento
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: check_fatura
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: check_fatura
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: toggle_pagamento
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: check_fatura
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: toggle_pagamento
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: excluir
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova_subcategoria_despesa
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova_subcategoria_despesa
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova_subcategoria_despesa
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova_subcategoria_despesa
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: excluir
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova_categoria_despesa
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova_categoria_despesa
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: excluir_categoria_despesa
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova_categoria_despesa
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova_categoria_despesa
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova_subcategoria_despesa
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova_subcategoria_despesa
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: categorias_despesas
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: excluir
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: excluir
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: excluir
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: editar
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: excluir
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: nova
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_flashes', '_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: index
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+
+
+DECORATOR @login_required chamado para: subcategorias
+Session keys: ['_permanent', 'nome_completo', 'user_id', 'username']
+user_id in session: True
+user_id value: 1
+============================================================
+

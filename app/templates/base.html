@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
-    
+
     <style>
         /* Transições suaves entre páginas */
         .page-transition {
@@ -16,18 +17,18 @@
             transform: translateY(20px);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
         .page-transition.loaded {
             opacity: 1;
             transform: translateY(0);
         }
-        
+
         /* Estilos para a sidebar */
         .nav-item {
             position: relative;
             overflow: hidden;
         }
-        
+
         .nav-item::before {
             content: '';
             position: absolute;
@@ -35,78 +36,78 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             transition: left 0.6s;
         }
-        
+
         .nav-item:hover::before {
             left: 100%;
         }
-        
+
         /* Efeito de glow nos itens ativos */
         .nav-item.active {
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
         }
-        
+
         /* Estilos para o menu colapsável */
         .category-menu {
             position: relative;
         }
-        
+
         #categorias-submenu {
             transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
             opacity: 0;
         }
-        
+
         #categoria-arrow {
             transition: transform 0.3s ease;
         }
-        
+
         /* Animação suave para os itens do submenu */
         #categorias-submenu .nav-item {
             transform: translateX(-10px);
             opacity: 0;
             transition: all 0.2s ease;
         }
-        
+
         #categorias-submenu[style*="max-height: 200px"] .nav-item {
             transform: translateX(0);
             opacity: 1;
         }
-        
+
         #categorias-submenu[style*="max-height: 200px"] .nav-item:nth-child(1) {
             transition-delay: 0.1s;
         }
-        
+
         #categorias-submenu[style*="max-height: 200px"] .nav-item:nth-child(2) {
             transition-delay: 0.2s;
         }
-        
+
         /* Scrollbar personalizada */
         ::-webkit-scrollbar {
             width: 6px;
         }
-        
+
         ::-webkit-scrollbar-track {
             background: #f1f1f1;
             border-radius: 3px;
         }
-        
+
         ::-webkit-scrollbar-thumb {
             background: #888;
             border-radius: 3px;
         }
-        
+
         ::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
-        
+
         /* Transição para links */
         .nav-link {
             transition: all 0.3s ease;
             position: relative;
         }
-        
+
         .nav-link::before {
             content: '';
             position: absolute;
@@ -119,12 +120,12 @@
             border-radius: 2px;
             transition: height 0.3s ease;
         }
-        
+
         .nav-link.active::before,
         .nav-link:hover::before {
             height: 100%;
         }
-        
+
         /* Loading overlay */
         .page-loading {
             position: fixed;
@@ -142,12 +143,12 @@
             visibility: hidden;
             transition: all 0.3s ease;
         }
-        
+
         .page-loading.show {
             opacity: 1;
             visibility: visible;
         }
-        
+
         .loading-spinner {
             width: 40px;
             height: 40px;
@@ -156,38 +157,60 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-        
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
-        
+
         /* Transição de cards */
         .card-enter {
             opacity: 0;
             transform: translateY(30px) scale(0.95);
         }
-        
+
         .card-enter-active {
             opacity: 1;
             transform: translateY(0) scale(1);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
         /* Stagger animation para múltiplos elementos */
         .stagger-item {
             opacity: 0;
             transform: translateY(20px);
             animation: staggerIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
-        
-        .stagger-item:nth-child(1) { animation-delay: 0.1s; }
-        .stagger-item:nth-child(2) { animation-delay: 0.2s; }
-        .stagger-item:nth-child(3) { animation-delay: 0.3s; }
-        .stagger-item:nth-child(4) { animation-delay: 0.4s; }
-        .stagger-item:nth-child(5) { animation-delay: 0.5s; }
-        .stagger-item:nth-child(6) { animation-delay: 0.6s; }
-        
+
+        .stagger-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .stagger-item:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .stagger-item:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .stagger-item:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .stagger-item:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .stagger-item:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
         @keyframes staggerIn {
             to {
                 opacity: 1;
@@ -196,18 +219,20 @@
         }
     </style>
 </head>
+
 <body class="bg-gradient-to-br from-gray-900 to-gray-800 font-sans text-sm md:text-base">
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <div class="relative w-36 md:w-52 lg:w-60 bg-gradient-to-b from-gray-900 to-gray-800 text-white shadow-2xl flex flex-col">
+        <div
+            class="relative w-36 md:w-52 lg:w-60 bg-gradient-to-b from-gray-900 to-gray-800 text-white shadow-2xl flex flex-col">
             <!-- Logo/Brand -->
             <div class="p-2.5 md:p-4 border-b border-gray-700">
                 <!-- Logo Grande Centralizado -->
                 <div class="flex justify-center mb-3">
-                    <div class="w-9 h-9 md:w-11 md:h-11 lg:w-12 lg:h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center overflow-hidden shadow-xl">
-                        <img src="{{ url_for('static', filename='img/logo/despesas.png') }}" 
-                             alt="Logo Finanças" 
-                             class="w-full h-full object-cover rounded-2xl">
+                    <div
+                        class="w-9 h-9 md:w-11 md:h-11 lg:w-12 lg:h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center overflow-hidden shadow-xl">
+                        <img src="{{ url_for('static', filename='img/logo/despesas.png') }}" alt="Logo Finanças"
+                            class="w-full h-full object-cover rounded-2xl">
                     </div>
                 </div>
                 <!-- Texto Centralizado Abaixo -->
@@ -216,56 +241,63 @@
                     <p class="text-gray-400 text-[10px]">Controle Financeiro</p>
                 </div>
             </div>
-            
+
             <!-- Informações do usuário -->
             <div class="px-2.5 py-2 md:px-4 md:py-3 bg-gray-800/50">
                 <div class="flex items-center">
                     <div class="relative">
                         {% set foto_path = 'img/profile_users/' + session.username + '.jpg' %}
-                        <div class="w-7 h-7 md:w-9 md:h-9 rounded-full overflow-hidden cursor-pointer hover:ring-2 hover:ring-blue-400 transition-all duration-300" onclick="document.getElementById('photoUpload').click()">
+                        <div class="w-7 h-7 md:w-9 md:h-9 rounded-full overflow-hidden cursor-pointer hover:ring-2 hover:ring-blue-400 transition-all duration-300"
+                            onclick="document.getElementById('photoUpload').click()">
                             {% if url_for('static', filename=foto_path) %}
-                                <img src="{{ url_for('static', filename=foto_path) }}" 
-                                     alt="Foto de {{ session.username }}" 
-                                     class="w-full h-full object-cover"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'; showCameraIcon();"
-                                     onload="hideCameraIcon();">
-                                <div class="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center" style="display: none;">
-                                    <i class="fas fa-user text-white"></i>
-                                </div>
+                            <img src="{{ url_for('static', filename=foto_path) }}" alt="Foto de {{ session.username }}"
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'; if(window.showCameraIcon) showCameraIcon();"
+                                onload="if(window.hideCameraIcon) hideCameraIcon();">
+                            <div class="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
+                                style="display: none;">
+                                <i class="fas fa-user text-white"></i>
+                            </div>
                             {% else %}
-                                <div class="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-user text-white"></i>
-                                </div>
+                            <div
+                                class="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-white"></i>
+                            </div>
                             {% endif %}
                         </div>
                         <!-- Ícone de câmera no canto (só aparece quando não há foto) -->
-                        <div id="cameraIcon" class="absolute -bottom-1 -right-1 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center cursor-pointer hover:bg-blue-600 transition-colors" onclick="document.getElementById('photoUpload').click()">
+                        <div id="cameraIcon"
+                            class="absolute -bottom-1 -right-1 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center cursor-pointer hover:bg-blue-600 transition-colors"
+                            onclick="document.getElementById('photoUpload').click()">
                             <i class="fas fa-camera text-white text-xs"></i>
                         </div>
                         <!-- Input file oculto -->
-                        <input type="file" id="photoUpload" accept="image/*" style="display: none;" onchange="uploadPhoto(this)">
+                        <input type="file" id="photoUpload" accept="image/*" style="display: none;"
+                            onchange="uploadPhoto(this)">
                     </div>
                     <div class="ml-2.5 flex-1">
-                        <p class="text-white font-medium text-xs md:text-sm">{{ session.nome_completo or session.username }}</p>
+                        <p class="text-white font-medium text-xs md:text-sm">{{ session.nome_completo or
+                            session.username }}</p>
                         <p class="text-gray-400 text-[11px]">@{{ session.username }}</p>
                     </div>
-                    <a href="{{ url_for('auth.profile') }}" 
-                       class="w-6 h-6 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors">
+                    <a href="{{ url_for('auth.profile') }}"
+                        class="w-6 h-6 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors">
                         <i class="fas fa-cog text-gray-300 text-[10px]"></i>
                     </a>
                 </div>
             </div>
-            
+
             <nav class="flex-1 overflow-y-auto px-2 md:px-3 py-2.5 md:py-4">
                 <!-- Menu Principal -->
                 <div class="space-y-2">
                     <div class="text-gray-400 text-xs font-semibold uppercase tracking-wider px-3 mb-3">
                         Menu Principal
                     </div>
-                    
-                    <a href="{{ url_for('dashboard.index') }}" 
-                       class="nav-item group flex items-center p-1.5 md:p-2 rounded-xl hover:bg-gray-700/50 transition-all duration-200 {% if request.endpoint == 'dashboard.index' %}bg-blue-600 shadow-lg{% endif %}">
-                        <div class="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded-lg bg-blue-500/20 group-hover:bg-blue-500/30 flex items-center justify-center mr-2 transition-colors">
+
+                    <a href="{{ url_for('dashboard.index') }}"
+                        class="nav-item group flex items-center p-1.5 md:p-2 rounded-xl hover:bg-gray-700/50 transition-all duration-200 {% if request.endpoint == 'dashboard.index' %}bg-blue-600 shadow-lg{% endif %}">
+                        <div
+                            class="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded-lg bg-blue-500/20 group-hover:bg-blue-500/30 flex items-center justify-center mr-2 transition-colors">
                             <i class="fas fa-tachometer-alt text-blue-400"></i>
                         </div>
                         <div class="flex-1">
@@ -274,16 +306,17 @@
                         </div>
                     </a>
                 </div>
-                
+
                 <!-- Transações -->
                 <div class="space-y-1.5 mt-3.5 md:mt-5">
                     <div class="text-gray-400 text-xs font-semibold uppercase tracking-wider px-3 mb-3">
                         Transações
                     </div>
-                    
-                    <a href="{{ url_for('receitas.index') }}" 
-                       class="nav-item group flex items-center p-1.5 md:p-2 rounded-xl hover:bg-gray-700/50 transition-all duration-200 {% if request.endpoint.startswith('receitas') %}bg-green-600 shadow-lg{% endif %}">
-                        <div class="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded-lg bg-green-500/20 group-hover:bg-green-500/30 flex items-center justify-center mr-2 transition-colors">
+
+                    <a href="{{ url_for('receitas.index') }}"
+                        class="nav-item group flex items-center p-1.5 md:p-2 rounded-xl hover:bg-gray-700/50 transition-all duration-200 {% if request.endpoint.startswith('receitas') %}bg-green-600 shadow-lg{% endif %}">
+                        <div
+                            class="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded-lg bg-green-500/20 group-hover:bg-green-500/30 flex items-center justify-center mr-2 transition-colors">
                             <i class="fas fa-arrow-up text-green-400"></i>
                         </div>
                         <div class="flex-1">
@@ -294,10 +327,11 @@
                             <i class="fas fa-chevron-right text-gray-400 text-[10px]"></i>
                         </div>
                     </a>
-                    
-                    <a href="{{ url_for('despesas.index') }}" 
-                       class="nav-item group flex items-center p-1.5 md:p-2 rounded-xl hover:bg-gray-700/50 transition-all duration-200 {% if request.endpoint.startswith('despesas') %}bg-red-600 shadow-lg{% endif %}">
-                        <div class="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded-lg bg-red-500/20 group-hover:bg-red-500/30 flex items-center justify-center mr-2 transition-colors">
+
+                    <a href="{{ url_for('despesas.index') }}"
+                        class="nav-item group flex items-center p-1.5 md:p-2 rounded-xl hover:bg-gray-700/50 transition-all duration-200 {% if request.endpoint.startswith('despesas') %}bg-red-600 shadow-lg{% endif %}">
+                        <div
+                            class="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded-lg bg-red-500/20 group-hover:bg-red-500/30 flex items-center justify-center mr-2 transition-colors">
                             <i class="fas fa-arrow-down text-red-400"></i>
                         </div>
                         <div class="flex-1">
@@ -308,19 +342,35 @@
                             <i class="fas fa-chevron-right text-gray-400 text-[10px]"></i>
                         </div>
                     </a>
+
+                    <a href="{{ url_for('cartoes.index') }}"
+                        class="nav-item group flex items-center p-1.5 md:p-2 rounded-xl hover:bg-gray-700/50 transition-all duration-200 {% if request.endpoint.startswith('cartoes') %}bg-purple-600 shadow-lg{% endif %}">
+                        <div
+                            class="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded-lg bg-purple-500/20 group-hover:bg-purple-500/30 flex items-center justify-center mr-2 transition-colors">
+                            <i class="fas fa-credit-card text-purple-400"></i>
+                        </div>
+                        <div class="flex-1">
+                            <span class="font-medium text-[11px] md:text-xs">Cartões</span>
+                            <p class="text-gray-400 text-[10px]">Gerenciar cartões</p>
+                        </div>
+                        <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i class="fas fa-chevron-right text-gray-400 text-[10px]"></i>
+                        </div>
+                    </a>
                 </div>
-                
+
                 <!-- Configurações -->
                 <div class="space-y-1.5 mt-3.5 md:mt-5">
                     <div class="text-gray-400 text-xs font-semibold uppercase tracking-wider px-3 mb-3">
                         Configurações
                     </div>
-                    
+
                     <!-- Categorias - Menu Colapsável -->
                     <div class="category-menu">
-                        <button onclick="toggleCategorias()" 
-                                class="nav-item group flex items-center p-1.5 md:p-2 rounded-xl hover:bg-gray-700/50 transition-all duration-200 w-full text-left">
-                            <div class="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded-lg bg-purple-500/20 group-hover:bg-purple-500/30 flex items-center justify-center mr-2 transition-colors">
+                        <button onclick="toggleCategorias()"
+                            class="nav-item group flex items-center p-1.5 md:p-2 rounded-xl hover:bg-gray-700/50 transition-all duration-200 w-full text-left">
+                            <div
+                                class="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded-lg bg-purple-500/20 group-hover:bg-purple-500/30 flex items-center justify-center mr-2 transition-colors">
                                 <i class="fas fa-layer-group text-purple-400"></i>
                             </div>
                             <div class="flex-1">
@@ -331,13 +381,15 @@
                                 <i class="fas fa-chevron-down text-gray-400 text-[10px]"></i>
                             </div>
                         </button>
-                        
+
                         <!-- Submenu - Inicialmente oculto -->
-                        <div id="categorias-submenu" class="overflow-hidden transition-all duration-300 ease-out" style="max-height: 0;">
+                        <div id="categorias-submenu" class="overflow-hidden transition-all duration-300 ease-out"
+                            style="max-height: 0;">
                             <div class="ml-2.5 pl-2 border-l border-gray-600 mt-1 space-y-1">
-                                <a href="{{ url_for('categorias.categorias_receitas') }}" 
-                                   class="nav-item group flex items-center p-1.5 rounded-lg hover:bg-gray-700/30 transition-all duration-200 {% if request.endpoint == 'categorias.categorias_receitas' %}bg-green-600/30{% endif %}">
-                                    <div class="w-6 h-6 rounded-lg bg-green-500/20 group-hover:bg-green-500/30 flex items-center justify-center mr-2 transition-colors">
+                                <a href="{{ url_for('categorias.categorias_receitas') }}"
+                                    class="nav-item group flex items-center p-1.5 rounded-lg hover:bg-gray-700/30 transition-all duration-200 {% if request.endpoint == 'categorias.categorias_receitas' %}bg-green-600/30{% endif %}">
+                                    <div
+                                        class="w-6 h-6 rounded-lg bg-green-500/20 group-hover:bg-green-500/30 flex items-center justify-center mr-2 transition-colors">
                                         <i class="fas fa-arrow-up text-green-400 text-[10px]"></i>
                                     </div>
                                     <div class="flex-1">
@@ -345,10 +397,11 @@
                                         <p class="text-gray-400 text-[10px]">Categorias de entrada</p>
                                     </div>
                                 </a>
-                                
-                                <a href="{{ url_for('categorias.categorias_despesas') }}" 
-                                   class="nav-item group flex items-center p-1.5 rounded-lg hover:bg-gray-700/30 transition-all duration-200 {% if request.endpoint == 'categorias.categorias_despesas' %}bg-red-600/30{% endif %}">
-                                    <div class="w-6 h-6 rounded-lg bg-red-500/20 group-hover:bg-red-500/30 flex items-center justify-center mr-2 transition-colors">
+
+                                <a href="{{ url_for('categorias.categorias_despesas') }}"
+                                    class="nav-item group flex items-center p-1.5 rounded-lg hover:bg-gray-700/30 transition-all duration-200 {% if request.endpoint == 'categorias.categorias_despesas' %}bg-red-600/30{% endif %}">
+                                    <div
+                                        class="w-6 h-6 rounded-lg bg-red-500/20 group-hover:bg-red-500/30 flex items-center justify-center mr-2 transition-colors">
                                         <i class="fas fa-arrow-down text-red-400 text-[10px]"></i>
                                     </div>
                                     <div class="flex-1">
@@ -360,13 +413,14 @@
                         </div>
                     </div>
                 </div>
-                
+
             </nav>
             <!-- Sair (fixado no rodapé da sidebar, fora do scroll) -->
             <div class="px-2 md:px-3 pb-3 md:pb-5 pt-2">
-                <a href="{{ url_for('auth.logout') }}" 
-                   class="nav-item group flex items-center p-1.5 md:p-2 rounded-xl hover:bg-red-600/20 border border-red-500/30 hover:border-red-500 transition-all duration-200">
-                    <div class="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded-lg bg-red-500/20 group-hover:bg-red-500/30 flex items-center justify-center mr-2 transition-colors">
+                <a href="{{ url_for('auth.logout') }}"
+                    class="nav-item group flex items-center p-1.5 md:p-2 rounded-xl hover:bg-red-600/20 border border-red-500/30 hover:border-red-500 transition-all duration-200">
+                    <div
+                        class="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 rounded-lg bg-red-500/20 group-hover:bg-red-500/30 flex items-center justify-center mr-2 transition-colors">
                         <i class="fas fa-sign-out-alt text-red-400"></i>
                     </div>
                     <div class="flex-1">
@@ -392,19 +446,19 @@
             <main class="flex-1 overflow-y-auto p-2 bg-gray-900/50">
                 <!-- Flash Messages -->
                 {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        <div class="mb-6">
-                            {% for category, message in messages %}
-                                <div class="alert alert-{{ category }} p-4 mb-4 rounded-lg border-l-4 
+                {% if messages %}
+                <div class="mb-6">
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} p-4 mb-4 rounded-lg border-l-4 
                                     {% if category == 'error' %}bg-red-900/20 border-red-500 text-red-300
                                     {% elif category == 'success' %}bg-green-900/20 border-green-500 text-green-300
                                     {% elif category == 'warning' %}bg-yellow-900/20 border-yellow-500 text-yellow-300
                                     {% else %}bg-blue-900/20 border-blue-500 text-blue-300{% endif %}">
-                                    <i class="fas fa-info-circle mr-2"></i>{{ message }}
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                        <i class="fas fa-info-circle mr-2"></i>{{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
                 {% endwith %}
 
                 {% block content %}{% endblock %}
@@ -419,7 +473,7 @@
             const submenu = document.getElementById('categorias-submenu');
             const arrow = document.getElementById('categoria-arrow');
             const isOpen = submenu.style.maxHeight && submenu.style.maxHeight !== '0px';
-            
+
             if (isOpen) {
                 // Fechar
                 submenu.style.maxHeight = '0px';
@@ -436,17 +490,17 @@
                 arrow.style.transform = 'rotate(180deg)';
             }
         }
-        
+
         // Verificar se uma página de categoria está ativa e expandir automaticamente
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const currentPath = window.location.pathname;
             if (currentPath.includes('/categorias/')) {
                 toggleCategorias();
             }
         });
-        
+
         // Função para fechar alertas
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
                 setTimeout(() => {
@@ -460,12 +514,12 @@
         function updateSubcategorias(categoriaId, subcategoriaSelectId) {
             const subcategoriaSelect = document.getElementById(subcategoriaSelectId);
             if (!subcategoriaSelect) return;
-            
+
             // Limpar opções existentes
             subcategoriaSelect.innerHTML = '<option value="">Selecione uma subcategoria (opcional)</option>';
-            
+
             if (!categoriaId) return;
-            
+
             // Determinar endpoint baseado na página atual
             let endpoint;
             if (window.location.pathname.includes('receitas')) {
@@ -475,7 +529,7 @@
             } else {
                 return;
             }
-            
+
             // Buscar subcategorias via fetch
             fetch(endpoint)
                 .then(response => response.json())
@@ -489,11 +543,11 @@
                 })
                 .catch(error => console.error('Erro ao carregar subcategorias:', error));
         }
-        
+
         // Variáveis globais para o cropper
         let cropper = null;
         let currentFile = null;
-        
+
         // Funções para controlar a visibilidade do ícone de câmera
         function hideCameraIcon() {
             const cameraIcon = document.getElementById('cameraIcon');
@@ -501,63 +555,63 @@
                 cameraIcon.style.display = 'none';
             }
         }
-        
+
         function showCameraIcon() {
             const cameraIcon = document.getElementById('cameraIcon');
             if (cameraIcon) {
                 cameraIcon.style.display = 'flex';
             }
         }
-        
+
         // Função para upload de foto de perfil
         function uploadPhoto(input) {
             if (input.files && input.files[0]) {
                 const file = input.files[0];
-                
+
                 // Validar tipo de arquivo
                 if (!file.type.startsWith('image/')) {
                     showToast('Por favor, selecione apenas arquivos de imagem.', 'error');
                     return;
                 }
-                
+
                 // Validar tamanho (max 5MB)
                 if (file.size > 5 * 1024 * 1024) {
                     showToast('A imagem deve ter no máximo 5MB.', 'error');
                     return;
                 }
-                
+
                 // Armazenar o arquivo atual
                 currentFile = file;
-                
+
                 // Ler o arquivo e exibir no modal de crop
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     const cropImage = document.getElementById('cropImage');
                     cropImage.src = e.target.result;
-                    
+
                     // Abrir o modal
                     openCropModal();
                 };
                 reader.readAsDataURL(file);
-                
+
                 // Limpar o input para permitir selecionar o mesmo arquivo novamente
                 input.value = '';
             }
         }
-        
+
         // Função para abrir o modal de crop
         function openCropModal() {
             const modal = document.getElementById('cropModal');
             const cropImage = document.getElementById('cropImage');
-            
+
             modal.classList.remove('hidden');
-            
+
             // Inicializar o cropper após um pequeno delay para garantir que a imagem está visível
             setTimeout(() => {
                 if (cropper) {
                     cropper.destroy();
                 }
-                
+
                 cropper = new Cropper(cropImage, {
                     aspectRatio: 1, // Proporção quadrada
                     viewMode: 1,
@@ -572,99 +626,98 @@
                 });
             }, 100);
         }
-        
+
         // Função para fechar o modal de crop
         function closeCropModal() {
             const modal = document.getElementById('cropModal');
             modal.classList.add('hidden');
-            
+
             if (cropper) {
                 cropper.destroy();
                 cropper = null;
             }
-            
+
             currentFile = null;
         }
-        
+
         // Função para aplicar o recorte e fazer upload
         function applyCrop() {
             if (!cropper) {
                 showToast('Erro: editor de recorte não encontrado.', 'error');
                 return;
             }
-            
+
             // Obter a imagem recortada como blob
             cropper.getCroppedCanvas({
                 width: 200,
                 height: 200,
                 imageSmoothingEnabled: true,
                 imageSmoothingQuality: 'high'
-            }).toBlob(function(blob) {
+            }).toBlob(function (blob) {
                 if (!blob) {
                     showToast('Erro ao processar imagem recortada.', 'error');
                     return;
                 }
-                
+
                 // Fechar o modal
                 closeCropModal();
-                
+
                 // Mostrar loading na foto de perfil
                 const photoContainer = document.querySelector('.w-12.h-12.rounded-full.overflow-hidden');
                 const originalContent = photoContainer.innerHTML;
                 photoContainer.innerHTML = '<div class="w-full h-full bg-gray-600 flex items-center justify-center"><i class="fas fa-spinner fa-spin text-white"></i></div>';
-                
+
                 // Criar FormData com a imagem recortada
                 const formData = new FormData();
                 const fileName = currentFile ? currentFile.name : 'profile.jpg';
                 formData.append('photo', blob, fileName);
-                
+
                 // Fazer upload
                 fetch('/auth/upload-photo', {
                     method: 'POST',
                     body: formData
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Atualizar a imagem com timestamp para forçar reload
-                        const timestamp = new Date().getTime();
-                        const newImageSrc = data.photo_url + '?t=' + timestamp;
-                        photoContainer.innerHTML = `<img src="${newImageSrc}" alt="Foto de perfil" class="w-full h-full object-cover" onload="hideCameraIcon();">`;
-                        
-                        // Esconder o ícone de câmera
-                        hideCameraIcon();
-                        
-                        // Mostrar mensagem de sucesso
-                        showToast('Foto de perfil atualizada com sucesso!', 'success');
-                    } else {
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Atualizar a imagem com timestamp para forçar reload
+                            const timestamp = new Date().getTime();
+                            const newImageSrc = data.photo_url + '?t=' + timestamp;
+                            photoContainer.innerHTML = `<img src="${newImageSrc}" alt="Foto de perfil" class="w-full h-full object-cover" onload="hideCameraIcon();">`;
+
+                            // Esconder o ícone de câmera
+                            hideCameraIcon();
+
+                            // Mostrar mensagem de sucesso
+                            showToast('Foto de perfil atualizada com sucesso!', 'success');
+                        } else {
+                            photoContainer.innerHTML = originalContent;
+                            showToast(data.message || 'Erro ao fazer upload da foto.', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
                         photoContainer.innerHTML = originalContent;
-                        showToast(data.message || 'Erro ao fazer upload da foto.', 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro:', error);
-                    photoContainer.innerHTML = originalContent;
-                    showToast('Erro ao fazer upload da foto.', 'error');
-                });
+                        showToast('Erro ao fazer upload da foto.', 'error');
+                    });
             }, 'image/jpeg', 0.9);
         }
-        
+
         // Função para mostrar toast notifications
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
-            toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white z-50 transition-all duration-300 transform translate-x-full ${
-                type === 'success' ? 'bg-green-500' : 
+            toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white z-50 transition-all duration-300 transform translate-x-full ${type === 'success' ? 'bg-green-500' :
                 type === 'error' ? 'bg-red-500' : 'bg-blue-500'
-            }`;
+                }`;
             toast.textContent = message;
-            
+
             document.body.appendChild(toast);
-            
+
             // Animação de entrada
             setTimeout(() => {
                 toast.classList.remove('translate-x-full');
             }, 100);
-            
+
             // Auto remover após 3 segundos
             setTimeout(() => {
                 toast.classList.add('translate-x-full');
@@ -673,9 +726,89 @@
                 }, 300);
             }, 3000);
         }
-        
+
+        // Função para mostrar confirmação personalizada
+        function showConfirm(message, onConfirm, onCancel = null) {
+            // Criar overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[100] animate-fadeIn';
+            overlay.style.animation = 'fadeIn 0.2s ease-out';
+
+            // Criar modal
+            const modal = document.createElement('div');
+            modal.className = 'bg-gray-900 rounded-2xl shadow-2xl p-6 max-w-md mx-4 transform scale-95 transition-transform duration-200';
+            modal.style.animation = 'scaleIn 0.2s ease-out forwards';
+
+            modal.innerHTML = `
+                <div class="flex items-start mb-4">
+                    <div class="w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                        <i class="fas fa-exclamation-triangle text-yellow-400 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-2">Confirmar ação</h3>
+                        <p class="text-gray-300 text-sm">${message}</p>
+                    </div>
+                </div>
+                <div class="flex space-x-3 mt-6">
+                    <button id="confirmCancel" class="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors font-medium">
+                        Cancelar
+                    </button>
+                    <button id="confirmOk" class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg transition-colors font-medium">
+                        Confirmar
+                    </button>
+                </div>
+            `;
+
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+
+            // Adicionar estilos de animação se não existirem
+            if (!document.getElementById('confirmAnimations')) {
+                const style = document.createElement('style');
+                style.id = 'confirmAnimations';
+                style.textContent = `
+                    @keyframes fadeIn {
+                        from { opacity: 0; }
+                        to { opacity: 1; }
+                    }
+                    @keyframes scaleIn {
+                        from { transform: scale(0.95); opacity: 0; }
+                        to { transform: scale(1); opacity: 1; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            // Event listeners
+            const btnCancel = modal.querySelector('#confirmCancel');
+            const btnOk = modal.querySelector('#confirmOk');
+
+            const close = (confirmed) => {
+                overlay.style.animation = 'fadeIn 0.2s ease-out reverse';
+                modal.style.animation = 'scaleIn 0.2s ease-out reverse';
+                setTimeout(() => {
+                    document.body.removeChild(overlay);
+                    if (confirmed && onConfirm) {
+                        onConfirm();
+                    } else if (!confirmed && onCancel) {
+                        onCancel();
+                    }
+                }, 200);
+            };
+
+            btnCancel.addEventListener('click', () => close(false));
+            btnOk.addEventListener('click', () => close(true));
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) close(false);
+            });
+
+            // Focus no botão OK
+            setTimeout(() => btnOk.focus(), 100);
+        }
+
+
         // Inicialização quando a página carrega
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Verificar se existe uma foto carregada e esconder o ícone de câmera se necessário
             const profileImg = document.querySelector('.w-12.h-12.rounded-full img');
             if (profileImg && profileImg.style.display !== 'none') {
@@ -684,10 +817,10 @@
             }
         });
     </script>
-    
+
     <script>
         // Sistema de transições suaves entre páginas
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Adiciona classe para transição inicial
             const mainContent = document.querySelector('main');
             if (mainContent) {
@@ -697,7 +830,7 @@
                     mainContent.classList.add('loaded');
                 }, 50);
             }
-            
+
             // Adiciona animação stagger para cards/elementos
             const staggerItems = document.querySelectorAll('.bg-white, .card, [class*="shadow"]');
             staggerItems.forEach((item, index) => {
@@ -706,24 +839,24 @@
                 }
             });
         });
-        
+
         // Intercepta cliques em links para transições suaves
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             const link = e.target.closest('a');
-            if (link && link.href && !link.target && !link.href.includes('#') && 
+            if (link && link.href && !link.target && !link.href.includes('#') &&
                 link.href.startsWith(window.location.origin)) {
-                
+
                 e.preventDefault();
-                
+
                 // Cria overlay de loading
                 const loading = document.createElement('div');
                 loading.className = 'page-loading';
                 loading.innerHTML = '<div class="loading-spinner"></div>';
                 document.body.appendChild(loading);
-                
+
                 // Mostra o loading
                 setTimeout(() => loading.classList.add('show'), 10);
-                
+
                 // Fade out do conteúdo atual
                 const mainContent = document.querySelector('main');
                 if (mainContent) {
@@ -731,37 +864,37 @@
                     mainContent.style.opacity = '0';
                     mainContent.style.transform = 'translateY(-20px)';
                 }
-                
+
                 // Navega após a animação
                 setTimeout(() => {
                     window.location.href = link.href;
                 }, 300);
             }
         });
-        
+
         // Adiciona indicador visual para link ativo no sidebar
         function setActiveNavLink() {
             const currentPath = window.location.pathname;
             const navLinks = document.querySelectorAll('nav a');
-            
+
             navLinks.forEach(link => {
                 link.classList.remove('nav-link', 'active');
                 link.classList.add('nav-link');
-                
+
                 const linkPath = new URL(link.href).pathname;
-                
-                if (currentPath === linkPath || 
+
+                if (currentPath === linkPath ||
                     (currentPath.startsWith(linkPath) && linkPath !== '/')) {
                     link.classList.add('active');
                 }
             });
         }
-        
+
         // Executa quando a página carrega
         document.addEventListener('DOMContentLoaded', setActiveNavLink);
-        
+
         // Transição suave para formulários
-        document.addEventListener('submit', function(e) {
+        document.addEventListener('submit', function (e) {
             const form = e.target;
             if (form.method === 'post') {
                 const submitBtn = form.querySelector('button[type="submit"]');
@@ -774,16 +907,16 @@
                 }
             }
         });
-        
+
         // Melhora a experiência de hover em botões
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const buttons = document.querySelectorAll('button, .btn, input[type="submit"]');
             buttons.forEach(btn => {
                 btn.style.transition = 'all 0.2s ease';
             });
         });
     </script>
-    
+
     <!-- Modal de Recorte de Foto -->
     <div id="cropModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
         <div class="bg-gray-800 rounded-2xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden">
@@ -793,158 +926,226 @@
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-            
+
             <div class="mb-4">
                 <div class="bg-gray-900 rounded-lg overflow-hidden" style="max-height: 400px;">
                     <img id="cropImage" style="max-width: 100%; display: block;">
                 </div>
             </div>
-            
+
             <div class="flex justify-between items-center">
                 <div class="text-sm text-gray-400">
                     <i class="fas fa-info-circle mr-2"></i>
                     Arraste para selecionar a área que deseja recortar
                 </div>
                 <div class="flex gap-3">
-                    <button onclick="closeCropModal()" 
-                            class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                    <button onclick="closeCropModal()"
+                        class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
                         Cancelar
                     </button>
-                    <button onclick="applyCrop()" 
-                            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                    <button onclick="applyCrop()"
+                        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
                         <i class="fas fa-crop mr-2"></i>Aplicar Recorte
                     </button>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- Script global para controlar pagamentos -->
     <script>
+        function showOptionDialog(title, message, options) {
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[100] animate-fadeIn';
+
+            const modal = document.createElement('div');
+            modal.className = 'bg-gray-900 rounded-2xl shadow-2xl p-6 max-w-md mx-4 transform scale-95 transition-transform duration-200';
+            modal.style.animation = 'scaleIn 0.2s ease-out forwards';
+
+            modal.innerHTML = `
+                <div class="flex items-start mb-4">
+                    <div class="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                        <i class="fas fa-question text-blue-400 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-2">${title}</h3>
+                        <p class="text-gray-300 text-sm">${message}</p>
+                    </div>
+                </div>
+                <div class="flex flex-col space-y-2 mt-6">
+                    ${options.map((opt, i) =>
+                `<button id="optBtn${i}" class="${opt.class || 'bg-gray-700 text-white'} w-full px-4 py-3 rounded-lg font-medium text-sm text-center hover:opacity-90 transition-opacity">
+                            ${opt.text}
+                        </button>`
+            ).join('')}
+                </div>
+            `;
+
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+
+            const close = () => {
+                overlay.style.animation = 'fadeIn 0.2s ease-out reverse';
+                modal.style.animation = 'scaleIn 0.2s ease-out reverse';
+                setTimeout(() => document.body.removeChild(overlay), 200);
+            };
+
+            options.forEach((opt, i) => {
+                document.getElementById(`optBtn${i}`).addEventListener('click', () => {
+                    close();
+                    if (opt.action) opt.action();
+                });
+            });
+
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) close();
+            });
+        }
+
         function togglePagamento(tipo, id, statusAtual) {
-            // Encontrar o botão que foi clicado
             const elemento = event.target.closest('button');
             if (!elemento) {
                 console.error('Botão não encontrado');
                 return;
             }
-            
-            // Obter o valor da transação para recalcular somatórios
+
+            // Extrair valor para somatórios
             let valor = 0;
-            
-            // Tentar encontrar o valor no item mais próximo - buscar o bloco principal
             const itemContainer = elemento.closest('.p-3.border-b') || elemento.closest('.block') || elemento.closest('div');
-            
+
             if (itemContainer) {
-                console.log('Procurando valor no container:', itemContainer);
-                
-                // Buscar por diferentes seletores possíveis para o valor - mais específicos
                 const valorSelectors = [
-                    '.text-green-400.font-bold.text-sm',  // Receitas específico
-                    '.text-red-400.font-bold.text-sm',    // Despesas específico
-                    '.text-green-400.font-bold',          // Receitas genérico
-                    '.text-red-400.font-bold',            // Despesas genérico
-                    '.font-bold',                         // Genérico
-                    'span[class*="font-bold"]'            // Qualquer span com font-bold
+                    '.text-green-400.font-bold.text-sm',
+                    '.text-red-400.font-bold.text-sm',
+                    '.text-green-400.font-bold',
+                    '.text-red-400.font-bold',
+                    '.font-bold',
+                    'span[class*="font-bold"]'
                 ];
-                
-                let valorContainer = null;
                 for (const selector of valorSelectors) {
-                    valorContainer = itemContainer.querySelector(selector);
-                    console.log(`Testando seletor "${selector}":`, valorContainer);
-                    if (valorContainer && valorContainer.textContent.includes('R$')) {
-                        console.log('Seletor funcionou! Conteúdo:', valorContainer.textContent);
+                    const el = itemContainer.querySelector(selector);
+                    if (el && el.textContent.includes('R$')) {
+                        valor = parseFloat(el.textContent.replace('R$ ', '').replace(',', '.')) || 0;
                         break;
                     }
                 }
-                
-                if (valorContainer) {
-                    const valorTexto = valorContainer.textContent.replace('R$ ', '').replace(',', '.');
-                    valor = parseFloat(valorTexto);
-                    
-                    if (isNaN(valor)) {
-                        console.warn('Valor inválido encontrado:', valorTexto, 'Continuando sem atualizar somatórios');
-                        valor = 0;
-                    } else {
-                        console.log('Valor encontrado corretamente:', valor, 'do texto:', valorTexto);
-                    }
-                } else {
-                    console.warn('Container de valor não encontrado, continuando sem atualizar somatórios');
-                    console.log('Seletores testados em:', itemContainer);
-                    console.log('HTML do item:', itemContainer.innerHTML);
-                }
             }
-            
+
             // Mostrar loading
             const originalContent = elemento.innerHTML;
             elemento.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             elemento.disabled = true;
-            
-            // Construir URL correta baseada no tipo
-            const url = tipo === 'receita' ? `/receitas/toggle-pagamento/${id}` : `/despesas/toggle-pagamento/${id}`;
-            
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Atualizar o visual do botão
-                    if (data.pago) {
-                        elemento.className = 'text-xs px-2 py-1 rounded transition-colors duration-200 bg-green-600 text-white flex items-center justify-center space-x-1';
-                        const textoStatus = tipo === 'receita' ? 'Recebido' : 'Pago';
-                        elemento.innerHTML = `<img src="/static/img/icones/pago.png" alt="${textoStatus}" class="w-3 h-3"><span>${textoStatus}</span>`;
-                    } else {
-                        elemento.className = 'text-xs px-2 py-1 rounded transition-colors duration-200 bg-gray-600 text-gray-300';
-                        elemento.innerHTML = 'Pendente';
-                    }
-                    
-                    // Atualizar o onclick para o novo status
-                    elemento.setAttribute('onclick', `togglePagamento('${tipo}', ${id}, ${data.pago})`);
-                    
-                    // Atualizar somatórios sempre (mesmo se valor for 0)
-                    if (valor >= 0) {
-                        console.log('Chamando atualizarSomatorios com:', { tipo, valor, novoPago: data.pago, statusAnterior: statusAtual });
-                        atualizarSomatorios(tipo, valor, data.pago, statusAtual, elemento);
-                        
-                        // Atualizar cards de receitas/despesas pagas/pendentes
-                        atualizarCardsReceitasDespesas(tipo, valor, data.pago, statusAtual);
-                        
-                        // Atualizar cards de saldo
-                        atualizarCardsSaldo(tipo, valor, data.pago, statusAtual);
-                    }
-                    
-                    // Mostrar feedback
-                    showToast(data.message, data.pago ? 'success' : 'info');
-                } else {
-                    elemento.innerHTML = originalContent;
-                    showToast(data.message, 'error');
-                }
-            })
-            .catch(error => {
-                elemento.innerHTML = originalContent;
-                showToast('Erro ao atualizar pagamento', 'error');
-                console.error('Erro:', error);
-            })
-            .finally(() => {
-                elemento.disabled = false;
-            });
+
+            const executarPagamento = (pagarFatura = false) => {
+                const url = tipo === 'receita' ? `/receitas/toggle-pagamento/${id}` : `/despesas/toggle-pagamento/${id}`;
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pagar_fatura: pagarFatura })
+                })
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.success) {
+                            if (data.pago) {
+                                elemento.className = 'text-xs px-2 py-1 rounded transition-colors duration-200 bg-green-600 text-white flex items-center justify-center space-x-1';
+                                const texto = tipo === 'receita' ? 'Recebido' : 'Pago';
+                                elemento.innerHTML = `<img src="/static/img/icones/pago.png" alt="${texto}" class="w-3 h-3"><span>${texto}</span>`;
+                            } else {
+                                elemento.className = 'text-xs px-2 py-1 rounded transition-colors duration-200 bg-gray-600 text-gray-300';
+                                elemento.innerHTML = 'Pendente';
+                            }
+
+                            elemento.setAttribute('onclick', `togglePagamento('${tipo}', ${id}, ${data.pago})`);
+
+                            // Atualizar somatórios e cards
+                            if (valor >= 0) {
+                                atualizarSomatorios(tipo, valor, data.pago, statusAtual, elemento);
+                                atualizarCardsReceitasDespesas(tipo, valor, data.pago, statusAtual);
+                                atualizarCardsSaldo(tipo, valor, data.pago, statusAtual);
+                            }
+
+                            if (pagarFatura) {
+                                showToast(data.message, 'success');
+                                setTimeout(() => location.reload(), 1500);
+                            } else {
+                                showToast(data.message, data.pago ? 'success' : 'info');
+                            }
+                        } else {
+                            elemento.innerHTML = originalContent;
+                            showToast(data.message, 'error');
+                        }
+                    })
+                    .catch(e => {
+                        elemento.innerHTML = originalContent;
+                        showToast('Erro ao atualizar', 'error');
+                        console.error(e);
+                    })
+                    .finally(() => elemento.disabled = false);
+            };
+
+            // Se for despesa, checar se pertence a uma fatura para ações em lote
+            if (tipo === 'despesa') {
+                const acaoPagar = !statusAtual; // True se estamos tentando PAGAR
+
+                fetch(`/despesas/check-fatura/${id}`)
+                    .then(r => r.json())
+                    .then(res => {
+                        if (res.is_cartao && res.tem_outras_pendentes) {
+                            const params = acaoPagar ? {
+                                titulo: 'Pagar Fatura Completa?',
+                                statusItem: 'pendentes',
+                                acaoItem: 'pagas',
+                                btnClass: 'bg-green-600 hover:bg-green-500 text-white',
+                                btnText: 'Sim, Pagar Fatura'
+                            } : {
+                                titulo: 'Reabrir Fatura Completa?',
+                                statusItem: 'pagas',
+                                acaoItem: 'pendentes',
+                                btnClass: 'bg-yellow-600 hover:bg-yellow-500 text-white',
+                                btnText: 'Sim, Reabrir Fatura'
+                            };
+
+                            showOptionDialog(
+                                params.titulo,
+                                `Esta despesa é do cartão <b>${res.instituicao_nome}</b> (Fatura ${res.mes_referencia}).<br><br>Existem outras <b>${res.qtd}</b> despesas ${params.statusItem} com o mesmo status nesta fatura.<br>Para manter a consistência da fatura, esta ação será aplicada a <b>TODAS</b> as despesas.`,
+                                [
+                                    {
+                                        text: `${params.btnText} (R$ ${res.valor_total.toFixed(2).replace('.', ',')})`,
+                                        class: params.btnClass,
+                                        action: () => executarPagamento(true)
+                                    },
+                                    {
+                                        text: 'Cancelar',
+                                        class: 'bg-gray-700 hover:bg-gray-600 text-white',
+                                        action: () => {
+                                            elemento.innerHTML = originalContent;
+                                            elemento.disabled = false;
+                                        }
+                                    }
+                                ]
+                            );
+                        } else {
+                            executarPagamento(false);
+                        }
+                    })
+                    .catch(() => executarPagamento(false));
+            } else {
+                executarPagamento(false);
+            }
         }
-        
+
         function atualizarSomatorios(tipo, valor, novoPago, antigoStatus, elementoClicado) {
             console.log('Atualizando somatórios:', tipo, valor, novoPago ? 'Pago' : 'Pendente');
-            
+
             if (!elementoClicado || valor <= 0) {
                 console.log('Elemento não fornecido ou valor inválido, pulando atualização');
                 return;
             }
-            
+
             // Encontrar o container específico que contém o elemento clicado
             let containerEspecifico = elementoClicado.closest('.bg-gray-800\\/50');
-            
+
             // Se não encontrou com a primeira tentativa, tentar outros seletores
             if (!containerEspecifico) {
                 containerEspecifico = elementoClicado.closest('.bg-gray-800/50');
@@ -955,7 +1156,7 @@
             if (!containerEspecifico) {
                 containerEspecifico = elementoClicado.closest('.rounded-xl');
             }
-            
+
             if (containerEspecifico) {
                 const header = containerEspecifico.querySelector('h4');
                 if (header) {
@@ -967,7 +1168,7 @@
             } else {
                 console.error('Container específico não encontrado para o elemento clicado');
                 console.log('Elemento clicado:', elementoClicado);
-                
+
                 // Fallback: tentar encontrar pelo contexto do elemento
                 let currentElement = elementoClicado;
                 while (currentElement && currentElement !== document.body) {
@@ -978,7 +1179,7 @@
                     }
                     currentElement = currentElement.parentElement;
                 }
-                
+
                 if (containerEspecifico) {
                     atualizarContainerSomatorio(containerEspecifico, valor, novoPago, antigoStatus, tipo);
                 } else {
@@ -986,23 +1187,23 @@
                 }
             }
         }
-        
+
         function atualizarContainerSomatorio(container, valor, novoPago, antigoStatus, tipo = null) {
             console.log('Atualizando container com valor:', valor, 'novoPago:', novoPago, 'tipo:', tipo);
-            
+
             const header = container.querySelector('h4');
             if (!header) return;
-            
+
             // Determinar se é receita ou despesa baseado no parâmetro ou contexto
             let isReceita = false;
-            
+
             if (tipo) {
                 // Se o tipo foi passado como parâmetro, usar ele
                 isReceita = tipo === 'receita';
             } else {
                 // Caso contrário, usar a lógica de detecção
                 const headerText = header.textContent.toLowerCase();
-                
+
                 // Verificar primeiro o cabeçalho específico
                 if (headerText.includes('receita')) {
                     isReceita = true;
@@ -1022,7 +1223,7 @@
                         }
                         parentContainer = parentContainer.parentElement;
                     }
-                    
+
                     // Fallback: verificar se está na primeira ou segunda coluna do grid
                     if (parentContainer === null || parentContainer === document.body) {
                         const gridContainer = container.closest('.grid');
@@ -1035,16 +1236,16 @@
                     }
                 }
             }
-            
+
             const labelPago = isReceita ? 'Recebido' : 'Pago';
             console.log('Determinado tipo:', isReceita ? 'Receita' : 'Despesa', '- Label:', labelPago);
-            
+
             // Buscar ou criar o container dos somatórios
             let summaryDiv = header.querySelector('.flex.items-center.space-x-1');
             if (!summaryDiv) {
                 summaryDiv = document.createElement('div');
                 summaryDiv.className = 'flex items-center space-x-1';
-                
+
                 // Inserir após o primeiro div (ícone + texto)
                 const firstDiv = header.querySelector('div');
                 if (firstDiv) {
@@ -1053,12 +1254,12 @@
                     header.appendChild(summaryDiv);
                 }
             }
-            
+
             // Buscar containers existentes (incluindo os ocultos)
             let pagoContainer = null;
             let pendenteContainer = null;
             let totalContainer = null;
-            
+
             // Limpar containers duplicados primeiro
             const duplicates = summaryDiv.querySelectorAll('div[class*="bg-"]');
             const seen = new Set();
@@ -1074,12 +1275,12 @@
                     }
                 }
             });
-            
+
             // Re-buscar containers após limpeza
             pagoContainer = null;
             pendenteContainer = null;
             totalContainer = null;
-            
+
             const cleanContainers = summaryDiv.querySelectorAll('div[class*="bg-"]');
             cleanContainers.forEach(cont => {
                 const label = cont.querySelector('div[class*="text-"][class*="text-[12px]"]');
@@ -1090,7 +1291,7 @@
                     else if (labelText === 'Total') totalContainer = cont;
                 }
             });
-            
+
             // Criar containers que não existem na ordem correta
             if (!pagoContainer) {
                 pagoContainer = criarContainer(labelPago, 0, 'green');
@@ -1103,7 +1304,7 @@
                     labelDiv.textContent = labelPago;
                 }
             }
-            
+
             if (!pendenteContainer) {
                 pendenteContainer = criarContainer('Pendente', 0, 'yellow');
                 // Inserir após o container "Pago"
@@ -1113,12 +1314,12 @@
                     summaryDiv.appendChild(pendenteContainer);
                 }
             }
-            
+
             // Se temos total container, garantir que ele está no final
             if (totalContainer && totalContainer.nextSibling) {
                 summaryDiv.appendChild(totalContainer);
             }
-            
+
             // Atualizar valores
             if (novoPago) {
                 // Movendo de pendente para pago
@@ -1129,65 +1330,65 @@
                 atualizarValorContainer(pagoContainer, valor, false);
                 atualizarValorContainer(pendenteContainer, valor, true);
             }
-            
+
             // Total sempre visível se existir
             if (totalContainer) {
                 totalContainer.style.display = 'block';
             }
         }
-        
+
         function criarContainer(tipo, valor, cor) {
             const container = document.createElement('div');
             const bgColor = cor === 'green' ? 'bg-green-500/20' : cor === 'yellow' ? 'bg-yellow-600/20' : 'bg-red-600/20';
             const textColor = cor === 'green' ? 'text-green-300' : cor === 'yellow' ? 'text-yellow-300' : 'text-red-300';
             const valueColor = cor === 'green' ? 'text-green-400' : cor === 'yellow' ? 'text-yellow-400' : 'text-red-400';
-            
+
             container.className = `${bgColor} rounded-lg px-2 py-1 text-center`;
             container.style.display = valor === 0 ? 'none' : 'block';
             container.innerHTML = `
                 <div class="${textColor} text-[12px] font-medium">${tipo}</div>
                 <div class="${valueColor} text-[14px] font-bold">R$ ${valor.toFixed(2).replace('.', ',')}</div>
             `;
-            
+
             return container;
         }
-        
+
         function atualizarValorContainer(container, valor, somar) {
             const valueDiv = container.querySelector('div[class*="text-"][class*="text-[14px]"]');
             if (!valueDiv) return;
-            
+
             // Extrair valor atual
             const currentText = valueDiv.textContent.replace('R$ ', '').replace(',', '.');
             const currentValue = parseFloat(currentText) || 0;
-            
+
             // Calcular novo valor
             const newValue = somar ? currentValue + valor : currentValue - valor;
-            
+
             // Atualizar display
             valueDiv.textContent = `R$ ${newValue.toFixed(2).replace('.', ',')}`;
-            
+
             // Mostrar/ocultar container baseado no valor
             container.style.display = newValue === 0 ? 'none' : 'block';
-            
+
             console.log(`Container atualizado: ${currentValue} -> ${newValue} (${somar ? 'soma' : 'subtração'})`);
         }
-        
+
         // Função para atualizar cards de receitas e despesas pagas/pendentes
         function atualizarCardsReceitasDespesas(tipo, valor, novoPago, statusAnterior) {
             console.log('Atualizando cards de receitas/despesas:', { tipo, valor, novoPago, statusAnterior });
-            
+
             if (tipo === 'receita') {
                 const receitasPagasEl = document.getElementById('receitas-pagas');
                 const receitasPendentesEl = document.getElementById('receitas-pendentes');
-                
+
                 if (receitasPagasEl && receitasPendentesEl) {
                     // Extrair valores atuais
                     const pagasAtual = parseFloat(receitasPagasEl.textContent.replace('R$ ', '').replace(',', '.'));
                     const pendentesAtual = parseFloat(receitasPendentesEl.textContent.replace('R$ ', '').replace(',', '.'));
-                    
+
                     let novasPagas = pagasAtual;
                     let novasPendentes = pendentesAtual;
-                    
+
                     if (novoPago && !statusAnterior) {
                         // Mudou de pendente para pago
                         novasPagas += valor;
@@ -1197,25 +1398,25 @@
                         novasPagas -= valor;
                         novasPendentes += valor;
                     }
-                    
+
                     // Atualizar valores na tela
                     receitasPagasEl.textContent = 'R$ ' + novasPagas.toFixed(2).replace('.', ',');
                     receitasPendentesEl.textContent = 'R$ ' + novasPendentes.toFixed(2).replace('.', ',');
-                    
+
                     console.log('Receitas atualizadas - Pagas:', novasPagas, 'Pendentes:', novasPendentes);
                 }
             } else if (tipo === 'despesa') {
                 const despesasPagasEl = document.getElementById('despesas-pagas');
                 const despesasPendentesEl = document.getElementById('despesas-pendentes');
-                
+
                 if (despesasPagasEl && despesasPendentesEl) {
                     // Extrair valores atuais
                     const pagasAtual = parseFloat(despesasPagasEl.textContent.replace('R$ ', '').replace(',', '.'));
                     const pendentesAtual = parseFloat(despesasPendentesEl.textContent.replace('R$ ', '').replace(',', '.'));
-                    
+
                     let novasPagas = pagasAtual;
                     let novasPendentes = pendentesAtual;
-                    
+
                     if (novoPago && !statusAnterior) {
                         // Mudou de pendente para pago
                         novasPagas += valor;
@@ -1225,31 +1426,31 @@
                         novasPagas -= valor;
                         novasPendentes += valor;
                     }
-                    
+
                     // Atualizar valores na tela
                     despesasPagasEl.textContent = 'R$ ' + novasPagas.toFixed(2).replace('.', ',');
                     despesasPendentesEl.textContent = 'R$ ' + novasPendentes.toFixed(2).replace('.', ',');
-                    
+
                     console.log('Despesas atualizadas - Pagas:', novasPagas, 'Pendentes:', novasPendentes);
                 }
             }
         }
-        
+
         function atualizarCardsSaldo(tipo, valor, novoPago, statusAnterior) {
             console.log('Atualizando cards de saldo:', { tipo, valor, novoPago, statusAnterior });
-            
+
             // Buscar elementos pelos IDs específicos
             const saldoAtual = document.getElementById('saldo-atual');
             const iconeSaldoAtual = document.getElementById('icone-saldo-atual');
-            
+
             if (!saldoAtual) {
                 console.warn('Elemento de saldo atual não encontrado');
                 return;
             }
-            
+
             // Calcular mudança no saldo atual
             let mudancaSaldoAtual = 0;
-            
+
             if (novoPago && !statusAnterior) {
                 // De pendente para pago
                 if (tipo === 'receita') {
@@ -1265,9 +1466,9 @@
                     mudancaSaldoAtual = valor; // Despesa não paga aumenta saldo atual
                 }
             }
-            
+
             console.log('Mudança calculada no saldo atual:', mudancaSaldoAtual);
-            
+
             // Atualizar saldo atual se houve mudança
             if (mudancaSaldoAtual !== 0) {
                 // Extrair valor atual do saldo atual
@@ -1275,47 +1476,47 @@
                 const valorAtualTexto = textoAtual.replace('R$ ', '').replace(',', '.');
                 const valorAtual = parseFloat(valorAtualTexto) || 0;
                 const novoValor = valorAtual + mudancaSaldoAtual;
-                
+
                 console.log(`Atualizando saldo: ${valorAtual} + ${mudancaSaldoAtual} = ${novoValor}`);
-                
+
                 // Atualizar display
                 saldoAtual.textContent = `R$ ${novoValor.toFixed(2).replace('.', ',')}`;
-                
+
                 // Atualizar cores do texto
                 saldoAtual.classList.remove('text-green-400', 'text-red-400');
                 saldoAtual.classList.add(novoValor >= 0 ? 'text-green-400' : 'text-red-400');
-                
+
                 // Atualizar ícone e fundo se existir
                 if (iconeSaldoAtual) {
                     const icone = iconeSaldoAtual.querySelector('i');
-                    
+
                     // Atualizar cor do ícone
                     if (icone) {
                         icone.classList.remove('text-green-400', 'text-red-400');
                         icone.classList.add(novoValor >= 0 ? 'text-green-400' : 'text-red-400');
                     }
-                    
+
                     // Atualizar cor de fundo do ícone
                     iconeSaldoAtual.classList.remove('bg-green-500/20', 'bg-red-500/20');
                     iconeSaldoAtual.classList.add(novoValor >= 0 ? 'bg-green-500/20' : 'bg-red-500/20');
                 }
-                
+
                 console.log(`Saldo atual atualizado com sucesso: ${novoValor}`);
             }
         }
-        
+
         function showToast(message, type = 'info') {
             // Criar elemento de toast
             const toast = document.createElement('div');
             toast.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg text-white z-50 transform transition-all duration-300 translate-x-full`;
-            
+
             // Definir cor baseada no tipo
             const colors = {
                 success: 'bg-green-500',
                 error: 'bg-red-500',
                 info: 'bg-blue-500'
             };
-            
+
             toast.classList.add(colors[type] || colors.info);
             toast.innerHTML = `
                 <div class="flex items-center">
@@ -1323,12 +1524,12 @@
                     ${message}
                 </div>
             `;
-            
+
             document.body.appendChild(toast);
-            
+
             // Animar entrada
             setTimeout(() => toast.classList.remove('translate-x-full'), 100);
-            
+
             // Remover após 3 segundos
             setTimeout(() => {
                 toast.classList.add('translate-x-full');
@@ -1336,7 +1537,8 @@
             }, 3000);
         }
     </script>
-    
+
     {% block scripts %}{% endblock %}
 </body>
+
 </html>

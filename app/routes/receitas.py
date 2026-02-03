@@ -52,6 +52,12 @@ def index():
     subcategoria = request.args.get('subcategoria')
     mes = request.args.get('mes')
     ano = request.args.get('ano')
+
+    # Default para o mês atual se não houver filtros de data (primeiro acesso)
+    if mes is None and ano is None:
+        hoje = datetime.now()
+        mes = str(hoje.month)
+        ano = str(hoje.year)
     
     # Construir query com filtros
     query = '''
@@ -125,7 +131,12 @@ def index():
     }
     
     conn.close()
-    return render_template('receitas/index.html', receitas=receitas_formatadas, categorias=categorias, stats=estatisticas)
+    return render_template('receitas/index.html', 
+                           receitas=receitas_formatadas, 
+                           categorias=categorias, 
+                           stats=estatisticas,
+                           mes_selecionado=mes,
+                           ano_selecionado=ano)
 
 @receitas_bp.route('/nova', methods=['GET', 'POST'])
 @login_required

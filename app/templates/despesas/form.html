@@ -6,249 +6,255 @@
 <div class="max-w-4xl mx-auto">
     <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg shadow-xl p-3 border border-gray-700">
         <div class="flex items-center mb-3">
-            <div class="w-7 h-7 bg-gradient-to-r from-red-500 to-rose-600 rounded-md flex items-center justify-center mr-2.5">
+            <div
+                class="w-7 h-7 bg-gradient-to-r from-red-500 to-rose-600 rounded-md flex items-center justify-center mr-2.5">
                 <i class="fas fa-minus-circle text-white text-sm"></i>
             </div>
             <div>
                 <h2 class="text-lg font-bold text-white">
                     {{ 'Editar' if despesa else 'Nova' }} Despesa
                 </h2>
-                <p class="text-gray-300 text-xs">{{ 'Atualize os dados da' if despesa else 'Preencha os dados para criar uma nova' }} despesa</p>
+                <p class="text-gray-300 text-xs">{{ 'Atualize os dados da' if despesa else 'Preencha os dados para criar
+                    uma nova' }} despesa</p>
             </div>
         </div>
-        
+
         <form method="POST" class="space-y-3">
             <!-- Categoria -->
             <div>
                 <label for="categoria_id" class="block text-xs font-medium text-gray-300 mb-1.5">
                     <i class="fas fa-tags text-red-400 mr-1.5"></i>Categoria *
                 </label>
-                <select id="categoria_id" name="categoria_id" required 
-                        class="w-full px-2 py-1.5 bg-gray-700/50 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-1.5 focus:ring-red-500 focus:border-transparent transition-all duration-200 text-sm"
-                        onchange="updateSubcategorias(this.value, 'subcategoria_id')">
+                <select id="categoria_id" name="categoria_id" required
+                    class="w-full px-2 py-1.5 bg-gray-700/50 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-1.5 focus:ring-red-500 focus:border-transparent transition-all duration-200 text-sm"
+                    onchange="updateSubcategorias(this.value, 'subcategoria_id')">
                     <option value="" class="bg-gray-800">Selecione uma categoria</option>
                     {% for categoria in categorias %}
-                        <option value="{{ categoria.id }}" class="bg-gray-800"
-                                {{ 'selected' if (despesa and despesa.categoria_id == categoria.id) or (not despesa and loop.first) else '' }}>
-                            {{ categoria.nome }}
-                        </option>
+                    <option value="{{ categoria.id }}" class="bg-gray-800" {{ 'selected' if (despesa and
+                        despesa.categoria_id==categoria.id) or (not despesa and loop.first) else '' }}>
+                        {{ categoria.nome }}
+                    </option>
                     {% endfor %}
                 </select>
             </div>
-            
+
             <!-- Subcategoria -->
             <div>
                 <label for="subcategoria_id" class="block text-xs font-medium text-gray-300 mb-1.5">
                     <i class="fas fa-tag text-red-400 mr-1.5"></i>Subcategoria
                 </label>
-                <select id="subcategoria_id" name="subcategoria_id" 
-                        class="w-full px-2 py-1.5 bg-gray-700/50 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-1.5 focus:ring-red-500 focus:border-transparent transition-all duration-200 text-sm">
+                <select id="subcategoria_id" name="subcategoria_id"
+                    class="w-full px-2 py-1.5 bg-gray-700/50 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-1.5 focus:ring-red-500 focus:border-transparent transition-all duration-200 text-sm">
                     <option value="" class="bg-gray-800">Selecione uma subcategoria (opcional)</option>
                     {% if subcategorias %}
-                        {% for subcategoria in subcategorias %}
-                            <option value="{{ subcategoria.id }}" class="bg-gray-800"
-                                    {{ 'selected' if (despesa and despesa.subcategoria_id == subcategoria.id) or (not despesa and loop.first) else '' }}>
-                                {{ subcategoria.nome }}
-                            </option>
-                        {% endfor %}
+                    {% for subcategoria in subcategorias %}
+                    <option value="{{ subcategoria.id }}" class="bg-gray-800" {{ 'selected' if (despesa and
+                        despesa.subcategoria_id==subcategoria.id) or (not despesa and loop.first) else '' }}>
+                        {{ subcategoria.nome }}
+                    </option>
+                    {% endfor %}
                     {% endif %}
                 </select>
             </div>
-            
+
             <!-- Data de Início (ou Data para edição) -->
             <div>
                 <label for="data_inicio" class="block text-xs font-medium text-gray-300 mb-1.5">
-                    <i class="fas fa-calendar text-red-400 mr-1.5"></i>Data {{ 'da Despesa' if despesa else 'de Início' }} *
+                    <i class="fas fa-calendar text-red-400 mr-1.5"></i>Data {{ 'da Despesa' if despesa else 'de Início'
+                    }} *
                 </label>
                 <input type="date" id="data_inicio" name="data_inicio" required
-                       value="{{ despesa.data_inicio if despesa else '' }}"
-                       class="w-full px-2 py-1.5 bg-gray-700/50 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-1.5 focus:ring-red-500 focus:border-transparent transition-all duration-200 text-sm">
+                    value="{{ despesa.data_inicio if despesa else '' }}"
+                    class="w-full px-2 py-1.5 bg-gray-700/50 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-1.5 focus:ring-red-500 focus:border-transparent transition-all duration-200 text-sm">
             </div>
-            
-            {% if not despesa %}
-            <!-- Campos para nova despesa -->
-            
-            <!-- Tipo de Recorrência -->
+
+            <!-- Cartão de Crédito -->
             <div>
-                <label for="tipo_recorrencia" class="block text-xs font-medium text-gray-300 mb-1.5">
-                    <i class="fas fa-sync-alt text-red-400 mr-1.5"></i>Tipo de Recorrência *
+                <label for="cartao_id" class="block text-xs font-medium text-gray-300 mb-1.5">
+                    <i class="fas fa-credit-card text-purple-400 mr-1.5"></i>Cartão de Crédito <span
+                        class="text-gray-500 text-[10px]">(opcional)</span>
                 </label>
-                <select id="tipo_recorrencia" name="tipo_recorrencia" required
+                <select id="cartao_id" name="cartao_id"
+                    class="w-full px-2 py-1.5 bg-gray-700/50 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-1.5 focus:ring-purple-500 focus:border-transparent transition-all duration-200 text-sm">
+                    <option value="" class="bg-gray-800">Selecione um cartão (opcional)</option>
+                    {% if cartoes %}
+                    {% for cartao in cartoes %}
+                    <option value="{{ cartao.id }}" class="bg-gray-800" {{ 'selected' if (despesa and
+                        despesa.cartao_id==cartao.id) else '' }}>
+                        {{ cartao.nome_cartao }} - {{ cartao.instituicao_nome }} (Final {{ cartao.ultimos_digitos }})
+                    </option>
+                    {% endfor %}
+                    {% endif %}
+                </select>
+                <div id="compra_parcelada_container" class="mt-2 pl-2 border-l-2 border-purple-500/50 hidden">
+                    <div
+                        class="flex items-center space-x-2.5 p-2 bg-purple-500/10 rounded-md border border-purple-500/20">
+                        <input type="checkbox" id="compra_parcelada" name="compra_parcelada" value="1"
+                            class="w-3.5 h-3.5 text-purple-600 bg-gray-700 border-gray-600 rounded focus:ring-purple-500 focus:ring-2">
+                        <label for="compra_parcelada" class="text-xs font-medium text-gray-300 flex items-center">
+                            <i class="fas fa-cubes text-purple-400 mr-1.5"></i>
+                            Compra Parcelada
+                        </label>
+                        <div class="flex-1 text-right">
+                            <span class="text-[10px] text-gray-400">Habilita cálculo automático</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-[10px] text-gray-500 mt-1">Se selecionado, a despesa será vinculada a este cartão</p>
+
+                {% if not despesa %}
+                <!-- Campos para nova despesa -->
+
+                <!-- Tipo de Recorrência (Controlado via JS se Compra Parcelada estiver ativo) -->
+                <div id="tipo_recorrencia_container">
+                    <label for="tipo_recorrencia" class="block text-xs font-medium text-gray-300 mb-1.5">
+                        <i class="fas fa-sync-alt text-red-400 mr-1.5"></i>Tipo de Recorrência *
+                    </label>
+                    <select id="tipo_recorrencia" name="tipo_recorrencia" required
                         class="w-full px-2 py-1.5 bg-gray-700/50 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-1.5 focus:ring-red-500 focus:border-transparent transition-all duration-200 text-sm"
                         onchange="toggleRecurrenceFields(this.value)">
-                    <option value="unica" selected class="bg-gray-800">Única (registro único)</option>
-                    <option value="semanal" class="bg-gray-800">Semanal</option>
-                    <option value="quinzenal" class="bg-gray-800">Quinzenal</option>
-                    <option value="mensal" class="bg-gray-800">Mensal</option>
-                    <option value="bimestral" class="bg-gray-800">Bimestral</option>
-                    <option value="trimestral" class="bg-gray-800">Trimestral</option>
-                    <option value="quadrimestral" class="bg-gray-800">Quadrimestral</option>
-                    <option value="semestral" class="bg-gray-800">Semestral</option>
-                    <option value="anual" class="bg-gray-800">Anual</option>
-                </select>
-                <p class="text-[10px] text-gray-500 mt-1">O número de parcelas será calculado automaticamente baseado no período</p>
-            </div>
-            
-            <!-- Checkbox Fixo -->
-            <div class="flex items-center space-x-2.5 p-2 bg-gray-800/50 rounded-md border border-gray-600">
-                <input type="checkbox" id="fixo" name="fixo" value="1"
-                       {{ 'checked' if despesa and despesa.fixo else '' }}
-                       class="w-3.5 h-3.5 text-red-600 bg-gray-700 border-gray-600 rounded focus:ring-red-500 focus:ring-2">
-                <label for="fixo" class="text-xs font-medium text-gray-300 flex items-center">
-                    <i class="fas fa-thumbtack text-red-400 mr-1.5"></i>
-                    Despesa Fixa
-                </label>
-                <div class="flex-1">
-                    <p class="text-[10px] text-gray-500">Marque se é uma despesa rotineira (ex: telefone, aluguel). Será exibida como "Fixo" em vez de mostrar parcelas.</p>
+                        <option value="unica" selected class="bg-gray-800">Única (registro único)</option>
+                        <option value="semanal" class="bg-gray-800">Semanal</option>
+                        <option value="quinzenal" class="bg-gray-800">Quinzenal</option>
+                        <option value="mensal" class="bg-gray-800">Mensal</option>
+                        <option value="bimestral" class="bg-gray-800">Bimestral</option>
+                        <option value="trimestral" class="bg-gray-800">Trimestral</option>
+                        <option value="quadrimestral" class="bg-gray-800">Quadrimestral</option>
+                        <option value="semestral" class="bg-gray-800">Semestral</option>
+                        <option value="anual" class="bg-gray-800">Anual</option>
+                    </select>
+                    <p class="text-[10px] text-gray-500 mt-1">O número de parcelas será calculado automaticamente
+                        baseado no período</p>
                 </div>
-            </div>
 
-            <!-- Data de Fim -->
-            <div id="data_fim_field" style="display: none;">
-                <label for="data_fim" class="block text-xs font-medium text-gray-300 mb-1.5">
-                    <i class="fas fa-calendar-check text-red-400 mr-1.5"></i>Data de Fim <span class="text-gray-500 text-[10px]">(opcional)</span>
-                </label>
-                <input type="date" id="data_fim" name="data_fim"
-                       class="w-full px-2 py-1.5 bg-gray-700/50 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-1.5 focus:ring-red-500 focus:border-transparent transition-all duration-200 text-sm">
-                <p class="text-[10px] text-gray-500 mt-1">Se não informada, as parcelas serão geradas conforme o número especificado</p>
-            </div>
+                <!-- Checkbox Fixo -->
+                <div id="fixo_container"
+                    class="flex items-center space-x-2.5 p-2 bg-gray-800/50 rounded-md border border-gray-600">
+                    <input type="checkbox" id="fixo" name="fixo" value="1" {{ 'checked' if despesa and despesa.fixo
+                        else '' }}
+                        class="w-3.5 h-3.5 text-red-600 bg-gray-700 border-gray-600 rounded focus:ring-red-500 focus:ring-2">
+                    <label for="fixo" class="text-xs font-medium text-gray-300 flex items-center">
+                        <i class="fas fa-thumbtack text-red-400 mr-1.5"></i>
+                        Despesa Fixa
+                    </label>
+                    <div class="flex-1">
+                        <p class="text-[10px] text-gray-500">Marque se é uma despesa rotineira (ex: telefone, aluguel).
+                            Será exibida como "Fixo" em vez de mostrar parcelas.</p>
+                    </div>
+                </div>
 
-            <!-- Dia Comum de Pagamento -->
-            <div id="dia_comum_field" style="display: none;">
-                <label for="dia_comum_pagamento" class="block text-xs font-medium text-gray-300 mb-1.5">
-                    <i class="fas fa-calendar-day text-red-400 mr-1.5"></i>Dia Comum de Pagamento
-                </label>
-                <input type="number" id="dia_comum_pagamento" name="dia_comum_pagamento"
-                       min="1" max="31" placeholder="Ex: 15"
-                       class="w-full px-2 py-1.5 bg-gray-700/50 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-1.5 focus:ring-red-500 focus:border-transparent transition-all duration-200 text-sm">
-                <p class="text-[10px] text-gray-500 mt-1">Opcional: dia fixo do mês para pagamento das parcelas</p>
-            </div>
-            {% endif %}            <!-- Valor -->
-            <div>
-                <label for="{{ 'valor' if despesa else 'valor_parcela' }}" class="block text-xs font-medium text-gray-300 mb-1.5">
-                    <i class="fas fa-dollar-sign text-red-400 mr-1.5"></i>Valor {{ 'da Despesa' if despesa else 'por Parcela' }} *
-                </label>
-                <input type="text" id="{{ 'valor' if despesa else 'valor_parcela' }}" name="{{ 'valor' if despesa else 'valor_parcela' }}" required
-                       value="{{ '%.2f'|format(despesa.valor)|replace('.', ',') if despesa else '' }}"
-                       placeholder="0,00"
-                       class="w-full px-2 py-1.5 bg-gray-700/50 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-1.5 focus:ring-red-500 focus:border-transparent transition-all duration-200 text-sm">
-                {% if not despesa %}
-                <p class="text-[10px] text-gray-500 mt-1">Este será o valor de cada parcela gerada (ex: aluguel mensal)</p>
-                {% endif %}
-            </div>
-            
-            <!-- Botões -->
-            <div class="flex justify-between items-center pt-3 border-t border-gray-700">
-                <div class="flex space-x-2">
-                    <a href="{{ url_for('despesas.index') }}" 
-                       class="flex items-center px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-md transition-all duration-150 group text-sm">
-                        <i class="fas fa-arrow-left mr-1.5 group-hover:-translate-x-0.5 transition-transform"></i>
-                        Voltar
-                    </a>
-                    
-                    {% if despesa %}
-                    <!-- Botão de Exclusão (só aparece na edição) -->
-                    <button type="button" onclick="confirmarExclusao()" 
-                            class="flex items-center px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-md transition-all duration-150 group text-sm">
-                        <i class="fas fa-trash mr-1.5"></i>
-                        Excluir
-                    </button>
+                <!-- Data de Fim -->
+                <div id="data_fim_field" style="display: none;">
+                    <label for="data_fim" class="block text-xs font-medium text-gray-300 mb-1.5">
+                        <i class="fas fa-calendar-check text-red-400 mr-1.5"></i>Data de Fim <span
+                            class="text-gray-500 text-[10px]">(opcional)</span>
+                    </label>
+                    <input type="date" id="data_fim" name="data_fim"
+                        class="w-full px-2 py-1.5 bg-gray-700/50 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-1.5 focus:ring-red-500 focus:border-transparent transition-all duration-200 text-sm">
+                    <p class="text-[10px] text-gray-500 mt-1">Se não informada, as parcelas serão geradas conforme o
+                        número especificado</p>
+                </div>
+
+                <!-- Dia Comum de Pagamento -->
+                <div id="dia_comum_field" style="display: none;">
+                    <label for="dia_comum_pagamento" class="block text-xs font-medium text-gray-300 mb-1.5">
+                        <i class="fas fa-calendar-day text-red-400 mr-1.5"></i>Dia Comum de Pagamento
+                    </label>
+                    <input type="number" id="dia_comum_pagamento" name="dia_comum_pagamento" min="1" max="31"
+                        placeholder="Ex: 15"
+                        class="w-full px-2 py-1.5 bg-gray-700/50 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-1.5 focus:ring-red-500 focus:border-transparent transition-all duration-200 text-sm">
+                    <p class="text-[10px] text-gray-500 mt-1">Opcional: dia fixo do mês para pagamento das parcelas</p>
+                </div>
+                <!-- Campos Específicos de Compra Parcelada -->
+                <div id="campos_parcelados_container" class="space-y-3 hidden">
+                    <!-- Valor Total do Bem -->
+                    <div>
+                        <label for="valor_total_bem" class="block text-xs font-medium text-gray-300 mb-1.5">
+                            <i class="fas fa-money-bill-wave text-green-400 mr-1.5"></i>Valor Total do Bem
+                        </label>
+                        <input type="text" id="valor_total_bem" name="valor_total_bem" placeholder="0,00"
+                            class="w-full px-2 py-1.5 bg-gray-700/50 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-1.5 focus:ring-green-500 focus:border-transparent transition-all duration-200 text-sm">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <!-- Qtd Parcelas -->
+                        <div>
+                            <label for="qtd_parcelas_input" class="block text-xs font-medium text-gray-300 mb-1.5">
+                                <i class="fas fa-list-ol text-blue-400 mr-1.5"></i>Nº Parcelas
+                            </label>
+                            <input type="number" id="qtd_parcelas_input" name="qtd_parcelas_input" min="2" max="360"
+                                placeholder="Ex: 10"
+                                class="w-full px-2 py-1.5 bg-gray-700/50 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-1.5 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm">
+                        </div>
+
+                        <!-- Mês Inicio -->
+                        <div>
+                            <label for="mes_primeira_fatura" class="block text-xs font-medium text-gray-300 mb-1.5">
+                                <i class="fas fa-calendar-check text-yellow-400 mr-1.5"></i>1ª Fatura
+                            </label>
+                            <input type="month" id="mes_primeira_fatura" name="mes_primeira_fatura"
+                                class="w-full px-2 py-1.5 bg-gray-700/50 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-1.5 focus:ring-yellow-500 focus:border-transparent transition-all duration-200 text-sm text-center">
+                        </div>
+                    </div>
+                </div>
+
+                {% endif %} <!-- Valor -->
+                <div id="valor_container">
+                    <label for="{{ 'valor' if despesa else 'valor_parcela' }}"
+                        class="block text-xs font-medium text-gray-300 mb-1.5">
+                        <i class="fas fa-dollar-sign text-red-400 mr-1.5"></i>Valor {{ 'da Despesa' if despesa else 'por
+                        Parcela' }} *
+                    </label>
+                    <input type="text" id="{{ 'valor' if despesa else 'valor_parcela' }}"
+                        name="{{ 'valor' if despesa else 'valor_parcela' }}" required
+                        value="{{ '%.2f'|format(despesa.valor)|replace('.', ',') if despesa else '' }}"
+                        placeholder="0,00"
+                        class="w-full px-2 py-1.5 bg-gray-700/50 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-1.5 focus:ring-red-500 focus:border-transparent transition-all duration-200 text-sm">
+                    {% if not despesa %}
+                    <p class="text-[10px] text-gray-500 mt-1">Este será o valor de cada parcela gerada (ex: aluguel
+                        mensal)</p>
                     {% endif %}
                 </div>
-                
-                <button type="submit" 
+
+                <!-- Botões -->
+                <div class="flex justify-between items-center pt-3 border-t border-gray-700">
+                    <div class="flex space-x-2">
+                        <a href="{{ url_for('despesas.index') }}"
+                            class="flex items-center px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-md transition-all duration-150 group text-sm">
+                            <i class="fas fa-arrow-left mr-1.5 group-hover:-translate-x-0.5 transition-transform"></i>
+                            Voltar
+                        </a>
+
+                        {% if despesa %}
+                        <!-- Botão de Exclusão (só aparece na edição) -->
+                        <button type="button" onclick="confirmarExclusao()"
+                            class="flex items-center px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-md transition-all duration-150 group text-sm">
+                            <i class="fas fa-trash mr-1.5"></i>
+                            Excluir
+                        </button>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit"
                         class="flex items-center px-4 py-2 bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white rounded-lg font-medium transition-all duration-150 text-sm">
-                    <i class="fas fa-save mr-1.5"></i>
-                    {{ 'Atualizar' if despesa else 'Cadastrar' }}
-                </button>
-            </div>
+                        <i class="fas fa-save mr-1.5"></i>
+                        {{ 'Atualizar' if despesa else 'Cadastrar' }}
+                    </button>
+                </div>
         </form>
-        
+
         {% if despesa %}
-        <!-- Formulário de Exclusão (oculto) -->
-        <form id="formExclusao" method="POST" action="{{ url_for('despesas.excluir', id=despesa.id) }}" style="display: none;">
-        </form>
+        <!-- Formulário de Exclusão removido em favor de criação dinâmica via JS -->
         {% endif %}
     </div>
 </div>
 
 <script>
-// Definir data de hoje como padrão
-document.addEventListener('DOMContentLoaded', function() {
-    const dataInicioField = document.getElementById('data_inicio');
-    const tipoRecorrenciaField = document.getElementById('tipo_recorrencia');
-    
-    // Definir data de hoje se for um novo registro
-    if (dataInicioField && !dataInicioField.value) {
-        const hoje = new Date();
-        const dataFormatada = hoje.getFullYear() + '-' + 
-                            String(hoje.getMonth() + 1).padStart(2, '0') + '-' + 
-                            String(hoje.getDate()).padStart(2, '0');
-        dataInicioField.value = dataFormatada;
-    }
-    
-    // Configurar estado inicial como "única"
-    if (tipoRecorrenciaField && tipoRecorrenciaField.value === 'unica') {
-        toggleRecurrenceFields('unica');
-    }
-});
-
-function toggleRecurrenceFields(tipoRecorrencia) {
-    const dataFimField = document.getElementById('data_fim_field');
-    const diaComumField = document.getElementById('dia_comum_field');
-    const valorLabel = document.querySelector('label[for="valor_parcela"]');
-    const valorHelp = document.querySelector('#valor_parcela').nextElementSibling;
-    
-    if (tipoRecorrencia === 'unica') {
-        // Ocultar campos específicos de recorrência
-        dataFimField.style.display = 'none';
-        diaComumField.style.display = 'none';
-        
-        // Alterar textos para registro único
-        valorLabel.innerHTML = '<i class="fas fa-dollar-sign text-red-400 mr-2"></i>Valor da Despesa *';
-        if (valorHelp) {
-            valorHelp.textContent = 'Valor total desta despesa específica';
-        }
-    } else {
-        // Mostrar campos de recorrência
-        dataFimField.style.display = 'block';
-        diaComumField.style.display = 'block';
-        
-        // Restaurar textos para parcelas
-        valorLabel.innerHTML = '<i class="fas fa-dollar-sign text-red-400 mr-2"></i>Valor por Parcela *';
-        if (valorHelp) {
-            valorHelp.textContent = 'Este será o valor de cada parcela gerada (ex: aluguel mensal)';
-        }
-    }
-}
-
-function updateSubcategorias(categoriaId, targetId) {
-    if (!categoriaId) {
-        document.getElementById(targetId).innerHTML = '<option value="" class="bg-gray-800">Selecione uma subcategoria (opcional)</option>';
-        return;
-    }
-    
-    fetch(`/despesas/subcategorias/${categoriaId}`)
-        .then(response => response.json())
-        .then(data => {
-            const select = document.getElementById(targetId);
-            select.innerHTML = '<option value="" class="bg-gray-800">Selecione uma subcategoria (opcional)</option>';
-            
-            data.forEach(subcategoria => {
-                const option = document.createElement('option');
-                option.value = subcategoria.id;
-                option.textContent = subcategoria.nome;
-                option.className = 'bg-gray-800';
-                select.appendChild(option);
-            });
-        })
-        .catch(error => console.error('Erro ao buscar subcategorias:', error));
-}
-
-function confirmarExclusao() {
-    if (confirm('Tem certeza que deseja excluir esta despesa? Esta ação não pode ser desfeita.')) {
-        document.getElementById('formExclusao').submit();
-    }
-}
+    window.despesaContext = {
+        id: {{ (despesa['id'] if despesa else None)| tojson }},
+    tipoRecorrencia: {{ (despesa['tipo_recorrencia'] if despesa else 'unica')| tojson }},
+    isEdicao: {{ (True if despesa else False)| tojson }}
+    };
 </script>
+<script src="{{ url_for('static', filename='js/despesas_form.js') }}"></script>
 {% endblock %}
