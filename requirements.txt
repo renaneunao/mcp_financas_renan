@@ -3,3 +3,4 @@ Pillow
 Werkzeug
 python-dateutil
 gunicorn
+python-dotenv
