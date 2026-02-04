@@ -5,7 +5,8 @@
 {% block header %}
 <div class="flex items-center justify-between">
     <div class="flex items-center">
-        <div class="w-7 h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg flex items-center justify-center mr-2.5">
+        <div
+            class="w-7 h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg flex items-center justify-center mr-2.5">
             <i class="fas fa-credit-card text-white"></i>
         </div>
         <div>
@@ -13,9 +14,9 @@
             <p class="text-gray-300 text-xs md:text-sm">Gerencie seus cartões de crédito</p>
         </div>
     </div>
-    
-    <button onclick="openModalNovoCartao()" 
-            class="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg hover:from-purple-600 hover:to-pink-700 transition-all duration-300 text-sm shadow-lg">
+
+    <button onclick="openModalNovoCartao()"
+        class="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg hover:from-purple-600 hover:to-pink-700 transition-all duration-300 text-sm shadow-lg">
         <i class="fas fa-plus mr-1"></i> Novo Cartão
     </button>
 </div>
@@ -23,142 +24,362 @@
 
 {% block content %}
 <div class="max-w-full mx-auto space-y-4">
-    
-    {% if cartoes %}
-        <!-- Grid de Cartões -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {% for cartao in cartoes %}
-                <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl p-6 border-l-4 border-purple-500 hover:shadow-purple-500/20 transition-all duration-300">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="flex-1">
-                            <div class="flex items-center space-x-2 mb-2">
-                                <i class="fas fa-credit-card text-purple-400"></i>
-                                <h3 class="text-lg font-bold text-white">{{ cartao.nome_cartao }}</h3>
+
+    <!-- Tabs Navigation -->
+    <div class="flex space-x-1 bg-gray-900/50 p-1 rounded-xl">
+        <button onclick="switchTab('cartoes')" id="btn-cartoes"
+            class="flex-1 py-2 text-sm font-medium rounded-lg text-white bg-gray-800 shadow transition-all">
+            <i class="fas fa-credit-card mr-2 text-purple-400"></i>Gestão de Cartões
+        </button>
+        <button onclick="switchTab('faturas')" id="btn-faturas"
+            class="flex-1 py-2 text-sm font-medium rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 transition-all">
+            <i class="fas fa-file-invoice-dollar mr-2 text-green-400"></i>Minhas Faturas
+        </button>
+    </div>
+
+    <!-- Tab: Meus Cartões (Gestão) -->
+    <div id="tab-cartoes" class="tab-content transition-opacity duration-300">
+        {% if cartoes %}
+        <div class="space-y-6">
+            {% for banco, lista_cartoes in cartoes.items() %}
+            <div class="bg-gray-900/40 rounded-xl p-4 border border-gray-800">
+                <h3 class="text-white font-bold text-sm mb-3 flex items-center gap-2">
+                    <!-- Logo Banco Pequeno (tamanho forçado com inline style como garantia) -->
+                    <div class="bg-white rounded-full flex items-center justify-center overflow-hidden shrink-0 ring-1 ring-gray-700"
+                        style="width: 20px; height: 20px; min-width: 20px;">
+                        <img src="{{ url_for('static', filename='img/icones/bancos/nubank.png') }}" alt="{{ banco }}"
+                            class="object-contain" style="width: 20px; height: 20px;"
+                            onerror="this.onerror=null; this.src=''; this.parentElement.innerHTML='<i class=\'fas fa-university text-gray-500\' style=\'font-size: 10px;\'></i>';">
+                    </div>
+                    <span class="text-white font-bold">{{ banco }}</span>
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                    {% for cartao in lista_cartoes %}
+                    <div onclick="openModalDetalhesCartao({{ cartao.id }})"
+                        class="bg-gray-800 rounded-lg shadow-md border border-gray-700 p-3 relative group hover:border-purple-500 transition-all hover:-translate-y-0.5 cursor-pointer">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h4 class="text-xs font-bold text-white truncate w-32" title="{{ cartao.nome_cartao }}">
+                                    {{ cartao.nome_cartao }}
+                                </h4>
+                                <div class="flex items-center gap-2">
+                                    <p class="text-[10px] text-gray-400 font-mono tracking-wider">•••• {{
+                                        cartao.ultimos_digitos }}</p>
+                                    <span
+                                        class="text-[9px] px-1.5 py-0.5 bg-gray-900/50 text-gray-400 rounded border border-gray-700">Vence:
+                                        {{ cartao.dia_vencimento }}</span>
+                                </div>
                             </div>
-                            <p class="text-sm text-gray-400">{{ cartao.instituicao_nome }}</p>
-                        </div>
-                        <div class="flex space-x-2">
-                            <button onclick="openModalEditarCartao({{ cartao.id }}, '{{ cartao.instituicao_id }}', '{{ cartao.nome_cartao }}', '{{ cartao.ultimos_digitos }}', {{ cartao.limite_total }}, {{ cartao.dia_vencimento }}, {{ cartao.dia_fechamento }})"
-                                    class="text-gray-400 hover:text-blue-400 transition-colors">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <form method="POST" action="{{ url_for('cartoes.excluir', cartao_id=cartao.id) }}" 
-                                  onsubmit="return confirm('Tem certeza que deseja remover este cartão?');"
-                                  class="inline">
-                                <button type="submit" class="text-gray-400 hover:text-red-400 transition-colors">
-                                    <i class="fas fa-trash"></i>
+                            <!-- Botões de Ação -->
+                            <div class="flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity absolute top-2 right-2 bg-gray-900/90 rounded px-1 border border-gray-700 shadow-lg z-10"
+                                onclick="event.stopPropagation()">
+                                <button
+                                    onclick="openModalEditarCartao({{ cartao.id }}, '{{ cartao.instituicao_id }}', '{{ cartao.nome_cartao }}', '{{ cartao.ultimos_digitos }}', {{ cartao.limite_total }}, {{ cartao.dia_fechamento }}, {{ cartao.dia_vencimento }})"
+                                    class="p-1.5 hover:text-blue-400 text-gray-400">
+                                    <i class="fas fa-pen text-[10px]"></i>
                                 </button>
-                            </form>
-                        </div>
-                    </div>
-                    
-                    <div class="space-y-3">
-                        <!-- Últimos Dígitos -->
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs text-gray-500">Final do cartão</span>
-                            <span class="text-sm font-mono text-gray-300">•••• {{ cartao.ultimos_digitos }}</span>
-                        </div>
-                        
-                        <!-- Limite -->
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs text-gray-500">Limite total</span>
-                            <span class="text-sm font-bold text-green-400">R$ {{ "%.2f"|format(cartao.limite_total)|replace('.', ',') }}</span>
-                        </div>
-                        
-                        <!-- Datas -->
-                        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-gray-700">
-                            <div class="text-center">
-                                <p class="text-xs text-gray-500 mb-1">Fechamento</p>
-                                <p class="text-sm font-semibold text-blue-400">Dia {{ cartao.dia_fechamento }}</p>
-                            </div>
-                            <div class="text-center">
-                                <p class="text-xs text-gray-500 mb-1">Vencimento</p>
-                                <p class="text-sm font-semibold text-orange-400">Dia {{ cartao.dia_vencimento }}</p>
+                                <form method="POST" action="{{ url_for('cartoes.excluir', cartao_id=cartao.id) }}"
+                                    onsubmit="return confirm('Excluir este cartão?');" class="inline">
+                                    <button type="submit" class="p-1.5 hover:text-red-400 text-gray-400">
+                                        <i class="fas fa-trash text-[10px]"></i>
+                                    </button>
+                                </form>
                             </div>
                         </div>
+
+                        <!-- Seção de Gastos e Limites -->
+                        <div class="pt-2 border-t border-gray-700/50 space-y-2">
+                            <!-- Consumo Real (Bloqueado no Cartão) -->
+                            <div class="flex justify-between items-center bg-gray-900/30 px-2 py-1 rounded">
+                                <span class="text-[9px] text-gray-400 uppercase tracking-tight">Utilizado/Total:</span>
+                                <span class="text-[10px] font-bold text-gray-300">
+                                    R$ {{ "%.0f"|format(cartao.valor_bloqueado) }} <span
+                                        class="text-gray-600 font-normal">/</span> R$ {{
+                                    "%.0f"|format(cartao.limite_total) }}
+                                </span>
+                            </div>
+
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <span
+                                        class="text-[9px] text-yellow-500/80 font-medium block uppercase tracking-tighter">Lim.
+                                        Disponível</span>
+                                    <span class="text-xs font-bold text-yellow-500">R$ {{
+                                        "%.0f"|format(cartao.valor_disponivel) }}</span>
+                                </div>
+                                <div class="text-right">
+                                    <span
+                                        class="text-[9px] text-red-400/80 font-medium block uppercase tracking-tighter">Fatura
+                                        Mensal</span>
+                                    <span class="text-sm font-black text-red-400">R$ {{
+                                        "%.0f"|format(cartao.valor_fatura_atual) }}</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    {% endfor %}
                 </div>
+            </div>
             {% endfor %}
         </div>
-    {% else %}
-        <!-- Estado Vazio -->
-        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl p-12 text-center">
-            <i class="fas fa-credit-card text-gray-600 text-6xl mb-4"></i>
-            <h3 class="text-xl font-semibold text-white mb-2">Nenhum cartão cadastrado</h3>
-            <p class="text-gray-400 mb-6">Adicione seu primeiro cartão de crédito para começar</p>
-            <button onclick="openModalNovoCartao()" 
-                    class="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg hover:from-purple-600 hover:to-pink-700 transition-all duration-300 shadow-lg">
-                <i class="fas fa-plus mr-2"></i> Adicionar Cartão
+        {% else %}
+        <div class="bg-gray-800 rounded-2xl p-8 text-center border border-gray-700">
+            <i class="fas fa-credit-card text-gray-600 text-4xl mb-3"></i>
+            <h3 class="text-lg font-semibold text-white mb-2">Nenhum cartão</h3>
+            <button onclick="openModalNovoCartao()"
+                class="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm hover:bg-purple-700">
+                Adicionar Cartão
             </button>
         </div>
-    {% endif %}
+        {% endif %}
+    </div>
+
+    <!-- Tab: Minhas Faturas -->
+    <div id="tab-faturas" class="tab-content hidden transition-opacity duration-300">
+        <!-- Filtro de Mês e Ano - FORÇADO LADO A LADO COM FLEX -->
+        <div class="bg-gray-800 rounded-xl p-4 mb-6 border border-gray-700">
+            <form method="GET" action="{{ url_for('cartoes.index') }}" id="formFiltroFaturas">
+                <input type="hidden" name="tab_ativa" value="faturas">
+                <div class="flex flex-row space-x-4">
+                    <div class="flex-1">
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Mês</label>
+                        <select name="mes" onchange="this.form.submit()"
+                            class="w-full bg-gray-900 border border-gray-600 text-white text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 p-2.5">
+                            {% set meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho',
+                            'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'] %}
+                            {% for m in range(1, 13) %}
+                            <option value="{{ m }}" {% if m==mes_selecionado %}selected{% endif %}>{{ meses[m-1] }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Ano</label>
+                        <select name="ano" onchange="this.form.submit()"
+                            class="w-full bg-gray-900 border border-gray-600 text-white text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 p-2.5">
+                            {% for a in range(2024, 2031) %}
+                            <option value="{{ a }}" {% if a==ano_selecionado %}selected{% endif %}>{{ a }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {% if faturas %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% for banco, dados_banco in faturas.items() %}
+            <div class="bg-gray-800 rounded-xl p-5 border border-gray-700 flex flex-col h-full shadow-lg">
+                <div class="flex items-center justify-between mb-4 border-b border-gray-600 pb-3">
+                    <div class="flex items-center overflow-hidden">
+                        <!-- Logo Banco Grande -->
+                        <div class="bg-white rounded-full flex items-center justify-center mr-3 overflow-hidden shrink-0 border-2 border-gray-600 shadow-sm"
+                            style="width: 48px; height: 48px; min-width: 48px;">
+                            <img src="{{ url_for('static', filename='img/icones/bancos/nubank.png') }}"
+                                alt="{{ banco }}" class="object-contain" style="width: 40px; height: 40px;"
+                                onerror="this.onerror=null; this.src=''; this.parentElement.innerHTML='<i class=\'fas fa-university text-gray-400\' style=\'font-size: 24px;\'></i>';">
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-white leading-tight">{{ banco }}</h2>
+                            <p class="text-xs text-gray-400">Vencimento dia {{ dados_banco.dia_vencimento }}</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="block text-2xl font-bold text-white">R$ {{
+                            "%.2f"|format(dados_banco.valor_total)|replace('.', ',') }}</span>
+                    </div>
+                </div>
+
+                <div class="space-y-3 flex-1">
+                    {% for nome_cartao, dados_cartao in dados_banco.cartoes.items() %}
+                    <div class="bg-gray-900/50 border border-gray-600 rounded-lg overflow-hidden">
+                        <!-- Cabeçalho Cartão (Acordeão) -->
+                        <div onclick="toggleAccordion('acc-{{ banco|slugify }}-{{ nome_cartao|slugify }}')"
+                            class="flex justify-between items-center p-3 cursor-pointer hover:bg-gray-700/50 transition-colors">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-credit-card text-purple-400"></i>
+                                <span class="text-white font-medium text-sm">{{ nome_cartao }}</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-white font-bold text-sm">R$ {{
+                                    "%.2f"|format(dados_cartao.valor_total)|replace('.', ',') }}</span>
+                                <i class="fas fa-chevron-down text-[10px] text-gray-500"></i>
+                            </div>
+                        </div>
+
+                        <!-- Detalhes do Cartão -->
+                        <div id="acc-{{ banco|slugify }}-{{ nome_cartao|slugify }}"
+                            class="hidden bg-gray-950 p-0 border-t border-gray-700">
+                            <table class="w-full text-left text-xs">
+                                <thead class="text-gray-400 uppercase bg-gray-900/80">
+                                    <tr>
+                                        <th class="px-3 py-2 font-medium">Dia</th>
+                                        <th class="px-3 py-2 font-medium">Descrição</th>
+                                        <th class="px-3 py-2 text-right font-medium">Valor</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-800">
+                                    {% for item in dados_cartao.itens %}
+                                    <tr class="hover:bg-gray-800/50 transition-colors">
+                                        <td class="px-3 py-2 text-gray-500 whitespace-nowrap">
+                                            {{ item.data.split('-')[2] }}
+                                        </td>
+                                        <td class="px-3 py-2 text-gray-300">
+                                            {{ item.descricao }}
+                                            {% if item.numero_parcelas and item.numero_parcelas|int > 1 %}
+                                            <span
+                                                class="text-[9px] bg-blue-900/30 text-blue-300 px-1 py-0.5 rounded ml-1 whitespace-nowrap border border-blue-500/20">
+                                                {{ item.parcela_atual }}/{{ item.numero_parcelas }}
+                                            </span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="px-3 py-2 text-right font-bold text-white">
+                                            {{ "%.2f"|format(item.valor)|replace('.', ',') }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="bg-gray-800 rounded-2xl p-12 text-center border border-gray-700">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-700 mb-6">
+                <i class="fas fa-clipboard-check text-gray-500 text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Tudo limpo!</h3>
+            <p class="text-gray-400">Sem faturas para <span class="text-purple-400 font-bold">{{ mes_selecionado }}/{{
+                    ano_selecionado }}</span>.</p>
+        </div>
+        {% endif %}
+    </div>
+
 </div>
 
-<!-- Modal Novo Cartão -->
-<div id="modalNovoCartao" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-    <div class="bg-gray-900 rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-xl font-bold text-white">Novo Cartão</h2>
-            <button onclick="closeModalNovoCartao()" class="text-gray-400 hover:text-white">
+<!-- Modal Detalhes do Cartão (NOVO) -->
+<div id="modalDetalhesCartao"
+    class="fixed inset-0 bg-black bg-opacity-80 hidden items-center justify-center z-50 backdrop-blur-md">
+    <div
+        class="bg-gray-900 rounded-3xl shadow-2xl w-full max-w-2xl mx-4 border border-gray-700 flex flex-col max-h-[90vh] overflow-hidden">
+        <!-- Header do Modal -->
+        <div class="p-6 border-b border-gray-800 flex justify-between items-center bg-gray-800/50">
+            <div class="flex items-center gap-4">
+                <div id="modal-card-icon"
+                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-white shadow-lg shadow-purple-500/20">
+                    <i class="fas fa-credit-card text-xl"></i>
+                </div>
+                <div>
+                    <h2 id="modal-card-name" class="text-xl font-bold text-white">Nome do Cartão</h2>
+                    <p id="modal-card-bank" class="text-gray-400 text-sm">Banco Instituição</p>
+                </div>
+            </div>
+            <button onclick="closeModalDetalhesCartao()"
+                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 transition-all">
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        
+
+        <!-- Body do Modal -->
+        <div class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="bg-gray-800/40 p-4 rounded-2xl border border-gray-700">
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider mb-1">Limite Total</p>
+                    <p id="modal-card-limit" class="text-lg font-bold text-white">R$ 0,00</p>
+                </div>
+                <div class="bg-gray-800/40 p-4 rounded-2xl border border-gray-700">
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider mb-1">Utilizado</p>
+                    <p id="modal-card-used" class="text-lg font-bold text-red-400">R$ 0,00</p>
+                </div>
+                <div class="bg-gray-800/40 p-4 rounded-2xl border border-gray-700 col-span-2 md:col-span-1">
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider mb-1">Disponível</p>
+                    <p id="modal-card-available" class="text-lg font-bold text-green-400">R$ 0,00</p>
+                </div>
+            </div>
+
+            <!-- Lista de Compras -->
+            <div>
+                <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
+                    <i class="fas fa-list-ul text-purple-400"></i> Histórico de Lançamentos
+                </h3>
+                <div class="space-y-2" id="modal-expenses-list">
+                    <!-- Gerado via JS -->
+                    <div class="flex items-center justify-center py-10">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Novo Cartão -->
+<div id="modalNovoCartao"
+    class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50 backdrop-blur-sm">
+    <div class="bg-gray-900 rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4 border border-gray-700">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold text-white">Novo Cartão</h2>
+            <button onclick="closeModalNovoCartao()" class="text-gray-400 hover:text-white transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
         <form method="POST" action="{{ url_for('cartoes.adicionar') }}" class="space-y-4">
             <div>
-                <label class="block text-sm font-medium text-gray-300 mb-2">Instituição Financeira</label>
-                <select name="instituicao_id" required 
-                        class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <label class="block text-sm font-medium text-gray-300 mb-2">Instituição</label>
+                <select name="instituicao_id" required
+                    class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none">
                     <option value="">Selecione...</option>
                     {% for instituicao in instituicoes %}
-                        <option value="{{ instituicao.id }}">{{ instituicao.nome }}</option>
+                    <option value="{{ instituicao.id }}">{{ instituicao.nome }}</option>
                     {% endfor %}
                 </select>
             </div>
-            
+
             <div>
-                <label class="block text-sm font-medium text-gray-300 mb-2">Nome do Cartão</label>
-                <input type="text" name="nome_cartao" required 
-                       placeholder="Ex: Cartão Principal, Cartão Pessoal"
-                       class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <label class="block text-sm font-medium text-gray-300 mb-2">Nome (Apelido)</label>
+                <input type="text" name="nome_cartao" required placeholder="Ex: Nubank Principal"
+                    class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none">
             </div>
-            
+
             <div>
                 <label class="block text-sm font-medium text-gray-300 mb-2">Últimos 4 Dígitos</label>
-                <input type="text" name="ultimos_digitos" required maxlength="4" pattern="[0-9]{4}"
-                       placeholder="1234"
-                       class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <input type="text" name="ultimos_digitos" required maxlength="4" pattern="[0-9]{4}" placeholder="1234"
+                    class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none">
             </div>
-            
+
             <div>
-                <label class="block text-sm font-medium text-gray-300 mb-2">Limite Total</label>
-                <input type="number" name="limite_total" step="0.01" min="0" required
-                       placeholder="0.00"
-                       class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <label class="block text-sm font-medium text-gray-300 mb-2">Limite (R$)</label>
+                <input type="number" name="limite_total" step="0.01" min="0" required placeholder="0.00"
+                    class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none">
             </div>
-            
+
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-2">Dia Fechamento</label>
-                    <input type="number" name="dia_fechamento" min="1" max="31" required
-                           placeholder="1-31"
-                           class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Fechamento (Dia)</label>
+                    <input type="number" name="dia_fechamento" min="1" max="31" required placeholder="1-31"
+                        class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-2">Dia Vencimento</label>
-                    <input type="number" name="dia_vencimento" min="1" max="31" required
-                           placeholder="1-31"
-                           class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Vencimento (Dia)</label>
+                    <input type="number" name="dia_vencimento" min="1" max="31" required placeholder="1-31"
+                        class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none">
                 </div>
             </div>
-            
+
             <div class="flex space-x-3 pt-4">
                 <button type="button" onclick="closeModalNovoCartao()"
-                        class="flex-1 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">
+                    class="flex-1 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">
                     Cancelar
                 </button>
                 <button type="submit"
-                        class="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg hover:from-purple-600 hover:to-pink-700 transition-all">
+                    class="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg hover:from-purple-600 hover:to-pink-700 transition-all font-medium">
                     Adicionar
                 </button>
             </div>
@@ -167,64 +388,66 @@
 </div>
 
 <!-- Modal Editar Cartão -->
-<div id="modalEditarCartao" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-    <div class="bg-gray-900 rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4">
+<div id="modalEditarCartao"
+    class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50 backdrop-blur-sm">
+    <div class="bg-gray-900 rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4 border border-gray-700">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-xl font-bold text-white">Editar Cartão</h2>
-            <button onclick="closeModalEditarCartao()" class="text-gray-400 hover:text-white">
+            <button onclick="closeModalEditarCartao()" class="text-gray-400 hover:text-white transition-colors">
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        
+
         <form id="formEditarCartao" method="POST" class="space-y-4">
             <div>
-                <label class="block text-sm font-medium text-gray-300 mb-2">Instituição Financeira</label>
-                <select id="edit_instituicao_id" name="instituicao_id" required 
-                        class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <label class="block text-sm font-medium text-gray-300 mb-2">Instituição</label>
+                <select id="edit_instituicao_id" name="instituicao_id" required
+                    class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none">
                     {% for instituicao in instituicoes %}
-                        <option value="{{ instituicao.id }}">{{ instituicao.nome }}</option>
+                    <option value="{{ instituicao.id }}">{{ instituicao.nome }}</option>
                     {% endfor %}
                 </select>
             </div>
-            
+
             <div>
-                <label class="block text-sm font-medium text-gray-300 mb-2">Nome do Cartão</label>
-                <input type="text" id="edit_nome_cartao" name="nome_cartao" required 
-                       class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <label class="block text-sm font-medium text-gray-300 mb-2">Nome (Apelido)</label>
+                <input type="text" id="edit_nome_cartao" name="nome_cartao" required
+                    class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none">
             </div>
-            
+
             <div>
                 <label class="block text-sm font-medium text-gray-300 mb-2">Últimos 4 Dígitos</label>
-                <input type="text" id="edit_ultimos_digitos" name="ultimos_digitos" required maxlength="4" pattern="[0-9]{4}"
-                       class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <input type="text" id="edit_ultimos_digitos" name="ultimos_digitos" required maxlength="4"
+                    pattern="[0-9]{4}"
+                    class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none">
             </div>
-            
+
             <div>
-                <label class="block text-sm font-medium text-gray-300 mb-2">Limite Total</label>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Limite (R$)</label>
                 <input type="number" id="edit_limite_total" name="limite_total" step="0.01" min="0" required
-                       class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none">
             </div>
-            
+
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-2">Dia Fechamento</label>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Fechamento (Dia)</label>
                     <input type="number" id="edit_dia_fechamento" name="dia_fechamento" min="1" max="31" required
-                           class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-2">Dia Vencimento</label>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Vencimento (Dia)</label>
                     <input type="number" id="edit_dia_vencimento" name="dia_vencimento" min="1" max="31" required
-                           class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none">
                 </div>
             </div>
-            
+
             <div class="flex space-x-3 pt-4">
                 <button type="button" onclick="closeModalEditarCartao()"
-                        class="flex-1 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">
+                    class="flex-1 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">
                     Cancelar
                 </button>
                 <button type="submit"
-                        class="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg hover:from-purple-600 hover:to-pink-700 transition-all">
+                    class="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg hover:from-purple-600 hover:to-pink-700 transition-all font-medium">
                     Salvar
                 </button>
             </div>
@@ -233,41 +456,186 @@
 </div>
 
 <script>
-function openModalNovoCartao() {
-    document.getElementById('modalNovoCartao').classList.remove('hidden');
-    document.getElementById('modalNovoCartao').classList.add('flex');
-}
+    function openModalNovoCartao() {
+        document.getElementById('modalNovoCartao').classList.remove('hidden');
+        document.getElementById('modalNovoCartao').classList.add('flex');
+    }
 
-function closeModalNovoCartao() {
-    document.getElementById('modalNovoCartao').classList.add('hidden');
-    document.getElementById('modalNovoCartao').classList.remove('flex');
-}
+    function closeModalNovoCartao() {
+        document.getElementById('modalNovoCartao').classList.add('hidden');
+        document.getElementById('modalNovoCartao').classList.remove('flex');
+    }
 
-function openModalEditarCartao(id, instituicaoId, nomeCartao, ultimosDigitos, limiteTotal, diaFechamento, diaVencimento) {
-    document.getElementById('formEditarCartao').action = `/cartoes/editar/${id}`;
-    document.getElementById('edit_instituicao_id').value = instituicaoId;
-    document.getElementById('edit_nome_cartao').value = nomeCartao;
-    document.getElementById('edit_ultimos_digitos').value = ultimosDigitos;
-    document.getElementById('edit_limite_total').value = limiteTotal;
-    document.getElementById('edit_dia_fechamento').value = diaFechamento;
-    document.getElementById('edit_dia_vencimento').value = diaVencimento;
-    
-    document.getElementById('modalEditarCartao').classList.remove('hidden');
-    document.getElementById('modalEditarCartao').classList.add('flex');
-}
+    // Modal Detalhes do Cartão
+    async function openModalDetalhesCartao(id) {
+        const modal = document.getElementById('modalDetalhesCartao');
+        const list = document.getElementById('modal-expenses-list');
 
-function closeModalEditarCartao() {
-    document.getElementById('modalEditarCartao').classList.add('hidden');
-    document.getElementById('modalEditarCartao').classList.remove('flex');
-}
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
 
-// Fechar modal ao clicar fora
-document.getElementById('modalNovoCartao').addEventListener('click', function(e) {
-    if (e.target === this) closeModalNovoCartao();
-});
+        list.innerHTML = `
+            <div class="flex flex-col items-center justify-center py-20 gap-3">
+                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-500"></div>
+                <p class="text-gray-400 text-sm font-medium">Carregando lançamentos...</p>
+            </div>
+        `;
 
-document.getElementById('modalEditarCartao').addEventListener('click', function(e) {
-    if (e.target === this) closeModalEditarCartao();
-});
+        try {
+            const response = await fetch(`/cartoes/detalhes/${id}`);
+            const data = await response.json();
+
+            if (data.success) {
+                const c = data.cartao;
+                // Atualizar Header/Stats com valores calculados que já temos na página
+                // Mas aqui pegamos do JSON retornado no backend
+                document.getElementById('modal-card-name').innerText = c.nome_cartao;
+                document.getElementById('modal-card-bank').innerText = c.instituicao_nome;
+
+                // Formatação simples (para precisão total o backend poderia retornar esses stats também)
+                document.getElementById('modal-card-limit').innerText = `R$ ${c.limite_total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+                document.getElementById('modal-card-used').innerText = `R$ ${c.valor_bloqueado.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+                document.getElementById('modal-card-available').innerText = `R$ ${c.valor_disponivel.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+
+                // Renderizar despesas
+                if (data.despesas.length === 0) {
+                    list.innerHTML = `
+                        <div class="text-center py-12">
+                            <i class="fas fa-receipt text-gray-700 text-4xl mb-3"></i>
+                            <p class="text-gray-400">Nenhum lançamento encontrado para este cartão.</p>
+                        </div>
+                    `;
+                } else {
+                    list.innerHTML = data.despesas.map(d => {
+                        const date = new Date(d.data_inicio + 'T00:00:00');
+                        const day = date.getDate().toString().padStart(2, '0');
+                        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+
+                        return `
+                            <div class="bg-gray-800/40 border border-gray-700/50 p-4 rounded-2xl flex items-center justify-between hover:bg-gray-800 transition-all border-l-4 ${d.pago ? 'border-l-green-500' : 'border-l-red-500'} group">
+                                <div class="flex items-center gap-4">
+                                    <div class="text-center min-w-[40px]">
+                                        <p class="text-[10px] text-gray-500 uppercase font-bold">${month.toUpperCase()}</p>
+                                        <p class="text-base font-black text-white leading-none">${day}</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-bold text-white group-hover:text-purple-400 transition-colors uppercase tracking-wide">${d.categoria_nome}</h4>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-[10px] text-gray-400">${d.subcategoria_nome || 'Sem subcategoria'}</span>
+                                            ${d.numero_parcelas > 1 ? `<span class="bg-purple-500/10 text-purple-400 text-[10px] px-1.5 py-0.5 rounded border border-purple-500/20">${d.parcela_atual}/${d.numero_parcelas}</span>` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-black text-white">R$ ${d.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                                    <p class="text-[10px] ${d.pago ? 'text-green-500' : 'text-red-500'} font-bold uppercase tracking-widest">${d.pago ? 'Pago' : 'Pendente'}</p>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+        } catch (error) {
+            list.innerHTML = `<p class="text-red-400 text-center py-10">Erro ao carregar dados.</p>`;
+        }
+    }
+
+    function closeModalDetalhesCartao() {
+        document.getElementById('modalDetalhesCartao').classList.add('hidden');
+        document.getElementById('modalDetalhesCartao').classList.remove('flex');
+    }
+
+    function openModalEditarCartao(id, instituicaoId, nomeCartao, ultimosDigitos, limiteTotal, diaFechamento, diaVencimento) {
+        document.getElementById('formEditarCartao').action = `/cartoes/editar/${id}`;
+        document.getElementById('edit_instituicao_id').value = instituicaoId;
+        document.getElementById('edit_nome_cartao').value = nomeCartao;
+        document.getElementById('edit_ultimos_digitos').value = ultimosDigitos;
+        document.getElementById('edit_limite_total').value = limiteTotal;
+        document.getElementById('edit_dia_fechamento').value = diaFechamento;
+        document.getElementById('edit_dia_vencimento').value = diaVencimento;
+
+        document.getElementById('modalEditarCartao').classList.remove('hidden');
+        document.getElementById('modalEditarCartao').classList.add('flex');
+    }
+
+    function closeModalEditarCartao() {
+        document.getElementById('modalEditarCartao').classList.add('hidden');
+        document.getElementById('modalEditarCartao').classList.remove('flex');
+    }
+
+    // Tab Switching Logic
+    function switchTab(tabName) {
+        const tabCartoes = document.getElementById('tab-cartoes');
+        const tabFaturas = document.getElementById('tab-faturas');
+        const btnCartoes = document.getElementById('btn-cartoes');
+        const btnFaturas = document.getElementById('btn-faturas');
+
+        if (tabName === 'cartoes') {
+            tabCartoes.classList.remove('hidden');
+            tabFaturas.classList.add('hidden');
+
+            btnCartoes.classList.remove('text-gray-400', 'bg-gray-800/50');
+            btnCartoes.classList.add('text-white', 'bg-gray-800', 'shadow');
+
+            btnFaturas.classList.add('text-gray-400', 'hover:bg-gray-800/50');
+            btnFaturas.classList.remove('text-white', 'bg-gray-800', 'shadow');
+        } else {
+            tabCartoes.classList.add('hidden');
+            tabFaturas.classList.remove('hidden');
+
+            btnFaturas.classList.remove('text-gray-400', 'bg-gray-800/50');
+            btnFaturas.classList.add('text-white', 'bg-gray-800', 'shadow');
+
+            btnCartoes.classList.add('text-gray-400', 'hover:bg-gray-800/50');
+            btnCartoes.classList.remove('text-white', 'bg-gray-800', 'shadow');
+        }
+    }
+
+    // Auto switch tab if param present
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('tab_ativa') === 'faturas' || urlParams.get('mes')) {
+        switchTab('faturas');
+    }
+
+    // Accordion Logic
+    function toggleAccordion(id) {
+        const element = document.getElementById(id);
+        if (element.classList.contains('hidden')) {
+            element.classList.remove('hidden');
+        } else {
+            element.classList.add('hidden');
+        }
+    }
+
+    // Fechar modal ao clicar fora
+    document.getElementById('modalNovoCartao').addEventListener('click', function (e) {
+        if (e.target === this) closeModalNovoCartao();
+    });
+
+    document.getElementById('modalEditarCartao').addEventListener('click', function (e) {
+        if (e.target === this) closeModalEditarCartao();
+    });
+
+    document.getElementById('modalDetalhesCartao').addEventListener('click', function (e) {
+        if (e.target === this) closeModalDetalhesCartao();
+    });
 </script>
+<style>
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #374151;
+        border-radius: 10px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #4B5563;
+    }
+</style>
 {% endblock %}

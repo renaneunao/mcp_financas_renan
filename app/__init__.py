@@ -50,6 +50,17 @@ def create_app():
     # Filtro personalizado para datas
     app.jinja_env.filters['date_br'] = format_date_br
     
+    # Filtro slugify simples
+    import re
+    import unicodedata
+    def slugify(value):
+        value = str(value)
+        value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')
+        value = re.sub(r'[^\w\s-]', '', value).strip().lower()
+        return re.sub(r'[-\s]+', '-', value)
+    
+    app.jinja_env.filters['slugify'] = slugify
+    
     # Inicializar banco de dados
     with app.app_context():
         init_db()
