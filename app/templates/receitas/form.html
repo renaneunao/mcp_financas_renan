@@ -191,6 +191,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         const dataInicioField = document.getElementById('data_inicio');
         const tipoRecorrenciaField = document.getElementById('tipo_recorrencia');
+        const fixoCheckbox = document.getElementById('fixo');
 
         // Definir data de hoje se for um novo registro
         if (dataInicioField && !dataInicioField.value) {
@@ -205,7 +206,46 @@
         if (tipoRecorrenciaField && tipoRecorrenciaField.value === 'unica') {
             toggleRecurrenceFields('unica');
         }
+
+        // Listener no checkbox Receita Fixa
+        if (fixoCheckbox && tipoRecorrenciaField) {
+            fixoCheckbox.addEventListener('change', function () {
+                toggleUnicaOption(this.checked);
+            });
+            // Aplicar estado inicial se já vier marcado (ex: edição)
+            if (fixoCheckbox.checked) {
+                toggleUnicaOption(true);
+            }
+        }
     });
+
+    function toggleUnicaOption(fixoMarcado) {
+        const sel = document.getElementById('tipo_recorrencia');
+        if (!sel) return;
+        const optUnica = sel.querySelector('option[value="unica"]');
+
+        if (fixoMarcado) {
+            // Se "Única" está selecionada, mudar para Mensal antes de remover
+            if (sel.value === 'unica') {
+                sel.value = 'mensal';
+                toggleRecurrenceFields('mensal');
+            }
+            // Remover opção Única
+            if (optUnica) optUnica.remove();
+        } else {
+            // Restaurar opção Única como primeira opção
+            if (!optUnica) {
+                const opt = document.createElement('option');
+                opt.value = 'unica';
+                opt.className = 'bg-gray-800';
+                opt.textContent = 'Única (registro único)';
+                sel.insertBefore(opt, sel.firstChild);
+            }
+            // Selecionar Única e ocultar campos de recorrência
+            sel.value = 'unica';
+            toggleRecurrenceFields('unica');
+        }
+    }
 
     function toggleRecurrenceFields(tipoRecorrencia) {
         const dataFimField = document.getElementById('data_fim_field');

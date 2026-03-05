@@ -53,10 +53,7 @@ def index():
             cat.nome as categoria_nome,
             sub.nome as subcategoria_nome,
             strftime('%Y-%m', d.data_inicio) as mes_compra,
-            CASE 
-                WHEN strftime('%d', d.data_inicio) > c.dia_fechamento THEN strftime('%Y-%m', date(d.data_inicio, '+1 month'))
-                ELSE strftime('%Y-%m', d.data_inicio)
-            END as mes_vencimento
+            strftime('%Y-%m', d.data_inicio) as mes_vencimento
         FROM despesa d
         JOIN cartao_credito c ON d.cartao_id = c.id
         JOIN instituicao_financeira i ON c.instituicao_id = i.id
@@ -133,10 +130,7 @@ def index():
         SELECT cartao_id, SUM(valor) as total
         FROM (
             SELECT d.cartao_id, d.valor,
-            CASE 
-                WHEN strftime('%d', d.data_inicio) > c.dia_fechamento THEN strftime('%Y-%m', date(d.data_inicio, '+1 month'))
-                ELSE strftime('%Y-%m', d.data_inicio)
-            END as mes_vencimento
+            strftime('%Y-%m', d.data_inicio) as mes_vencimento
             FROM despesa d
             JOIN cartao_credito c ON d.cartao_id = c.id
             WHERE d.usuario_id = ? AND d.pago = 0 AND d.cartao_id IS NOT NULL
@@ -212,10 +206,7 @@ def detalhes(cartao_id):
     bloqueado_recorrente = conn.execute('''
         SELECT SUM(valor) as total FROM (
             SELECT d.valor,
-            CASE 
-                WHEN strftime('%d', d.data_inicio) > c.dia_fechamento THEN strftime('%Y-%m', date(d.data_inicio, '+1 month'))
-                ELSE strftime('%Y-%m', d.data_inicio)
-            END as mes_vencimento
+            strftime('%Y-%m', d.data_inicio) as mes_vencimento
             FROM despesa d
             JOIN cartao_credito c ON d.cartao_id = c.id
             WHERE d.usuario_id = ? AND d.cartao_id = ? AND d.pago = 0
