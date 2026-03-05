@@ -54,7 +54,7 @@
                     <span class="text-white font-bold">{{ banco }}</span>
                 </h3>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3">
                     {% for cartao in lista_cartoes %}
                     <div onclick="openModalDetalhesCartao({{ cartao.id }})"
                         class="bg-gray-800 rounded-lg shadow-md border border-gray-700 p-3 relative group hover:border-purple-500 transition-all hover:-translate-y-0.5 cursor-pointer">
@@ -288,7 +288,7 @@
         <!-- Body do Modal -->
         <div class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
             <!-- Stats Grid -->
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
                 <div class="bg-gray-800/40 p-4 rounded-2xl border border-gray-700">
                     <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider mb-1">Limite Total</p>
                     <p id="modal-card-limit" class="text-lg font-bold text-white">R$ 0,00</p>

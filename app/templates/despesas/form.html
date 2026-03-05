@@ -127,21 +127,7 @@
                         baseado no período</p>
                 </div>
 
-                <!-- Checkbox Fixo -->
-                <div id="fixo_container"
-                    class="flex items-center space-x-2.5 p-2 bg-gray-800/50 rounded-md border border-gray-600">
-                    <input type="checkbox" id="fixo" name="fixo" value="1" {{ 'checked' if despesa and despesa.fixo
-                        else '' }}
-                        class="w-3.5 h-3.5 text-red-600 bg-gray-700 border-gray-600 rounded focus:ring-red-500 focus:ring-2">
-                    <label for="fixo" class="text-xs font-medium text-gray-300 flex items-center">
-                        <i class="fas fa-thumbtack text-red-400 mr-1.5"></i>
-                        Despesa Fixa
-                    </label>
-                    <div class="flex-1">
-                        <p class="text-[10px] text-gray-500">Marque se é uma despesa rotineira (ex: telefone, aluguel).
-                            Será exibida como "Fixo" em vez de mostrar parcelas.</p>
-                    </div>
-                </div>
+
 
                 <!-- Data de Fim -->
                 <div id="data_fim_field" style="display: none;">
@@ -198,7 +184,25 @@
                     </div>
                 </div>
 
-                {% endif %} <!-- Valor -->
+                {% endif %}
+
+                <!-- Checkbox Fixo -->
+                <div id="fixo_container"
+                    class="flex items-center space-x-2.5 p-2 bg-gray-800/50 rounded-md border border-gray-600">
+                    <input type="checkbox" id="fixo" name="fixo" value="1" {{ 'checked' if despesa and despesa.fixo
+                        else '' }}
+                        class="w-3.5 h-3.5 text-red-600 bg-gray-700 border-gray-600 rounded focus:ring-red-500 focus:ring-2">
+                    <label for="fixo" class="text-xs font-medium text-gray-300 flex items-center">
+                        <i class="fas fa-thumbtack text-red-400 mr-1.5"></i>
+                        Despesa Fixa
+                    </label>
+                    <div class="flex-1">
+                        <p class="text-[10px] text-gray-500">Marque se é uma despesa rotineira (ex: telefone, aluguel).
+                            Será exibida como "Fixo" em vez de mostrar parcelas.</p>
+                    </div>
+                </div>
+
+                <!-- Valor -->
                 <div id="valor_container">
                     <label for="{{ 'valor' if despesa else 'valor_parcela' }}"
                         class="block text-xs font-medium text-gray-300 mb-1.5">
@@ -252,8 +256,8 @@
 <script>
     window.despesaContext = {
         id: {{ (despesa['id'] if despesa else None)| tojson }},
-    tipoRecorrencia: {{ (despesa['tipo_recorrencia'] if despesa else 'unica')| tojson }},
-    isEdicao: {{ (True if despesa else False)| tojson }}
+    tipoRecorrencia: { { (despesa['tipo_recorrencia'] if despesa else 'unica')| tojson } },
+    isEdicao: { { (True if despesa else False)| tojson } }
     };
 </script>
 <script src="{{ url_for('static', filename='js/despesas_form.js') }}"></script>

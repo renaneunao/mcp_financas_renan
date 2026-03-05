@@ -4,7 +4,8 @@
 
 {% block header %}
 <div class="flex items-center">
-    <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-600 rounded-lg flex items-center justify-center mr-3">
+    <div
+        class="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-600 rounded-lg flex items-center justify-center mr-3">
         <i class="fas fa-user-cog text-white"></i>
     </div>
     <div>
@@ -16,7 +17,7 @@
 
 {% block content %}
 <div class="max-w-6xl mx-auto">
-    <div class="grid lg:grid-cols-3 gap-6">
+    <div class="grid lg:grid-cols-2 gap-6">
         <!-- Card do Perfil Principal (2/3 da largura) -->
         <div class="lg:col-span-2">
             <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl overflow-hidden">
@@ -24,19 +25,20 @@
                 <div class="bg-gradient-to-r from-purple-600 to-blue-600 p-6">
                     <div class="flex items-center">
                         {% set foto_path = 'img/profile_users/' + session.username + '.jpg' %}
-                        <div class="w-20 h-20 rounded-full overflow-hidden mr-6 backdrop-blur-sm border-2 border-white/30">
+                        <div
+                            class="w-20 h-20 rounded-full overflow-hidden mr-6 backdrop-blur-sm border-2 border-white/30">
                             {% if url_for('static', filename=foto_path) %}
-                                <img src="{{ url_for('static', filename=foto_path) }}" 
-                                     alt="Foto de {{ session.username }}" 
-                                     class="w-full h-full object-cover"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="w-full h-full bg-white/20 flex items-center justify-center" style="display: none;">
-                                    <i class="fas fa-user text-white text-2xl"></i>
-                                </div>
+                            <img src="{{ url_for('static', filename=foto_path) }}" alt="Foto de {{ session.username }}"
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="w-full h-full bg-white/20 flex items-center justify-center"
+                                style="display: none;">
+                                <i class="fas fa-user text-white text-2xl"></i>
+                            </div>
                             {% else %}
-                                <div class="w-full h-full bg-white/20 flex items-center justify-center">
-                                    <i class="fas fa-user text-white text-2xl"></i>
-                                </div>
+                            <div class="w-full h-full bg-white/20 flex items-center justify-center">
+                                <i class="fas fa-user text-white text-2xl"></i>
+                            </div>
                             {% endif %}
                         </div>
                         <div class="text-white">
@@ -64,20 +66,25 @@
                                     <!-- Preview da foto atual -->
                                     <div class="relative">
                                         {% set foto_path = 'img/profile_users/' + session.username + '.jpg' %}
-                                        <div id="profilePreview" class="w-24 h-24 rounded-full overflow-hidden border-2 border-purple-400">
+                                        <div id="profilePreview"
+                                            class="w-24 h-24 rounded-full overflow-hidden border-2 border-purple-400">
                                             {% if url_for('static', filename=foto_path) %}
-                                                <img id="currentProfileImg" src="{{ url_for('static', filename=foto_path) }}" 
-                                                     alt="Foto de {{ session.username }}" 
-                                                     class="w-full h-full object-cover"
-                                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                                <div id="defaultProfileIcon" class="w-full h-full bg-gradient-to-r from-purple-500 to-blue-600 flex items-center justify-center" style="display: none;">
-                                                    <i class="fas fa-user text-white text-xl"></i>
-                                                </div>
+                                            <img id="currentProfileImg"
+                                                src="{{ url_for('static', filename=foto_path) }}"
+                                                alt="Foto de {{ session.username }}" class="w-full h-full object-cover"
+                                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                            <div id="defaultProfileIcon"
+                                                class="w-full h-full bg-gradient-to-r from-purple-500 to-blue-600 flex items-center justify-center"
+                                                style="display: none;">
+                                                <i class="fas fa-user text-white text-xl"></i>
+                                            </div>
                                             {% else %}
-                                                <img id="currentProfileImg" style="display: none;" class="w-full h-full object-cover">
-                                                <div id="defaultProfileIcon" class="w-full h-full bg-gradient-to-r from-purple-500 to-blue-600 flex items-center justify-center">
-                                                    <i class="fas fa-user text-white text-xl"></i>
-                                                </div>
+                                            <img id="currentProfileImg" style="display: none;"
+                                                class="w-full h-full object-cover">
+                                            <div id="defaultProfileIcon"
+                                                class="w-full h-full bg-gradient-to-r from-purple-500 to-blue-600 flex items-center justify-center">
+                                                <i class="fas fa-user text-white text-xl"></i>
+                                            </div>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -86,18 +93,20 @@
                                     <div class="flex-1">
                                         <p class="text-gray-300 mb-4">Personalize seu perfil com uma foto</p>
                                         <div class="flex space-x-3">
-                                            <button type="button" onclick="document.getElementById('profilePhotoUpload').click()" 
-                                                    class="flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors">
+                                            <button type="button"
+                                                onclick="document.getElementById('profilePhotoUpload').click()"
+                                                class="flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors">
                                                 <i class="fas fa-upload mr-2"></i>
                                                 Adicionar Foto
                                             </button>
                                             <button type="button" onclick="removeProfilePhoto()" id="removePhotoBtn"
-                                                    class="flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors">
+                                                class="flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors">
                                                 <i class="fas fa-trash mr-2"></i>
                                                 Remover Foto
                                             </button>
                                         </div>
-                                        <input type="file" id="profilePhotoUpload" accept="image/*" style="display: none;" onchange="uploadProfilePhoto(this)">
+                                        <input type="file" id="profilePhotoUpload" accept="image/*"
+                                            style="display: none;" onchange="uploadProfilePhoto(this)">
                                     </div>
                                 </div>
                             </div>
@@ -121,12 +130,8 @@
                                     <label for="nome" class="block text-sm font-medium text-gray-300">
                                         <i class="fas fa-user mr-2 text-blue-400"></i>Nome Completo
                                     </label>
-                                    <input type="text" 
-                                           id="nome" 
-                                           name="nome" 
-                                           value="{{ user.nome_completo }}"
-                                           required
-                                           class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                    <input type="text" id="nome" name="nome" value="{{ user.nome_completo }}" required
+                                        class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
                                 </div>
 
                                 <!-- Nome de Usuário (somente leitura) -->
@@ -134,10 +139,8 @@
                                     <label class="block text-sm font-medium text-gray-300">
                                         <i class="fas fa-at mr-2 text-purple-400"></i>Nome de Usuário
                                     </label>
-                                    <input type="text" 
-                                           value="{{ user.username }}"
-                                           disabled
-                                           class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-gray-400 cursor-not-allowed">
+                                    <input type="text" value="{{ user.username }}" disabled
+                                        class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl text-gray-400 cursor-not-allowed">
                                     <p class="text-xs text-gray-500">O nome de usuário não pode ser alterado</p>
                                 </div>
                             </div>
@@ -153,20 +156,19 @@
                                     <i class="fas fa-lock text-red-400"></i>
                                 </div>
                                 <h3 class="text-xl font-semibold text-white">Segurança</h3>
-                                <span class="ml-auto text-xs bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-full">Opcional</span>
+                                <span
+                                    class="ml-auto text-xs bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-full">Opcional</span>
                             </div>
 
-                            <div class="grid md:grid-cols-3 gap-6">
+                            <div class="grid md:grid-cols-2 gap-6">
                                 <!-- Senha Atual -->
                                 <div class="space-y-2">
                                     <label for="senha_atual" class="block text-sm font-medium text-gray-300">
                                         <i class="fas fa-key mr-2 text-yellow-400"></i>Senha Atual
                                     </label>
-                                    <input type="password" 
-                                           id="senha_atual" 
-                                           name="senha_atual"
-                                           placeholder="Digite sua senha atual"
-                                           class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200">
+                                    <input type="password" id="senha_atual" name="senha_atual"
+                                        placeholder="Digite sua senha atual"
+                                        class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200">
                                 </div>
 
                                 <!-- Nova Senha -->
@@ -174,11 +176,9 @@
                                     <label for="nova_senha" class="block text-sm font-medium text-gray-300">
                                         <i class="fas fa-shield-alt mr-2 text-green-400"></i>Nova Senha
                                     </label>
-                                    <input type="password" 
-                                           id="nova_senha" 
-                                           name="nova_senha"
-                                           placeholder="Mínimo 6 caracteres"
-                                           class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
+                                    <input type="password" id="nova_senha" name="nova_senha"
+                                        placeholder="Mínimo 6 caracteres"
+                                        class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
                                 </div>
 
                                 <!-- Confirmar Nova Senha -->
@@ -186,11 +186,9 @@
                                     <label for="confirmar_senha" class="block text-sm font-medium text-gray-300">
                                         <i class="fas fa-check-double mr-2 text-blue-400"></i>Confirmar Senha
                                     </label>
-                                    <input type="password" 
-                                           id="confirmar_senha" 
-                                           name="confirmar_senha"
-                                           placeholder="Repita a nova senha"
-                                           class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                    <input type="password" id="confirmar_senha" name="confirmar_senha"
+                                        placeholder="Repita a nova senha"
+                                        class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
                                 </div>
                             </div>
 
@@ -211,14 +209,14 @@
 
                         <!-- Botões de Ação -->
                         <div class="flex justify-between items-center pt-6 border-t border-gray-700">
-                            <a href="{{ url_for('dashboard.index') }}" 
-                               class="flex items-center px-6 py-3 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-xl transition-all duration-200 group">
+                            <a href="{{ url_for('dashboard.index') }}"
+                                class="flex items-center px-6 py-3 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-xl transition-all duration-200 group">
                                 <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
                                 Voltar
                             </a>
-                            
-                            <button type="submit" 
-                                    class="flex items-center px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-xl font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
+
+                            <button type="submit"
+                                class="flex items-center px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-xl font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
                                 <i class="fas fa-save mr-2"></i>
                                 Salvar Alterações
                             </button>
@@ -237,7 +235,7 @@
                     </div>
                     <h3 class="text-xl font-semibold text-white">Informações da Conta</h3>
                 </div>
-                
+
                 <div class="space-y-4">
                     <div class="bg-gray-800/50 rounded-xl p-4">
                         <div class="flex items-center">
@@ -246,11 +244,12 @@
                             </div>
                             <div>
                                 <p class="text-gray-400 text-sm">Membro desde</p>
-                                <p class="text-white font-semibold">{{ user.data_criacao.strftime('%d/%m/%Y') if user.data_criacao else 'N/A' }}</p>
+                                <p class="text-white font-semibold">{{ user.data_criacao.strftime('%d/%m/%Y') if
+                                    user.data_criacao else 'N/A' }}</p>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="bg-gray-800/50 rounded-xl p-4">
                         <div class="flex items-center">
                             <div class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mr-4">
@@ -262,7 +261,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="bg-gray-800/50 rounded-xl p-4">
                         <div class="flex items-center">
                             <div class="w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center mr-4">
@@ -275,7 +274,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Estatísticas Adicionais -->
                 <div class="mt-6 pt-6 border-t border-gray-700">
                     <h4 class="text-lg font-semibold text-white mb-4 flex items-center">
@@ -299,288 +298,287 @@
 </div>
 
 <script>
-// Validação em tempo real das senhas
-document.addEventListener('DOMContentLoaded', function() {
-    const novaSenha = document.getElementById('nova_senha');
-    const confirmarSenha = document.getElementById('confirmar_senha');
-    const senhaAtual = document.getElementById('senha_atual');
-    
-    function validarSenhas() {
-        if (novaSenha.value && confirmarSenha.value) {
-            if (novaSenha.value === confirmarSenha.value) {
-                confirmarSenha.classList.remove('border-red-500');
-                confirmarSenha.classList.add('border-green-500');
-            } else {
-                confirmarSenha.classList.remove('border-green-500');
-                confirmarSenha.classList.add('border-red-500');
-            }
-        }
-    }
-    
-    novaSenha.addEventListener('input', validarSenhas);
-    confirmarSenha.addEventListener('input', validarSenhas);
-    
-    // Se preencheu nova senha, senha atual é obrigatória
-    novaSenha.addEventListener('input', function() {
-        if (this.value) {
-            senhaAtual.required = true;
-            senhaAtual.classList.add('border-yellow-500');
-        } else {
-            senhaAtual.required = false;
-            senhaAtual.classList.remove('border-yellow-500');
-        }
-    });
-});
+    // Validação em tempo real das senhas
+    document.addEventListener('DOMContentLoaded', function () {
+        const novaSenha = document.getElementById('nova_senha');
+        const confirmarSenha = document.getElementById('confirmar_senha');
+        const senhaAtual = document.getElementById('senha_atual');
 
-// Funções para gerenciamento de foto de perfil
-function uploadProfilePhoto(input) {
-    if (input.files && input.files[0]) {
-        const file = input.files[0];
-        
-        // Validar tipo de arquivo
-        if (!file.type.startsWith('image/')) {
-            showToast('Por favor, selecione apenas arquivos de imagem.', 'error');
-            return;
-        }
-        
-        // Validar tamanho (máximo 5MB)
-        if (file.size > 5 * 1024 * 1024) {
-            showToast('A imagem deve ter no máximo 5MB.', 'error');
-            return;
-        }
-        
-        // Mostrar preview
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            // Armazenar o arquivo para o crop
-            currentFile = file;
-            
-            // Abrir modal de crop
-            const cropModal = document.getElementById('cropModal');
-            const cropImage = document.getElementById('cropImage');
-            
-            cropImage.src = e.target.result;
-            cropModal.classList.remove('hidden');
-            cropModal.classList.add('flex');
-            
-            // Inicializar cropper
-            if (cropper) {
-                cropper.destroy();
+        function validarSenhas() {
+            if (novaSenha.value && confirmarSenha.value) {
+                if (novaSenha.value === confirmarSenha.value) {
+                    confirmarSenha.classList.remove('border-red-500');
+                    confirmarSenha.classList.add('border-green-500');
+                } else {
+                    confirmarSenha.classList.remove('border-green-500');
+                    confirmarSenha.classList.add('border-red-500');
+                }
             }
-            
-            cropper = new Cropper(cropImage, {
-                aspectRatio: 1, // Quadrado
-                viewMode: 2,
-                autoCropArea: 0.8,
-                responsive: true,
-                restore: false,
-                guides: true,
-                highlight: false,
-                cropBoxMovable: true,
-                cropBoxResizable: true,
-                toggleDragModeOnDblclick: false,
-            });
-        };
-        
-        reader.readAsDataURL(file);
-    }
-}
+        }
 
-function removeProfilePhoto() {
-    if (confirm('Tem certeza que deseja remover sua foto de perfil?')) {
-        fetch('/auth/remove-photo', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Atualizar preview na página de perfil
-                const currentImg = document.getElementById('currentProfileImg');
-                const defaultIcon = document.getElementById('defaultProfileIcon');
-                
-                currentImg.style.display = 'none';
-                defaultIcon.style.display = 'flex';
-                
-                // Atualizar também na sidebar se estiver visível
-                const sidebarImg = document.querySelector('.w-12.h-12.rounded-full img');
-                if (sidebarImg) {
-                    sidebarImg.style.display = 'none';
-                    const sidebarDefault = sidebarImg.nextElementSibling;
-                    if (sidebarDefault) {
-                        sidebarDefault.style.display = 'flex';
-                    }
-                }
-                
-                // Mostrar ícone de câmera na sidebar
-                if (window.showCameraIcon) {
-                    window.showCameraIcon();
-                }
-                
-                showToast('Foto de perfil removida com sucesso!', 'success');
+        novaSenha.addEventListener('input', validarSenhas);
+        confirmarSenha.addEventListener('input', validarSenhas);
+
+        // Se preencheu nova senha, senha atual é obrigatória
+        novaSenha.addEventListener('input', function () {
+            if (this.value) {
+                senhaAtual.required = true;
+                senhaAtual.classList.add('border-yellow-500');
             } else {
-                showToast(data.message || 'Erro ao remover foto de perfil', 'error');
+                senhaAtual.required = false;
+                senhaAtual.classList.remove('border-yellow-500');
             }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            showToast('Erro ao remover foto de perfil', 'error');
         });
-    }
-}
-
-// Função para aplicar o crop na página de perfil
-function applyCropFromProfile() {
-    if (!cropper) return;
-    
-    const canvas = cropper.getCroppedCanvas({
-        width: 300,
-        height: 300,
-        imageSmoothingEnabled: true,
-        imageSmoothingQuality: 'high'
     });
-    
-    if (!canvas) {
-        showToast('Erro ao processar a imagem. Tente novamente.', 'error');
-        return;
-    }
-    
-    canvas.toBlob(function(blob) {
-        if (!blob) {
-            showToast('Erro ao gerar a imagem. Tente novamente.', 'error');
-            return;
-        }
-        
-        // Mostrar loading no preview
-        const preview = document.getElementById('profilePreview');
-        const originalContent = preview.innerHTML;
-        preview.innerHTML = '<div class="w-full h-full bg-gray-600 flex items-center justify-center"><i class="fas fa-spinner fa-spin text-white"></i></div>';
-        
-        // Criar FormData com a imagem recortada
-        const formData = new FormData();
-        const fileName = currentFile ? currentFile.name : 'profile.jpg';
-        formData.append('photo', blob, fileName);
-        
-        // Fazer upload
-        fetch('/auth/upload-photo', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Fechar modal
-                closeCropModal();
-                
-                // Atualizar preview na página de perfil
-                const timestamp = new Date().getTime();
-                const newImageSrc = data.photo_url + '?t=' + timestamp;
-                
-                const currentImg = document.getElementById('currentProfileImg');
-                const defaultIcon = document.getElementById('defaultProfileIcon');
-                
-                currentImg.src = newImageSrc;
-                currentImg.style.display = 'block';
-                defaultIcon.style.display = 'none';
-                
-                // Atualizar também na sidebar
-                const sidebarImg = document.querySelector('.w-12.h-12.rounded-full img');
-                if (sidebarImg) {
-                    sidebarImg.src = newImageSrc;
-                    sidebarImg.style.display = 'block';
-                    const sidebarDefault = sidebarImg.nextElementSibling;
-                    if (sidebarDefault) {
-                        sidebarDefault.style.display = 'none';
-                    }
-                }
-                
-                // Esconder ícone de câmera na sidebar
-                if (window.hideCameraIcon) {
-                    window.hideCameraIcon();
-                }
-                
-                showToast('Foto de perfil atualizada com sucesso!', 'success');
-            } else {
-                preview.innerHTML = originalContent;
-                showToast(data.message || 'Erro ao atualizar foto de perfil', 'error');
+
+    // Funções para gerenciamento de foto de perfil
+    function uploadProfilePhoto(input) {
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+
+            // Validar tipo de arquivo
+            if (!file.type.startsWith('image/')) {
+                showToast('Por favor, selecione apenas arquivos de imagem.', 'error');
+                return;
             }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            preview.innerHTML = originalContent;
-            showToast('Erro ao atualizar foto de perfil', 'error');
-        });
-    }, 'image/jpeg', 0.9);
-}
 
-// Sobrescrever a função applyCrop quando estiver na página de perfil
-if (window.applyCrop) {
-    window.applyCrop = applyCropFromProfile;
-}
+            // Validar tamanho (máximo 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('A imagem deve ter no máximo 5MB.', 'error');
+                return;
+            }
 
-// Controlar visibilidade do botão remover foto
-document.addEventListener('DOMContentLoaded', function() {
-    const currentImg = document.getElementById('currentProfileImg');
-    const removeBtn = document.getElementById('removePhotoBtn');
-    
-    if (currentImg && removeBtn) {
-        // Se a imagem não está visível ou não existe, esconder o botão
-        if (currentImg.style.display === 'none' || !currentImg.src || currentImg.src.includes('default')) {
-            removeBtn.style.display = 'none';
+            // Mostrar preview
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                // Armazenar o arquivo para o crop
+                currentFile = file;
+
+                // Abrir modal de crop
+                const cropModal = document.getElementById('cropModal');
+                const cropImage = document.getElementById('cropImage');
+
+                cropImage.src = e.target.result;
+                cropModal.classList.remove('hidden');
+                cropModal.classList.add('flex');
+
+                // Inicializar cropper
+                if (cropper) {
+                    cropper.destroy();
+                }
+
+                cropper = new Cropper(cropImage, {
+                    aspectRatio: 1, // Quadrado
+                    viewMode: 2,
+                    autoCropArea: 0.8,
+                    responsive: true,
+                    restore: false,
+                    guides: true,
+                    highlight: false,
+                    cropBoxMovable: true,
+                    cropBoxResizable: true,
+                    toggleDragModeOnDblclick: false,
+                });
+            };
+
+            reader.readAsDataURL(file);
         }
-        
-        // Observar mudanças na imagem para mostrar/esconder o botão
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-                    if (currentImg.style.display === 'none') {
-                        removeBtn.style.display = 'none';
+    }
+
+    function removeProfilePhoto() {
+        if (confirm('Tem certeza que deseja remover sua foto de perfil?')) {
+            fetch('/auth/remove-photo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Atualizar preview na página de perfil
+                        const currentImg = document.getElementById('currentProfileImg');
+                        const defaultIcon = document.getElementById('defaultProfileIcon');
+
+                        currentImg.style.display = 'none';
+                        defaultIcon.style.display = 'flex';
+
+                        // Atualizar também na sidebar se estiver visível
+                        const sidebarImg = document.querySelector('.w-12.h-12.rounded-full img');
+                        if (sidebarImg) {
+                            sidebarImg.style.display = 'none';
+                            const sidebarDefault = sidebarImg.nextElementSibling;
+                            if (sidebarDefault) {
+                                sidebarDefault.style.display = 'flex';
+                            }
+                        }
+
+                        // Mostrar ícone de câmera na sidebar
+                        if (window.showCameraIcon) {
+                            window.showCameraIcon();
+                        }
+
+                        showToast('Foto de perfil removida com sucesso!', 'success');
                     } else {
-                        removeBtn.style.display = 'flex';
+                        showToast(data.message || 'Erro ao remover foto de perfil', 'error');
                     }
-                }
-            });
-        });
-        
-        observer.observe(currentImg, { attributes: true });
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    showToast('Erro ao remover foto de perfil', 'error');
+                });
+        }
     }
-});
 
-// Função de toast simples para a página de perfil
-function showToast(message, type = 'info') {
-    // Criar elemento de toast
-    const toast = document.createElement('div');
-    toast.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300 ${
-        type === 'success' ? 'bg-green-600 text-white' : 
-        type === 'error' ? 'bg-red-600 text-white' : 
-        'bg-blue-600 text-white'
-    }`;
-    
-    toast.innerHTML = `
+    // Função para aplicar o crop na página de perfil
+    function applyCropFromProfile() {
+        if (!cropper) return;
+
+        const canvas = cropper.getCroppedCanvas({
+            width: 300,
+            height: 300,
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: 'high'
+        });
+
+        if (!canvas) {
+            showToast('Erro ao processar a imagem. Tente novamente.', 'error');
+            return;
+        }
+
+        canvas.toBlob(function (blob) {
+            if (!blob) {
+                showToast('Erro ao gerar a imagem. Tente novamente.', 'error');
+                return;
+            }
+
+            // Mostrar loading no preview
+            const preview = document.getElementById('profilePreview');
+            const originalContent = preview.innerHTML;
+            preview.innerHTML = '<div class="w-full h-full bg-gray-600 flex items-center justify-center"><i class="fas fa-spinner fa-spin text-white"></i></div>';
+
+            // Criar FormData com a imagem recortada
+            const formData = new FormData();
+            const fileName = currentFile ? currentFile.name : 'profile.jpg';
+            formData.append('photo', blob, fileName);
+
+            // Fazer upload
+            fetch('/auth/upload-photo', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Fechar modal
+                        closeCropModal();
+
+                        // Atualizar preview na página de perfil
+                        const timestamp = new Date().getTime();
+                        const newImageSrc = data.photo_url + '?t=' + timestamp;
+
+                        const currentImg = document.getElementById('currentProfileImg');
+                        const defaultIcon = document.getElementById('defaultProfileIcon');
+
+                        currentImg.src = newImageSrc;
+                        currentImg.style.display = 'block';
+                        defaultIcon.style.display = 'none';
+
+                        // Atualizar também na sidebar
+                        const sidebarImg = document.querySelector('.w-12.h-12.rounded-full img');
+                        if (sidebarImg) {
+                            sidebarImg.src = newImageSrc;
+                            sidebarImg.style.display = 'block';
+                            const sidebarDefault = sidebarImg.nextElementSibling;
+                            if (sidebarDefault) {
+                                sidebarDefault.style.display = 'none';
+                            }
+                        }
+
+                        // Esconder ícone de câmera na sidebar
+                        if (window.hideCameraIcon) {
+                            window.hideCameraIcon();
+                        }
+
+                        showToast('Foto de perfil atualizada com sucesso!', 'success');
+                    } else {
+                        preview.innerHTML = originalContent;
+                        showToast(data.message || 'Erro ao atualizar foto de perfil', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    preview.innerHTML = originalContent;
+                    showToast('Erro ao atualizar foto de perfil', 'error');
+                });
+        }, 'image/jpeg', 0.9);
+    }
+
+    // Sobrescrever a função applyCrop quando estiver na página de perfil
+    if (window.applyCrop) {
+        window.applyCrop = applyCropFromProfile;
+    }
+
+    // Controlar visibilidade do botão remover foto
+    document.addEventListener('DOMContentLoaded', function () {
+        const currentImg = document.getElementById('currentProfileImg');
+        const removeBtn = document.getElementById('removePhotoBtn');
+
+        if (currentImg && removeBtn) {
+            // Se a imagem não está visível ou não existe, esconder o botão
+            if (currentImg.style.display === 'none' || !currentImg.src || currentImg.src.includes('default')) {
+                removeBtn.style.display = 'none';
+            }
+
+            // Observar mudanças na imagem para mostrar/esconder o botão
+            const observer = new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                        if (currentImg.style.display === 'none') {
+                            removeBtn.style.display = 'none';
+                        } else {
+                            removeBtn.style.display = 'flex';
+                        }
+                    }
+                });
+            });
+
+            observer.observe(currentImg, { attributes: true });
+        }
+    });
+
+    // Função de toast simples para a página de perfil
+    function showToast(message, type = 'info') {
+        // Criar elemento de toast
+        const toast = document.createElement('div');
+        toast.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300 ${type === 'success' ? 'bg-green-600 text-white' :
+                type === 'error' ? 'bg-red-600 text-white' :
+                    'bg-blue-600 text-white'
+            }`;
+
+        toast.innerHTML = `
         <div class="flex items-center">
             <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle'} mr-2"></i>
             ${message}
         </div>
     `;
-    
-    document.body.appendChild(toast);
-    
-    // Animar entrada
-    setTimeout(() => {
-        toast.classList.remove('translate-x-full');
-    }, 100);
-    
-    // Auto remover após 3 segundos
-    setTimeout(() => {
-        toast.classList.add('translate-x-full');
+
+        document.body.appendChild(toast);
+
+        // Animar entrada
         setTimeout(() => {
-            if (document.body.contains(toast)) {
-                document.body.removeChild(toast);
-            }
-        }, 300);
-    }, 3000);
-}
+            toast.classList.remove('translate-x-full');
+        }, 100);
+
+        // Auto remover após 3 segundos
+        setTimeout(() => {
+            toast.classList.add('translate-x-full');
+            setTimeout(() => {
+                if (document.body.contains(toast)) {
+                    document.body.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
+    }
 </script>
 {% endblock %}

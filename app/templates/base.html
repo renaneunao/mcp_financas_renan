@@ -220,11 +220,15 @@
     </style>
 </head>
 
-<body class="bg-gradient-to-br from-gray-900 to-gray-800 font-sans text-sm md:text-base">
-    <div class="flex h-screen">
+<body class="bg-gradient-to-br from-gray-900 to-gray-800 font-sans text-xs sm:text-sm md:text-base">
+    <div class="flex h-screen relative overflow-hidden">
+        <!-- Overlay for mobile sidebar -->
+        <div id="sidebarOverlay" onclick="toggleSidebar()"
+            class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden"></div>
+
         <!-- Sidebar -->
-        <div
-            class="relative w-36 md:w-52 lg:w-60 bg-gradient-to-b from-gray-900 to-gray-800 text-white shadow-2xl flex flex-col">
+        <div id="sidebar"
+            class="fixed inset-y-0 left-0 z-50 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out w-64 md:w-52 lg:w-60 bg-gradient-to-b from-gray-900 to-gray-800 text-white shadow-2xl flex flex-col">
             <!-- Logo/Brand -->
             <div class="p-2.5 md:p-4 border-b border-gray-700">
                 <!-- Logo Grande Centralizado -->
@@ -435,10 +439,16 @@
         <div class="flex-1 flex flex-col">
             <!-- Header -->
             <header class="bg-gradient-to-r from-gray-800 to-gray-700 shadow-lg border-b border-gray-600">
-                <div class="px-3 py-2 md:px-6 md:py-4">
-                    <h2 class="text-lg md:text-xl lg:text-2xl font-semibold text-white">
-                        {% block header %}Dashboard{% endblock %}
-                    </h2>
+                <div class="px-3 py-2 md:px-6 md:py-4 flex items-center">
+                    <button onclick="toggleSidebar()"
+                        class="md:hidden text-gray-300 hover:text-white mr-3 flex-shrink-0 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <div class="flex-1 min-w-0">
+                        <h2 class="text-lg md:text-xl lg:text-2xl font-semibold text-white w-full">
+                            {% block header %}Dashboard{% endblock %}
+                        </h2>
+                    </div>
                 </div>
             </header>
 
@@ -468,6 +478,19 @@
 
     <!-- Scripts -->
     <script>
+        // Função para alternar a sidebar no mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+
+            sidebar.classList.toggle('-translate-x-full');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                overlay.classList.add('hidden');
+            } else {
+                overlay.classList.remove('hidden');
+            }
+        }
+
         // Função para controlar o menu de categorias
         function toggleCategorias() {
             const submenu = document.getElementById('categorias-submenu');
