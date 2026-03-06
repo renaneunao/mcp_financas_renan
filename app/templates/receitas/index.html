@@ -11,12 +11,12 @@
         </div>
         <div>
             <h1 class="text-xl font-bold text-white">Receitas</h1>
-            <p class="text-gray-300 text-xs">Gerencie suas receitas e rendimentos</p>
+            <p class="text-gray-300 text-xs hidden sm:block">Gerencie suas receitas e rendimentos</p>
         </div>
     </div>
     <a href="{{ url_for('receitas.nova') }}"
-        class="flex items-center px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white rounded-lg font-medium transition-all duration-200">
-        <i class="fas fa-plus mr-2 text-sm"></i>Nova Receita
+        class="flex items-center px-3 py-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white rounded-lg font-medium transition-all duration-200 text-sm">
+        <i class="fas fa-plus mr-1 text-sm"></i><span class="hidden sm:inline">Nova </span>Receita
     </a>
 </div>
 {% endblock %}
@@ -25,118 +25,115 @@
 <div class="max-w-full mx-auto space-y-3">
     <!-- Filtros Compactos -->
     <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg shadow-2xl p-3">
-        <form method="GET" id="filtroReceitasForm" class="flex items-center gap-2 flex-wrap">
-            <!-- Filtro de Categoria -->
-            <div class="flex items-center gap-2 min-w-0 flex-1">
-                <i class="fas fa-folder text-green-400 text-xs"></i>
-                <select name="categoria" id="categoriaSelect"
-                    class="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
-                    <option value="">Categoria</option>
-                    {% for categoria in categorias %}
-                    <option value="{{ categoria.id }}" {% if request.args.get('categoria')==categoria.id|string
-                        %}selected{% endif %}>
-                        {{ categoria.nome }}
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
+        <form method="GET" id="filtroReceitasForm">
+            <div class="grid grid-cols-2 md:flex md:items-center gap-2">
+                <!-- Filtro de Categoria -->
+                <div class="flex items-center gap-1 min-w-0 col-span-1">
+                    <i class="fas fa-folder text-green-400 text-xs hidden sm:block"></i>
+                    <select name="categoria" id="categoriaSelect"
+                        class="w-full px-2 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white text-xs focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
+                        <option value="">Categoria</option>
+                        {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}" {% if request.args.get('categoria')==categoria.id|string
+                            %}selected{% endif %}>
+                            {{ categoria.nome }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-            <!-- Filtro de Subcategoria -->
-            <div class="flex items-center gap-2 min-w-0 flex-1">
-                <i class="fas fa-folder-open text-green-400 text-xs"></i>
-                <select name="subcategoria" id="subcategoriaSelect"
-                    class="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                    disabled>
-                    <option value="">Subcategoria</option>
-                </select>
-            </div>
+                <!-- Filtro de Subcategoria -->
+                <div class="flex items-center gap-1 min-w-0 col-span-1">
+                    <i class="fas fa-folder-open text-green-400 text-xs hidden sm:block"></i>
+                    <select name="subcategoria" id="subcategoriaSelect"
+                        class="w-full px-2 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white text-xs focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                        disabled>
+                        <option value="">Subcategoria</option>
+                    </select>
+                </div>
 
-            <!-- Filtro de Mês -->
-            <div class="flex items-center gap-2 min-w-0 flex-1">
-                <i class="fas fa-calendar-alt text-green-400 text-xs"></i>
-                <select name="mes"
-                    class="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
-                    <option value="">Mês</option>
-                    <option value="1" {% if mes_selecionado=='1' %}selected{% endif %}>Jan</option>
-                    <option value="2" {% if mes_selecionado=='2' %}selected{% endif %}>Fev</option>
-                    <option value="3" {% if mes_selecionado=='3' %}selected{% endif %}>Mar</option>
-                    <option value="4" {% if mes_selecionado=='4' %}selected{% endif %}>Abr</option>
-                    <option value="5" {% if mes_selecionado=='5' %}selected{% endif %}>Mai</option>
-                    <option value="6" {% if mes_selecionado=='6' %}selected{% endif %}>Jun</option>
-                    <option value="7" {% if mes_selecionado=='7' %}selected{% endif %}>Jul</option>
-                    <option value="8" {% if mes_selecionado=='8' %}selected{% endif %}>Ago</option>
-                    <option value="9" {% if mes_selecionado=='9' %}selected{% endif %}>Set</option>
-                    <option value="10" {% if mes_selecionado=='10' %}selected{% endif %}>Out</option>
-                    <option value="11" {% if mes_selecionado=='11' %}selected{% endif %}>Nov</option>
-                    <option value="12" {% if mes_selecionado=='12' %}selected{% endif %}>Dez</option>
-                </select>
-            </div>
+                <!-- Filtro de Mês -->
+                <div class="flex items-center gap-1 min-w-0 col-span-1">
+                    <i class="fas fa-calendar-alt text-green-400 text-xs hidden sm:block"></i>
+                    <select name="mes"
+                        class="w-full px-2 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white text-xs focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
+                        <option value="">Mês</option>
+                        <option value="1" {% if mes_selecionado=='1' %}selected{% endif %}>Jan</option>
+                        <option value="2" {% if mes_selecionado=='2' %}selected{% endif %}>Fev</option>
+                        <option value="3" {% if mes_selecionado=='3' %}selected{% endif %}>Mar</option>
+                        <option value="4" {% if mes_selecionado=='4' %}selected{% endif %}>Abr</option>
+                        <option value="5" {% if mes_selecionado=='5' %}selected{% endif %}>Mai</option>
+                        <option value="6" {% if mes_selecionado=='6' %}selected{% endif %}>Jun</option>
+                        <option value="7" {% if mes_selecionado=='7' %}selected{% endif %}>Jul</option>
+                        <option value="8" {% if mes_selecionado=='8' %}selected{% endif %}>Ago</option>
+                        <option value="9" {% if mes_selecionado=='9' %}selected{% endif %}>Set</option>
+                        <option value="10" {% if mes_selecionado=='10' %}selected{% endif %}>Out</option>
+                        <option value="11" {% if mes_selecionado=='11' %}selected{% endif %}>Nov</option>
+                        <option value="12" {% if mes_selecionado=='12' %}selected{% endif %}>Dez</option>
+                    </select>
+                </div>
 
-            <!-- Filtro de Ano -->
-            <div class="flex items-center gap-2 min-w-0">
-                <i class="fas fa-calendar text-green-400 text-xs"></i>
-                <input type="number" name="ano" value="{{ ano_selecionado or '' }}" min="2000" max="2100"
-                    placeholder="Ano"
-                    class="w-20 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
+                <!-- Filtro de Ano + botão limpar -->
+                <div class="flex items-center gap-1 min-w-0 col-span-1">
+                    <i class="fas fa-calendar text-green-400 text-xs hidden sm:block"></i>
+                    <input type="number" name="ano" value="{{ ano_selecionado or '' }}" min="2000" max="2100"
+                        placeholder="Ano"
+                        class="w-full px-2 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 text-xs focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
+                    <a href="{{ url_for('receitas.index') }}"
+                        class="bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white p-2 rounded-lg transition-all duration-200 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-times text-xs"></i>
+                    </a>
+                </div>
             </div>
-
-            <!-- Botão Limpar -->
-            <a href="{{ url_for('receitas.index') }}"
-                class="bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white p-2 rounded-lg transition-all duration-200 flex items-center justify-center">
-                <i class="fas fa-times text-xs"></i>
-            </a>
         </form>
     </div>
 
     <!-- Estatísticas -->
-    <div class="grid md:grid-cols-4 gap-3">
-        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-2xl p-4">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-2xl p-3">
             <div class="flex items-center">
-                <div class="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center mr-3">
-                    <i class="fas fa-list text-green-400 text-sm"></i>
+                <div class="w-7 h-7 bg-green-500/20 rounded-full flex items-center justify-center mr-2">
+                    <i class="fas fa-list text-green-400 text-xs"></i>
                 </div>
                 <div>
-                    <p class="text-gray-400 text-sm">Total de Receitas</p>
-                    <p class="text-xl font-bold text-white">{{ stats.total }}</p>
+                    <p class="text-gray-400 text-xs">Total</p>
+                    <p class="text-lg font-bold text-white">{{ stats.total }}</p>
                 </div>
             </div>
         </div>
 
-        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-2xl p-4">
+        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-2xl p-3">
             <div class="flex items-center">
-                <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center mr-3">
-                    <i class="fas fa-money-bill-wave text-blue-400 text-sm"></i>
+                <div class="w-7 h-7 bg-blue-500/20 rounded-full flex items-center justify-center mr-2">
+                    <i class="fas fa-money-bill-wave text-blue-400 text-xs"></i>
                 </div>
                 <div>
-                    <p class="text-gray-400 text-sm">Valor Total</p>
-                    <p class="text-xl font-bold text-white">R$ {{ "%.2f"|format(stats.valor_total)|replace('.', ',') }}
-                    </p>
+                    <p class="text-gray-400 text-xs">Total R$</p>
+                    <p class="text-sm font-bold text-white">R$ {{ "%.2f"|format(stats.valor_total)|replace('.', ',') }}</p>
                 </div>
             </div>
         </div>
 
-        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-2xl p-4">
+        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-2xl p-3">
             <div class="flex items-center">
-                <div class="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center mr-3">
-                    <i class="fas fa-calculator text-purple-400 text-sm"></i>
+                <div class="w-7 h-7 bg-purple-500/20 rounded-full flex items-center justify-center mr-2">
+                    <i class="fas fa-calculator text-purple-400 text-xs"></i>
                 </div>
                 <div>
-                    <p class="text-gray-400 text-sm">Média por Receita</p>
-                    <p class="text-xl font-bold text-white">R$ {{ "%.2f"|format(stats.media_valor)|replace('.', ',') }}
-                    </p>
+                    <p class="text-gray-400 text-xs">Média</p>
+                    <p class="text-sm font-bold text-white">R$ {{ "%.2f"|format(stats.media_valor)|replace('.', ',') }}</p>
                 </div>
             </div>
         </div>
 
-        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-2xl p-4">
+        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-2xl p-3">
             <div class="flex items-center">
-                <div class="w-8 h-8 bg-yellow-500/20 rounded-full flex items-center justify-center mr-3">
-                    <i class="fas fa-trophy text-yellow-400 text-sm"></i>
+                <div class="w-7 h-7 bg-yellow-500/20 rounded-full flex items-center justify-center mr-2">
+                    <i class="fas fa-trophy text-yellow-400 text-xs"></i>
                 </div>
                 <div>
-                    <p class="text-gray-400 text-sm">Maior Receita</p>
-                    <p class="text-base font-semibold text-white">R$ {{ "%.2f"|format(stats.maior_valor)|replace('.',
-                        ',') }}</p>
+                    <p class="text-gray-400 text-xs">Maior</p>
+                    <p class="text-sm font-bold text-white">R$ {{ "%.2f"|format(stats.maior_valor)|replace('.', ',') }}</p>
                 </div>
             </div>
         </div>
@@ -162,7 +159,8 @@
         </div>
 
         {% if receitas %}
-        <div class="overflow-x-auto">
+        <!-- TABELA (desktop) -->
+        <div class="hidden md:block overflow-x-auto">
             <table class="min-w-full">
                 <thead class="bg-gray-800/50">
                     <tr>
@@ -251,6 +249,58 @@
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
+
+        <!-- CARDS (mobile) -->
+        <div class="md:hidden divide-y divide-gray-700">
+            {% for receita in receitas %}
+            <div class="p-3">
+                <div class="flex items-start justify-between mb-2">
+                    <div class="flex items-center flex-1 min-w-0">
+                        <div class="w-7 h-7 bg-green-500/20 rounded-md flex items-center justify-center mr-2 flex-shrink-0">
+                            <i class="fas fa-folder text-green-400 text-xs"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <div class="text-white font-medium text-sm truncate">{{ receita.categoria_nome or 'Sem categoria' }}</div>
+                            {% if receita.subcategoria_nome %}
+                            <div class="text-gray-400 text-xs">{{ receita.subcategoria_nome }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="text-green-400 font-bold text-sm ml-2 flex-shrink-0">R$ {{ "%.2f"|format(receita.valor)|replace('.', ',') }}</div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="text-gray-400 text-xs">
+                            <i class="fas fa-calendar mr-1"></i>{{ receita.data_inicio.strftime('%d/%m/%Y') if receita.data_inicio else 'N/A' }}
+                        </span>
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs bg-blue-500/20 text-blue-300">
+                            {{ receita.numero_parcelas if receita.numero_parcelas != 'x' else '∞' }}
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <button
+                            onclick="togglePagamento('receita', {{ receita.id }}, {{ receita.pago|tojson|safe }})"
+                            class="text-xs px-2 py-1 rounded transition-colors duration-200 {{ 'bg-green-600 text-white' if receita.pago else 'bg-gray-600 text-gray-300' }}"
+                            data-receita-id="{{ receita.id }}">
+                            {% if receita.pago %}
+                            <i class="fas fa-check mr-1"></i>Pago
+                            {% else %}
+                            Pendente
+                            {% endif %}
+                        </button>
+                        <a href="{{ url_for('receitas.editar', id=receita.id) }}"
+                            class="p-1.5 bg-yellow-600 hover:bg-yellow-500 text-white rounded-md transition-colors">
+                            <i class="fas fa-edit text-xs"></i>
+                        </a>
+                        <button onclick="confirmarExclusao({{ receita.id }}, '{{ receita.categoria_nome }}')"
+                            class="p-1.5 bg-red-600 hover:bg-red-500 text-white rounded-md transition-colors">
+                            <i class="fas fa-trash text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
         {% else %}
         <div class="p-8 text-center">
