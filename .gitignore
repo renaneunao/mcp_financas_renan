@@ -28,6 +28,7 @@ Thumbs.db
 
 # Logs
 *.log
+login_debug.txt
 
 # SSL certificates (se necessário manter privado)
 # certs/
@@ -38,3 +39,6 @@ app/static/css/output.css
 # Chaves SSH (segurança)
 .ssh/vps_key
 .ssh/vps_key.pubfinancas.db
+
+# Sessões Flask locais
+flask_sessions/

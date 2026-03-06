@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from app.database import get_db_connection, gerar_parcelas_receita, gerar_parcelas_despesa
 import hashlib
 import os
-from datetime import date
+from datetime import date, timedelta
 from werkzeug.utils import secure_filename
 from PIL import Image
 
@@ -151,15 +151,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        
-        # DEBUG: Log da tentativa de login em arquivo
-        with open('login_debug.txt', 'a', encoding='utf-8') as f:
-            f.write(f"\n{'='*60}\n")
-            f.write(f"TENTATIVA DE LOGIN - {date.today()}\n")
-            f.write(f"{'='*60}\n")
-            f.write(f"Username digitado: {username}\n")
-            f.write(f"Senha digitada: {password}\n")
-            f.write(f"Hash da senha digitada: {hash_password(password)}\n")
+        remember_me = request.form.get('remember_me') == '1'
         
         conn = get_db_connection()
         user = conn.execute(
@@ -168,33 +160,22 @@ def login():
         ).fetchone()
         conn.close()
         
-        with open('login_debug.txt', 'a', encoding='utf-8') as f:
-            if user:
-                f.write(f"Hash armazenado no banco: {user['password_hash']}\n")
-                f.write(f"Senhas conferem? {check_password(password, user['password_hash'])}\n")
-            else:
-                f.write(f"ERRO: Usuario '{username}' nao encontrado ou inativo\n")
-            f.write(f"{'='*60}\n\n")
-        
         if user and check_password(password, user['password_hash']):
-            # Tornar a sessão permanente para persistir entre requisições
-            session.permanent = True
             session['user_id'] = user['id']
             session['username'] = user['username']
             session['nome_completo'] = user['nome_completo']
             
-            # DEBUG: Verificar sessão
-            with open('login_debug.txt', 'a', encoding='utf-8') as f:
-                f.write(f"LOGIN BEM-SUCEDIDO!\n")
-                f.write(f"Session permanent: {session.permanent}\n")
-                f.write(f"Session user_id: {session.get('user_id')}\n")
-                f.write(f"Session username: {session.get('username')}\n")
-                f.write(f"Session keys: {list(session.keys())}\n")
-                f.write(f"{'='*60}\n\n")
+            if remember_me:
+                # Sessão permanente por 30 dias
+                session.permanent = True
+                current_app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
+            else:
+                # Sessão expira ao fechar o browser (ou 1h)
+                session.permanent = True
+                current_app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=1)
             
             flash(f'Bem-vindo, {user["nome_completo"] or user["username"]}!', 'success')
             
-            # Redirecionar para a página solicitada ou dashboard
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('dashboard.index'))
         else:
@@ -274,15 +255,6 @@ def login_required(f):
     
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        # DEBUG: Verificar sessão no decorator
-        with open('login_debug.txt', 'a', encoding='utf-8') as file:
-            file.write(f"\nDECORATOR @login_required chamado para: {f.__name__}\n")
-            file.write(f"Session keys: {list(session.keys())}\n")
-            file.write(f"user_id in session: {'user_id' in session}\n")
-            if 'user_id' in session:
-                file.write(f"user_id value: {session['user_id']}\n")
-            file.write(f"{'='*60}\n\n")
-        
         if 'user_id' not in session:
             flash('Você precisa fazer login para acessar esta página', 'warning')
             return redirect(url_for('auth.login', next=request.url))

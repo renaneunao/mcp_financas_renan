@@ -4,3 +4,5 @@ Werkzeug
 python-dateutil
 gunicorn
 python-dotenv
+flask-session
+redis

@@ -9,7 +9,7 @@ from app.routes.despesas import despesas_bp
 from app.routes.categorias import categorias_bp
 from app.routes.auth import auth_bp
 from app.routes.cartoes import cartoes_bp
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # Carregar variáveis de ambiente do arquivo .env
 load_dotenv()
@@ -35,17 +35,41 @@ def format_date_br(date_string):
 def create_app():
     app = Flask(__name__)
     
-    # Configurações da aplicação
+    # Configurações básicas
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-key-change-in-production')
     app.config['DATABASE'] = os.environ.get('DB_PATH', 'financas.db')
     
-    # Configurações de sessão simplificadas para desenvolvimento
-    # Remover todas as restrições de cookies para funcionar localmente
+    # -----------------------------------------------------------------
+    # Configuração de Sessão com Flask-Session (Redis ou filesystem)
+    # -----------------------------------------------------------------
+    session_type = os.environ.get('SESSION_TYPE', 'filesystem')
+    app.config['SESSION_TYPE'] = session_type
+    app.config['SESSION_PERMANENT'] = False  # Controlado por rota
+    app.config['SESSION_USE_SIGNER'] = True   # Assinar o cookie com SECRET_KEY
+    app.config['SESSION_KEY_PREFIX'] = 'financas:'
+
+    if session_type == 'redis':
+        import redis as redis_lib
+        redis_url = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
+        r = redis_lib.from_url(redis_url, decode_responses=False)
+        app.config['SESSION_REDIS'] = r
+        # Sessão padrão: 1h; "lembrar de mim": 30 dias (definido no login)
+        app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=1)
+        app.logger.info(f'[Sessão] Usando Redis: {redis_url.split("@")[-1]}')
+    else:
+        # Desenvolvimento local sem Redis
+        app.config['SESSION_FILE_DIR'] = os.path.join(os.getcwd(), 'flask_sessions')
+        app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=1)
+        app.logger.info('[Sessão] Usando filesystem (desenvolvimento)')
+
+    from flask_session import Session
+    Session(app)
+
+    # Configurações de cookie de sessão
     app.config['SESSION_COOKIE_SECURE'] = False
-    app.config['SESSION_COOKIE_HTTPONLY'] = False
-    app.config['SESSION_COOKIE_SAMESITE'] = None
+    app.config['SESSION_COOKIE_HTTPONLY'] = True
+    app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
     app.config['SESSION_COOKIE_DOMAIN'] = None
-    app.config['PERMANENT_SESSION_LIFETIME'] = 3600  # 1 hora
     
     # Filtro personalizado para datas
     app.jinja_env.filters['date_br'] = format_date_br
