@@ -146,12 +146,75 @@ def nova():
     if request.method == 'POST':
         categoria_id = request.form['categoria_id']
         subcategoria_id = request.form.get('subcategoria_id') or None
+        fixo = bool(request.form.get('fixo'))
+
+        # --- Recebimento Parcelado ---
+        recebimento_parcelado = request.form.get('recebimento_parcelado') == '1'
+
+        if recebimento_parcelado:
+            valor_total_raw = request.form.get('valor_total_recebimento', '')
+            qtd_parcelas_raw = request.form.get('qtd_parcelas_receita', '')
+            mes_primeiro = request.form.get('mes_primeiro_recebimento', '')  # YYYY-MM
+            dia_recebimento = request.form.get('dia_recebimento_parcela', '')
+
+            if not valor_total_raw or not qtd_parcelas_raw or not mes_primeiro or not dia_recebimento:
+                flash('Para recebimento parcelado, preencha valor total, nº de parcelas, mês do 1º recebimento e dia.', 'error')
+                return redirect(url_for('receitas.nova'))
+
+            try:
+                if ',' in valor_total_raw:
+                    valor_total_raw = valor_total_raw.replace('.', '').replace(',', '.')
+                valor_total = float(valor_total_raw)
+                if valor_total <= 0:
+                    flash('O valor total deve ser maior que zero.', 'error')
+                    return redirect(url_for('receitas.nova'))
+
+                qtd_parcelas = int(qtd_parcelas_raw)
+                if qtd_parcelas < 2:
+                    flash('O número de parcelas deve ser maior que 1.', 'error')
+                    return redirect(url_for('receitas.nova'))
+
+                dia = int(dia_recebimento)
+                if dia < 1 or dia > 31:
+                    flash('Dia de recebimento deve estar entre 1 e 31.', 'error')
+                    return redirect(url_for('receitas.nova'))
+
+                # Calcular valor de cada parcela
+                valor_parcela = valor_total / qtd_parcelas
+
+                # Montar data_inicio com mês/ano + dia informado
+                from dateutil.relativedelta import relativedelta
+                ano_r, mes_r = map(int, mes_primeiro.split('-'))
+                try:
+                    data_inicio_obj = datetime(ano_r, mes_r, dia).date()
+                except ValueError:
+                    # Dia não existe no mês (ex: 31 de fevereiro) → pega o último dia
+                    ultimo_dia = (datetime(ano_r, mes_r, 1) + relativedelta(months=1) - relativedelta(days=1)).day
+                    data_inicio_obj = datetime(ano_r, mes_r, ultimo_dia).date()
+
+                data_inicio = data_inicio_obj.strftime('%Y-%m-%d')
+
+                # Data fim = data_inicio + (qtd - 1) meses
+                data_fim_obj = data_inicio_obj + relativedelta(months=qtd_parcelas - 1)
+                data_fim = data_fim_obj.strftime('%Y-%m-%d')
+
+                gerar_parcelas_receita(
+                    categoria_id, subcategoria_id, data_inicio, data_fim,
+                    'mensal', valor_parcela, dia, user_id, fixo=False
+                )
+                flash(f'Recebimento parcelado cadastrado: {qtd_parcelas}x de R$ {valor_parcela:.2f} a partir de {data_inicio_obj.strftime("%d/%m/%Y")}!', 'success')
+                return redirect(url_for('receitas.index'))
+
+            except Exception as e:
+                flash(f'Erro ao cadastrar recebimento parcelado: {str(e)}', 'error')
+                return redirect(url_for('receitas.nova'))
+
+        # --- Fluxo Normal ---
         data_inicio = request.form['data_inicio']
         data_fim = request.form.get('data_fim') or None
         tipo_recorrencia = request.form['tipo_recorrencia']
         dia_comum_recebimento = request.form.get('dia_comum_recebimento') or None
         valor_parcela = request.form['valor_parcela']
-        fixo = bool(request.form.get('fixo'))  # Checkbox para receita fixa
         
         # Validações
         if not categoria_id or not data_inicio or not tipo_recorrencia or not valor_parcela:
@@ -159,7 +222,6 @@ def nova():
             return redirect(url_for('receitas.nova'))
         
         try:
-            # Converter valor: se tem vírgula, tratar como separador decimal brasileiro
             if ',' in valor_parcela:
                 valor_parcela = valor_parcela.replace('.', '').replace(',', '.')
             valor_parcela = float(valor_parcela)
@@ -170,7 +232,6 @@ def nova():
             flash('Valor inválido.', 'error')
             return redirect(url_for('receitas.nova'))
         
-        # Converter dia comum para inteiro se fornecido
         if dia_comum_recebimento:
             try:
                 dia_comum_recebimento = int(dia_comum_recebimento)
@@ -182,9 +243,8 @@ def nova():
         else:
             dia_comum_recebimento = None
         
-        # Gerar parcelas
         try:
-            receita_pai_id = gerar_parcelas_receita(
+            gerar_parcelas_receita(
                 categoria_id, subcategoria_id, data_inicio, data_fim, 
                 tipo_recorrencia, valor_parcela, dia_comum_recebimento, user_id, fixo
             )
@@ -194,8 +254,6 @@ def nova():
             flash(f'Erro ao cadastrar receita: {str(e)}', 'error')
     
     categorias = get_categorias_receitas(usuario_id=user_id)
-    
-    # Para nova receita, carregar subcategorias da primeira categoria se existir
     subcategorias = []
     if categorias:
         primeira_categoria_id = categorias[0]['id']

@@ -464,16 +464,16 @@
         <div class="flex-1 flex flex-col">
             <!-- Header -->
             <header class="bg-gradient-to-r from-gray-800 to-gray-700 shadow-lg border-b border-gray-600">
-                <div class="px-3 py-2 md:px-6 md:py-4 flex items-center">
+                <div class="px-3 py-2 md:px-6 md:py-4 flex items-center gap-3">
                     <!-- Hamburguer: CSS mostra só no mobile -->
                     <button id="mob-open-btn" onclick="mobOpen()"
-                        class="text-gray-300 hover:text-white mr-3 flex-shrink-0 focus:outline-none">
+                        class="text-gray-300 hover:text-white flex-shrink-0 focus:outline-none">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                     <div class="flex-1 min-w-0">
-                        <h2 class="text-lg md:text-xl lg:text-2xl font-semibold text-white w-full">
-                            {% block header %}Dashboard{% endblock %}
-                        </h2>
+                        {% block header %}
+                        <h2 class="text-lg md:text-xl lg:text-2xl font-semibold text-white">Dashboard</h2>
+                        {% endblock %}
                     </div>
                 </div>
             </header>

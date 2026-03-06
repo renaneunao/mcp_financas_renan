@@ -106,8 +106,19 @@ def index():
             'data': row['data_inicio'],
             'parcela_atual': row['parcela_atual'],
             'numero_parcelas': row['numero_parcelas'],
-            'id': row['id']
+            'id': row['id'],
+            'pago': bool(row['pago'])
         })
+
+    # Calcular 'todos_pagos' por cartao e por banco
+    for banco, dados_banco in faturas_view.items():
+        banco_pago = True
+        for cartao, dados_cartao in dados_banco['cartoes'].items():
+            cartao_pago = all(item['pago'] for item in dados_cartao['itens'])
+            dados_cartao['todos_pagos'] = cartao_pago
+            if not cartao_pago:
+                banco_pago = False
+        dados_banco['todos_pagos'] = banco_pago
 
     # Calcular total bloqueado (consumo total do limite)
     # Lógica: 
